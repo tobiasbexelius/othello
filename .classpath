@@ -2,15 +2,12 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/home/anton/Othello/sources/mockito-all-1.9.5-sources.jar">
+	<classpathentry kind="lib" path="/home/anton/Github/othello/mockito-all-1.9.5.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/home/anton/Downloads/mockito-1.9.5.zip!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/anton/Othello/sources/mockito-core-1.9.5-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/home/anton/Downloads/mockito-1.9.5.zip!/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="sources/mockito-core-1.9.5-sources.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
