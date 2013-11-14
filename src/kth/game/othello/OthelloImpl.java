@@ -38,7 +38,7 @@ public class OthelloImpl implements Othello{
 		List<Node> swappedNodes = new ArrayList<Node>();
 		Node move = getNode(nodeId);
 		if(move == null) 
-			return null;
+			return swappedNodes;
 		
 		for(int i = 0; i < dY.length; i++) {
 			List<Node> nodesInDirection = getNodesToSwapInDirection(playerId, move, dX[i], dY[i]);
