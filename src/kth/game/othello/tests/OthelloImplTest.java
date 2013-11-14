@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 import java.util.List;
@@ -52,6 +53,9 @@ public class OthelloImplTest {
 		assertFalse(game.isMoveValid(startingPlayerId, "28"));
 		assertTrue(game.isMoveValid(startingPlayerId, "20"));
 		assertTrue(game.isMoveValid(startingPlayerId, "29"));
+		
+		game.move(startingPlayerId, "20");
+		assertFalse(game.isMoveValid(startingPlayerId, "20"));
 	}
 	
 	@Test
@@ -81,11 +85,16 @@ public class OthelloImplTest {
 		String opponentPlayer = game.getPlayers().get(1).getId();
 		game.start(startingPlayerId);
 		assertEquals(2, game.move(startingPlayerId, "29").size());
-		assertEquals(2, game.move(opponentPlayer, "28").size());
-		assertEquals(2, game.move(startingPlayerId, "28").size());
+		assertEquals(2, game.move(opponentPlayer, "21").size());
+		assertEquals(2, game.move(startingPlayerId, "13").size());
+		try {
+			game.move(startingPlayerId, "13").size();
+		} catch(IllegalArgumentException e) {
+		}
+
 	}
 	
-	public void printBoard(Othello o) {
+	public static void printBoard(Othello o) {
 		List<Node> board = o.getBoard().getNodes();
 		System.out.println("##########");
 		System.out.print("#");

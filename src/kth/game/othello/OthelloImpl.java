@@ -76,7 +76,8 @@ public class OthelloImpl implements Othello{
 		Node move = getNode(nodeId);
 		if(move == null) 
 			return false;
-		
+		if(move.isMarked())
+			return false;
 		for(int i = 0; i < dY.length; i++) {
 			if(canCaptureInDirection(playerId, move, dX[i], dY[i]))
 				return true;
