@@ -11,6 +11,7 @@ import java.util.List;
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.OthelloImpl;
+import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class OthelloImplTest {
 		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
 		String startingPlayerId = game.getPlayers().get(0).getId();
 		game.start(startingPlayerId);
-	
+		
 		assertEquals(0, game.getNodesToSwap(startingPlayerId, "500").size());
 		assertEquals(0, game.getNodesToSwap(startingPlayerId, "10").size());
 		assertEquals(0, game.getNodesToSwap(startingPlayerId, "-1").size());
@@ -63,16 +64,34 @@ public class OthelloImplTest {
 		assertEquals(2, game.move().size());
 	}
 	
+	@Test
 	public void testMoveHuman() {
 		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
 		String startingPlayerId = game.getPlayers().get(0).getId();
 		String opponentPlayer = game.getPlayers().get(1).getId();
 		game.start(startingPlayerId);
-		
 		assertEquals(2, game.move(startingPlayerId, "29").size());
 		assertEquals(2, game.move(opponentPlayer, "28").size());
 		assertEquals(2, game.move(startingPlayerId, "28").size());
-		
+	}
+	
+	public void printBoard(Othello o) {
+		List<Node> board = o.getBoard().getNodes();
+		System.out.println("##########");
+		System.out.print("#");
+		for(Node node: board) {
+			char c;
+			if(node.isMarked()) {
+				c = node.getOccupantPlayerId().equals(o.getPlayers().get(0).getId()) ? 'B' : 'W';
+			} else {
+				c = ' ';
+			}
+			System.out.print(c);
+			if((Double.parseDouble(node.getId())+1) % 8 == 0) {
+				System.out.print("#\n#");
+			}
+		}
+		System.out.println("#########");
 	}
 
 }
