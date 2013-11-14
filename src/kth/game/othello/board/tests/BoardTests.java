@@ -6,7 +6,7 @@ import junit.framework.Assert;
 
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
-import kth.game.othello.board.OthelloBoard;
+import kth.game.othello.board.BoardImpl;
 
 import org.junit.Test;
 
@@ -14,7 +14,7 @@ public class BoardTests {
 
 	@Test
 	public void testCreation() {
-		Board board = new OthelloBoard();
+		Board board = new BoardImpl();
 		List<Node> nodes = board.getNodes();
 		Assert.assertEquals("0", nodes.get(0).getId());
 		Assert.assertEquals("63", nodes.get(nodes.size()-1).getId());
