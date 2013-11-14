@@ -8,10 +8,12 @@ import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.board.OthelloNode;
 import kth.game.othello.player.Player;
+import kth.game.othello.player.Player.Type;
 
 public class OthelloGame implements Othello{
 
 	private Board board;
+	private Random random;
 	private List<Player> players;
 	private Player playerInTurn;
 	private boolean active;
@@ -23,6 +25,7 @@ public class OthelloGame implements Othello{
 		players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
+		random = new Random();
 	}
 	
 	@Override
@@ -33,7 +36,7 @@ public class OthelloGame implements Othello{
 	@Override
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
 		List<Node> swappedNodes = new ArrayList<Node>();
-		Node move = getNodeFromId(nodeId);
+		Node move = getNode(nodeId);
 		if(move == null) 
 			return null;
 		
@@ -69,7 +72,7 @@ public class OthelloGame implements Othello{
 
 	@Override
 	public boolean isMoveValid(String playerId, String nodeId) {
-		Node move = getNodeFromId(nodeId);
+		Node move = getNode(nodeId);
 		if(move == null) 
 			return false;
 		
@@ -110,7 +113,7 @@ public class OthelloGame implements Othello{
 			return swappedNodes;
 	}
 	
-	private Node getNodeFromId(String nodeId) {
+	private Node getNode(String nodeId) {
 		for(Node node : board.getNodes()) {
 			if(node.getId().equals(nodeId)) {
 				return node;
@@ -127,20 +130,67 @@ public class OthelloGame implements Othello{
 	}
 	
 	@Override
-	public List<Node> move() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Node> move() throws IllegalArgumentException {
+		if(getPlayerInTurn().getType() != Type.COMPUTER)
+			throw new IllegalArgumentException();
+		
+		String playerId = getPlayerInTurn().getId();
+		List<Node> possibleMoves = findPossibleMoves(playerId);
+		
+		int moveIndex = random.nextInt(possibleMoves.size()-1);
+		Node move = possibleMoves.get(moveIndex);
+		List<Node> capturedNodes = captureNodes(playerId, move);
+
+		swapPlayerInTurn();
+		
+		return capturedNodes;
 	}
 
 	@Override
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
-		// TODO Auto-generated method stub
-		return null;
+		if(!playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
+			throw new IllegalArgumentException();
+		
+		Node move = getNode(nodeId);
+		List<Node> capturedNodes = captureNodes(playerId, move);
+		swapPlayerInTurn();
+		return capturedNodes;
+	}
+	
+	private List<Node> captureNodes(String playerId, Node move) {
+		List<Node> capturedNodes = getNodesToSwap(playerId, move.getId());
+		capturedNodes.add(move);
+		for(Node node : capturedNodes) {
+			occupyNode(node, board.getNodes(), playerId);
+		}
+		return capturedNodes;
+	}
+	
+	private boolean playerIsInTurn(String playerId) {
+		if(getPlayerInTurn().getId().equals(playerId))
+			return true;
+		else 
+			return false;
+	}
+	
+	private void swapPlayerInTurn() {
+		String currentPlayerId = getPlayerInTurn().getId();
+		
+		if(players.get(0).getId().equals(currentPlayerId)) {
+			playerInTurn = players.get(1);
+		} else {
+			playerInTurn = players.get(0);
+		}
+	}
+	
+	private void occupyNode(Node node, List<Node> nodes, String occupantPlayerId) {
+		int nodeIndex = nodes.indexOf(node);
+		nodes.remove(node);
+		nodes.add(nodeIndex, new OthelloNode(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(), occupantPlayerId));
 	}
 
 	@Override
 	public void start() {
-		Random random = new Random();
 		int player = random.nextInt(2);
 		playerInTurn = players.get(player);
 		active = true;
