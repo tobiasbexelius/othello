@@ -1,6 +1,7 @@
 package kth.game.othello.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
@@ -36,12 +37,42 @@ public class OthelloImplTest {
 	}
 	
 	@Test
-	public void isActiveTest() {
-		Othello game = mock(OthelloImpl.class);
-		when(game.hasValidMove(anyString())).thenReturn(true);
-		game.start();
-		System.out.println(game.hasValidMove("derp"));
-		assertTrue(game.isActive());
+	public void testIsMoveValid() {
+		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayerId = game.getPlayers().get(0).getId();
+		game.start(startingPlayerId);
+		
+		assertFalse(game.isMoveValid(startingPlayerId, "500"));
+		assertFalse(game.isMoveValid(startingPlayerId, "10"));
+		assertFalse(game.isMoveValid(startingPlayerId, "-1"));
+		assertFalse(game.isMoveValid(startingPlayerId, "26"));
+		assertFalse(game.isMoveValid(startingPlayerId, "21"));
+		assertFalse(game.isMoveValid(startingPlayerId, "27"));
+		assertFalse(game.isMoveValid(startingPlayerId, "28"));
+		assertTrue(game.isMoveValid(startingPlayerId, "20"));
+		assertTrue(game.isMoveValid(startingPlayerId, "29"));
+	}
+	
+	@Test
+	public void testMoveComputer() {
+		Othello game = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
+		String startingPlayerId = game.getPlayers().get(0).getId();
+		game.start(startingPlayerId);
+	
+		assertEquals(2, game.move().size());
+		assertEquals(2, game.move().size());
+	}
+	
+	public void testMoveHuman() {
+		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayerId = game.getPlayers().get(0).getId();
+		String opponentPlayer = game.getPlayers().get(1).getId();
+		game.start(startingPlayerId);
+		
+		assertEquals(2, game.move(startingPlayerId, "29").size());
+		assertEquals(2, game.move(opponentPlayer, "28").size());
+		assertEquals(2, game.move(startingPlayerId, "28").size());
+		
 	}
 
 }
