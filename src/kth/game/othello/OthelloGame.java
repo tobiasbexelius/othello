@@ -33,11 +33,7 @@ public class OthelloGame implements Othello{
 	@Override
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
 		List<Node> swappedNodes = new ArrayList<Node>();
-		Node move = null;//TODO Bryt ut till en ny metod
-		for(Node node : board.getNodes()) {
-			if(node.getId().equals(nodeId))
-				move = node;
-		}
+		Node move = getNodeFromId(nodeId);
 		if(move == null) 
 			return null;
 		
@@ -73,11 +69,7 @@ public class OthelloGame implements Othello{
 
 	@Override
 	public boolean isMoveValid(String playerId, String nodeId) {
-		Node move = null;
-		for(Node node : board.getNodes()) {
-			if(node.getId().equals(nodeId))
-				move = node;
-		}
+		Node move = getNodeFromId(nodeId);
 		if(move == null) 
 			return false;
 		
@@ -116,6 +108,15 @@ public class OthelloGame implements Othello{
 					return null;
 			} 
 			return swappedNodes;
+	}
+	
+	private Node getNodeFromId(String nodeId) {
+		for(Node node : board.getNodes()) {
+			if(node.getId().equals(nodeId)) {
+				return node;
+			}
+		}
+		return null;
 	}
 	
 	private Node getNode(int x, int y) {
