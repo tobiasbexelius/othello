@@ -2,11 +2,14 @@ package kth.game.othello.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
+import kth.game.othello.OthelloImpl;
 import kth.game.othello.board.Node;
 
 import org.junit.Test;
@@ -32,6 +35,13 @@ public class OthelloImplTest {
 		assertNull(game.getBoard().getNodes().get(29).getOccupantPlayerId());
 	}
 	
-	
+	@Test
+	public void isActiveTest() {
+		Othello game = mock(OthelloImpl.class);
+		when(game.hasValidMove(anyString())).thenReturn(true);
+		game.start();
+		System.out.println(game.hasValidMove("derp"));
+		assertTrue(game.isActive());
+	}
 
 }

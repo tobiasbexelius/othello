@@ -86,10 +86,12 @@ public class OthelloImpl implements Othello{
 	
 	private boolean canCaptureInDirection(String playerId, Node move, int xDir, int yDir) {
 		Node next = getNode(move.getXCoordinate()+xDir, move.getYCoordinate()+yDir);
-		if(!next.isMarked() || next.getOccupantPlayerId().equals(playerId))
+		
+		if(next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
 			return false;
+
 		while(true) {
-			next = getNode(move.getXCoordinate()+xDir, move.getYCoordinate()+yDir);
+			next = getNode(next.getXCoordinate()+xDir, next.getYCoordinate()+yDir);
 			if(next == null || !next.isMarked())
 				return false;
 			if(next.getOccupantPlayerId().equals(playerId))
@@ -122,7 +124,7 @@ public class OthelloImpl implements Othello{
 	
 	private Node getNode(int x, int y) {
 		int index = 8*y+x;
-		if(index > board.getNodes().size() || index < 0)
+		if(index >= board.getNodes().size() || index < 0)
 			return null;
 		return board.getNodes().get(index);
 	}
