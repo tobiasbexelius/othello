@@ -60,7 +60,17 @@ public class OthelloImplTest {
 		game.start(startingPlayerId);
 	
 		assertEquals(2, game.move().size());
+		assertTrue(!startingPlayerId.equals(game.getPlayerInTurn().getId()));
 		assertEquals(2, game.move().size());
+		assertTrue(startingPlayerId.equals(game.getPlayerInTurn().getId()));
+		int moves = 2;
+		while(game.isActive()) {
+			List<Node> captured = game.move();
+			if(!game.hasValidMove(game.getPlayerInTurn().getId()))
+				assertTrue(game.move().size() == 0);
+			moves++;
+			System.out.println("Moves made: " + moves);
+		}
 	}
 	
 	public void testMoveHuman() {

@@ -101,7 +101,7 @@ public class OthelloImpl implements Othello{
 	
 	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
 			Node next = getNode(move.getXCoordinate()+xDir, move.getYCoordinate()+yDir);
-			if(!next.isMarked() || next.getOccupantPlayerId().equals(playerId))
+			if(next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
 				return null;
 			List<Node> swappedNodes = new ArrayList<Node>();
 			while(!next.getOccupantPlayerId().equals(playerId)) {
@@ -135,10 +135,14 @@ public class OthelloImpl implements Othello{
 			throw new IllegalArgumentException();
 		
 		String playerId = getPlayerInTurn().getId();
+		if(!hasValidMove(playerId)) {
+			swapPlayerInTurn();
+			return new ArrayList<Node>();
+		}
 		List<Node> possibleMoves = findPossibleMoves(playerId);
-		
-		int moveIndex = random.nextInt(possibleMoves.size()-1);
+		int moveIndex = random.nextInt(possibleMoves.size());
 		Node move = possibleMoves.get(moveIndex);
+		
 		List<Node> capturedNodes = captureNodes(playerId, move);
 
 		swapPlayerInTurn();
@@ -185,6 +189,9 @@ public class OthelloImpl implements Othello{
 	
 	private void occupyNode(Node node, List<Node> nodes, String occupantPlayerId) {
 		int nodeIndex = nodes.indexOf(node);
+		if(nodeIndex == -1) {
+			System.out.println("Could not find node: " + node.getId());
+		}
 		nodes.remove(node);
 		nodes.add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(), occupantPlayerId));
 	}

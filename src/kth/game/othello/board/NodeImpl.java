@@ -38,5 +38,12 @@ public class NodeImpl implements Node {
 	public boolean isMarked() {
 		return marked;
 	}
-
+	
+	@Override
+	public boolean equals(Object o) {
+		Node other = (Node) o;
+		if(other.getXCoordinate() == getXCoordinate() && other.getYCoordinate() == getYCoordinate() && getId().equals(other.getId()))
+			return true;
+		return false;
+	}
 }
