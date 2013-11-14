@@ -16,7 +16,6 @@ public class OthelloImpl implements Othello{
 	private Random random;
 	private List<Player> players;
 	private Player playerInTurn;
-	private boolean active;
 	private int[] dX = {0, 0, 1, -1, 1, -1, -1, 1};
 	private int[] dY = {1, -1, 0, 0, 1, -1, 1, -1};
 	
@@ -67,7 +66,9 @@ public class OthelloImpl implements Othello{
 
 	@Override
 	public boolean isActive() {
-		return active;
+		if(hasValidMove(players.get(0).getId()) || hasValidMove(players.get(1).getId()))
+			return true;
+		return false;
 	}
 
 	@Override
@@ -190,13 +191,11 @@ public class OthelloImpl implements Othello{
 	public void start() {
 		int player = random.nextInt(2);
 		playerInTurn = players.get(player);
-		active = true;
 	}
 
 	@Override
 	public void start(String playerId) {
 		playerInTurn = getPlayer(playerId);
-		active = true;
 	}
 
 	private Player getPlayer(String playerId) {
