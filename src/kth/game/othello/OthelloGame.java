@@ -32,17 +32,17 @@ public class OthelloGame implements Othello{
 
 	@Override
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
-		List<Node> swappedNodes = new ArrayList<Node>();
-		Node move = getNodeFromId(nodeId);
+		List<Node> capturedNodes = new ArrayList<Node>();
+		Node move = getNode(nodeId);
 		if(move == null) 
 			return null;
 		
 		for(int i = 0; i < dY.length; i++) {
-			List<Node> nodesInDirection = checkSwapDirection(playerId, move, dX[i], dY[i]);
+			List<Node> nodesInDirection = getNodesToSwapInDirection(playerId, move, dX[i], dY[i]);
 			if(nodesInDirection != null)
-				swappedNodes.addAll(nodesInDirection);			
+				capturedNodes.addAll(nodesInDirection);			
 		}
-		return swappedNodes;
+		return capturedNodes;
 	}
 
 	@Override
@@ -69,34 +69,31 @@ public class OthelloGame implements Othello{
 
 	@Override
 	public boolean isMoveValid(String playerId, String nodeId) {
-		Node move = getNodeFromId(nodeId);
+		Node move = getNode(nodeId);
 		if(move == null) 
 			return false;
 		
 		for(int i = 0; i < dY.length; i++) {
-			if(checkDirection(playerId, move, dX[i], dY[i]))
+			if(canCaptureInDirection(playerId, move, dX[i], dY[i]))
 				return true;
 		}
 		return false;
 	}
 	
-	private boolean checkDirection(String playerId, Node move, int xDir, int yDir) {
+	private boolean canCaptureInDirection(String playerId, Node move, int xDir, int yDir) {
 		Node next = getNode(move.getXCoordinate()+xDir, move.getYCoordinate()+yDir);
 		if(!next.isMarked() || next.getOccupantPlayerId().equals(playerId))
 			return false;
-		do {
-			next = getNode(next.getXCoordinate()+xDir, next.getYCoordinate()+yDir);
-			if(next == null)
-				break;
-			if(next.getOccupantPlayerId().equals(playerId)) {
+		while(true) {
+			next = getNode(move.getXCoordinate()+xDir, move.getYCoordinate()+yDir);
+			if(next == null || !next.isMarked())
+				return false;
+			if(next.getOccupantPlayerId().equals(playerId))
 				return true;
-			}
-
-		} while(next.isMarked());
-		return false;
+		}
 	}
 	
-	private List<Node> checkSwapDirection(String playerId, Node move, int xDir, int yDir) {
+	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
 			Node next = getNode(move.getXCoordinate()+xDir, move.getYCoordinate()+yDir);
 			if(!next.isMarked() || next.getOccupantPlayerId().equals(playerId))
 				return null;
@@ -110,7 +107,7 @@ public class OthelloGame implements Othello{
 			return swappedNodes;
 	}
 	
-	private Node getNodeFromId(String nodeId) {
+	private Node getNode(String nodeId) {
 		for(Node node : board.getNodes()) {
 			if(node.getId().equals(nodeId)) {
 				return node;
