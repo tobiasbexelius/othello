@@ -26,8 +26,8 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	
 	@Override
 	public Othello createHumanGameOnOriginalBoard() {
-		Player player1 = new PlayerImpl("1", "Computer 1", Type.HUMAN);
-		Player player2 = new PlayerImpl("2", "Computer 2", Type.HUMAN);
+		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
+		Player player2 = new PlayerImpl("2", "Human 2", Type.HUMAN);
 		Board board = createBoard(player1,player2);
 		Othello game = new OthelloImpl(player1, player2, board);
 		return game;
@@ -35,8 +35,8 @@ public class OthelloFactoryImpl implements OthelloFactory{
 
 	@Override
 	public Othello createHumanVersusComputerGameOnOriginalBoard() {
-		Player player1 = new PlayerImpl("1", "Computer 1", Type.HUMAN);
-		Player player2 = new PlayerImpl("2", "Computer 2", Type.COMPUTER);
+		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
+		Player player2 = new PlayerImpl("2", "Computer 1", Type.COMPUTER);
 		Board board = createBoard(player1,player2);
 		Othello game = new OthelloImpl(player1, player2, board);
 		return game;
