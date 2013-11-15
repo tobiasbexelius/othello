@@ -6,33 +6,32 @@ import java.util.Random;
 
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
-import kth.game.othello.board.NodeImpl;
 import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
 
 public class OthelloImpl implements Othello {
 
-	private Board board;
+	private BoardHandler bh;
 	private Random random;
 	private PlayerHandler ph;
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
 	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
 
 	public OthelloImpl(Player player1, Player player2, Board board) {
-		this.board = board;
+		bh = new BoardHandler(board);
 		ph = new PlayerHandler(player1, player2); 		
 		random = new Random();
 	}
 
 	@Override
 	public Board getBoard() {
-		return board;
+		return bh.getBoard();
 	}
 
 	@Override
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
 		List<Node> swappedNodes = new ArrayList<Node>();
-		Node move = getNode(nodeId);
+		Node move = bh.getNode(nodeId);
 		if (move == null)
 			return swappedNodes;
 
@@ -73,7 +72,7 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public boolean isMoveValid(String playerId, String nodeId) {
-		Node move = getNode(nodeId);
+		Node move = bh.getNode(nodeId);
 		if (move == null)
 			return false;
 		if (move.isMarked())
@@ -101,7 +100,7 @@ public class OthelloImpl implements Othello {
 
 		List<Node> nodesToSwap = getNodesToSwap(playerId, move.getId());
 		nodesToSwap.add(move);
-		List<Node> swappedNodes = swapNodes(nodesToSwap, playerId);
+		List<Node> swappedNodes = bh.swapNodes(nodesToSwap, playerId);
 
 		ph.swapPlayerInTurn();
 
@@ -113,10 +112,10 @@ public class OthelloImpl implements Othello {
 		if (!ph.playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
 			throw new IllegalArgumentException();
 
-		Node move = getNode(nodeId);
+		Node move = bh.getNode(nodeId);
 		List<Node> nodesToSwap = getNodesToSwap(playerId, move.getId());
 		nodesToSwap.add(move);
-		List<Node> swappedNodes = swapNodes(nodesToSwap, playerId);
+		List<Node> swappedNodes = bh.swapNodes(nodesToSwap, playerId);
 		ph.swapPlayerInTurn();
 		return swappedNodes;
 	}
@@ -147,13 +146,13 @@ public class OthelloImpl implements Othello {
 	 * @return true if a capture could be made in the direction, false otherwise
 	 */
 	private boolean canSwapInDirection(String playerId, Node move, int xDir, int yDir) {
-		Node next = getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
+		Node next = bh.getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
 
 		if (next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
 			return false;
 
 		while (true) {
-			next = getNode(next.getXCoordinate() + xDir, next.getYCoordinate() + yDir);
+			next = bh.getNode(next.getXCoordinate() + xDir, next.getYCoordinate() + yDir);
 			if (next == null || !next.isMarked())
 				return false;
 			if (next.getOccupantPlayerId().equals(playerId))
@@ -178,84 +177,17 @@ public class OthelloImpl implements Othello {
 	 *         node could be swapped
 	 */
 	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
-		Node next = getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
+		Node next = bh.getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
 		if (next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
 			return null;
 		List<Node> swappedNodes = new ArrayList<Node>();
 		while (!next.getOccupantPlayerId().equals(playerId)) {
 			swappedNodes.add(next);
-			next = getNode(next.getXCoordinate() + xDir, next.getYCoordinate() + yDir);
+			next = bh.getNode(next.getXCoordinate() + xDir, next.getYCoordinate() + yDir);
 			if (next == null || !next.isMarked())
 				return null;
 		}
 		return swappedNodes;
-	}
-
-	/**
-	 * Retrieves a node from the board.
-	 * 
-	 * @param nodeId
-	 *            the id of the node to be retrieved
-	 * @return a node with the specified id. Null if no node with the id exists
-	 */
-	private Node getNode(String nodeId) {
-		for (Node node : board.getNodes()) {
-			if (node.getId().equals(nodeId)) {
-				return node;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Retrieves a node from the board.
-	 * 
-	 * @param x
-	 *            the x-coordinate of the node
-	 * @param y
-	 *            the y-coordinate of the node
-	 * @return a node with the specified coordinates. Null if the coordinates
-	 *         are outside of the board
-	 */
-	private Node getNode(int x, int y) {
-		int index = 8 * y + x;
-		if (index >= board.getNodes().size() || index < 0)
-			return null;
-		return board.getNodes().get(index);
-	}
-
-	/**
-	 * Swaps all nodes in a list so that they belong to a certain player.
-	 * 
-	 * @param nodesToSwap
-	 *            the nodes to be swapped
-	 * @param playerId
-	 *            the id of the player who will own the swapped nodes
-	 * @return a list of all nodes that were swapped
-	 */
-	private List<Node> swapNodes(List<Node> nodesToSwap, String playerId) {
-		for (Node node : nodesToSwap) {
-			occupyNode(node, playerId);
-		}
-		return nodesToSwap;
-	}
-
-	/**
-	 * Occupies a certain node on the board.
-	 * 
-	 * @param node the node to be occupied
-	 * @param occupantPlayerId the player who will occupy the node
-	 * @return true if the node was on the board, false otherwise
-	 */
-	private boolean occupyNode(Node node, String occupantPlayerId) {
-		int nodeIndex = board.getNodes().indexOf(node);
-		if (nodeIndex == -1) {
-			return false;
-		}
-		board.getNodes().remove(node);
-		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
-				occupantPlayerId));
-		return true;
 	}
 	
 	/**
@@ -266,7 +198,7 @@ public class OthelloImpl implements Othello {
 	 */
 	private List<Node> findPossibleMoves(String playerId) {
 		List<Node> moves = new ArrayList<Node>();
-		for (Node node : board.getNodes()) {
+		for (Node node : bh.getNodes()) {
 			if (!node.isMarked()) {
 				if (isMoveValid(playerId, node.getId())) {
 					moves.add(node);
@@ -275,5 +207,4 @@ public class OthelloImpl implements Othello {
 		}
 		return moves;
 	}
-
 }
