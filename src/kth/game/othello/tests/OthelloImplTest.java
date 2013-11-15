@@ -12,9 +12,12 @@ import java.util.List;
 
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
+import kth.game.othello.PlayerHandler;
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.board.NodeImpl;
+import kth.game.othello.player.Player;
+import kth.game.othello.player.Player.Type;
 
 import org.junit.Test;
 
@@ -64,31 +67,62 @@ public class OthelloImplTest {
 	 * Mock: getPlayerInTurn, hasValidMove, getNodesToSwap
 	 * */
 	@Test
-	public void testMoveComputer() {
+	public void testMoveComputer1() {
 		Othello spyOnOthelloGame = spy(new OthelloFactoryImpl().createComputerGameOnClassicalBoard());
 		spyOnOthelloGame.start();
 		assertEquals(2, spyOnOthelloGame.move().size());
-		String startingPlayerId = spyOnOthelloGame.getPlayers().get(0).getId();
-		when(spyOnOthelloGame.getPlayerInTurn().getId()).thenReturn("lol");
+		//String startingPlayerId = spyOnOthelloGame.getPlayers().get(0).getId();
+		Player humanPlayer = new Player() {
+			
+			@Override
+			public Type getType() {
+				return Type.HUMAN;
+			}
+			
+			@Override
+			public String getName() {
+				return "something";
+			}
+			
+			@Override
+			public String getId() {
+				return "something else";
+			}
+		};
+		when(spyOnOthelloGame.getPlayerInTurn()).thenReturn(humanPlayer);
 		try{
 			spyOnOthelloGame.move();
 		}catch(IllegalArgumentException e){
 			assertEquals(5,getNumberOfOccupiedNodes(spyOnOthelloGame));
-		}
-		
+		}	
+	}
+	@Test
+	public void testMoveComputer2(){
+		Othello spyOnOthelloGame = spy(new OthelloFactoryImpl().createComputerGameOnClassicalBoard());
+		spyOnOthelloGame.start();
+		assertEquals(2, spyOnOthelloGame.move().size());
 		assertEquals(2, spyOnOthelloGame.move().size());	
 		for(int i = 0; i < 10; i++){
 			spyOnOthelloGame.move();
 		}
 		assertEquals(16, getNumberOfOccupiedNodes(spyOnOthelloGame));
 		
-		when(spyOnOthelloGame.isActive()).thenReturn(true).thenReturn(false);
-		when(spyOnOthelloGame.hasValidMove(anyString())).thenReturn(true).thenReturn(false);
-		while (spyOnOthelloGame.isActive()) {
-			spyOnOthelloGame.move();
-			if (!spyOnOthelloGame.hasValidMove(spyOnOthelloGame.getPlayerInTurn().getId()))
-				assertTrue(spyOnOthelloGame.move().size() == 0);
-		}
+		when(spyOnOthelloGame.hasValidMove(anyString())).thenReturn(false).thenReturn(true);
+		
+		Player firstPlayer = spyOnOthelloGame.getPlayerInTurn();
+		List<Node> firstMove = spyOnOthelloGame.move();
+		
+		assertTrue(firstPlayer.getId()!=null);
+		
+		Player secondPlayer = spyOnOthelloGame.getPlayerInTurn();
+		List<Node> secondMove = spyOnOthelloGame.move();
+		assertTrue(firstPlayer.getId()!=null);
+		
+		assertTrue(firstMove.size() == 0);
+		assertTrue(secondMove.size() > 0);
+		assertFalse(firstPlayer.equals(secondPlayer));
+		
+		assertTrue(firstPlayer.getId().equals(spyOnOthelloGame.getPlayerInTurn().getId()));
 	}
 
 	@Test
