@@ -119,12 +119,11 @@ public class OthelloImplTest {
 		
 		othello = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
 		assertNull(othello.getPlayerInTurn());
-		//othello.start(othello.);
+		othello.start(othello.getPlayers().get(0).getId());
 		assertEquals(2, othello.getPlayers().size());
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
-		assertEquals(2, othello.getPlayers().size());
 	}
 	
 
