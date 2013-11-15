@@ -12,6 +12,7 @@ import java.util.List;
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.board.Node;
+import kth.game.othello.player.Player;
 
 import org.junit.Test;
 
@@ -58,8 +59,8 @@ public class OthelloImplTest {
 
 	
 	/*
-	 * 
-	 * MOOOOOOOOOOCKKKKKKKKKAAAAAAAA*/
+	 * Mock: getPlayerInTurn, hasValidMove, getNodesToSwap
+	 * */
 	@Test
 	public void testMoveComputer() {
 		Othello game = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
@@ -81,10 +82,17 @@ public class OthelloImplTest {
 	}
 
 	/*
-	 * 
-	 * MOOOOOOOOOOCKKKKKKKKKAAAAAAAA*/
+	 * Mock: getplayerinturn, ismovevalid, getNodestoswap
+	 */
 	@Test
 	public void testMoveHuman() {
+//		Othello spyOnOthello = spy(new OthelloFactoryImpl().createHumanGameOnOriginalBoard());
+//		spyOnOthello.start();
+//		Player startingPlayerId = spyOnOthello.getPlayers().get(0);
+//		Player opponentPlayer = spyOnOthello.getPlayers().get(1);
+//		when(spyOnOthello.getPlayerInTurn());
+//		
+//		
 		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
 		String startingPlayerId = game.getPlayers().get(0).getId();
 		String opponentPlayer = game.getPlayers().get(1).getId();
@@ -133,7 +141,9 @@ public class OthelloImplTest {
 		assertEquals(2, othello.getPlayers().size());
 	}
 	
-
+	public void testHasValidMove() {
+		
+	}
 
 	public static void printBoard(Othello o) {
 		List<Node> board = o.getBoard().getNodes();

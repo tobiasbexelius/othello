@@ -155,7 +155,7 @@ public class OthelloImpl implements Othello{
 
 	@Override
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
-		if(!playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
+		if(!getPlayerInTurn().getId().equals(playerId) || !isMoveValid(playerId, nodeId))
 			throw new IllegalArgumentException();
 		
 		Node move = getNode(nodeId);
@@ -171,13 +171,6 @@ public class OthelloImpl implements Othello{
 			occupyNode(node, board.getNodes(), playerId);
 		}
 		return nodesToCapture;
-	}
-	
-	private boolean playerIsInTurn(String playerId) {
-		if(getPlayerInTurn().getId().equals(playerId))
-			return true;
-		else 
-			return false;
 	}
 	
 	private void swapPlayerInTurn() {
