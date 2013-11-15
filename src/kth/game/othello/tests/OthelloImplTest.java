@@ -68,6 +68,7 @@ public class OthelloImplTest {
 		assertTrue(startingPlayerId.equals(game.getPlayerInTurn().getId()));
 		int moves = 2;
 		while(game.isActive()) {
+			game.move();
 			if(!game.hasValidMove(game.getPlayerInTurn().getId()))
 				assertTrue(game.move().size() == 0);
 			moves++;
