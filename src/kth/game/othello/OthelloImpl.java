@@ -14,16 +14,13 @@ public class OthelloImpl implements Othello {
 
 	private Board board;
 	private Random random;
-	private List<Player> players;
-	private Player playerInTurn;
+	private PlayerHandler ph;
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
 	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
 
 	public OthelloImpl(Player player1, Player player2, Board board) {
 		this.board = board;
-		players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
+		ph = new PlayerHandler(player1, player2); 		
 		random = new Random();
 	}
 
@@ -49,12 +46,12 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public Player getPlayerInTurn() {
-		return playerInTurn;
+		return ph.getPlayerInTurn();
 	}
 
 	@Override
 	public List<Player> getPlayers() {
-		return players;
+		return ph.getPlayers();
 	}
 
 	@Override
@@ -66,7 +63,7 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public boolean isActive() {
-		if (hasValidMove(players.get(0).getId()) || hasValidMove(players.get(1).getId()))
+		if (hasValidMove(ph.getPlayer(0).getId()) || hasValidMove(ph.getPlayer(1).getId()))
 			return true;
 		return false;
 	}
@@ -92,7 +89,7 @@ public class OthelloImpl implements Othello {
 
 		String playerId = getPlayerInTurn().getId();
 		if (!hasValidMove(playerId)) {
-			swapPlayerInTurn();
+			ph.swapPlayerInTurn();
 			return new ArrayList<Node>();
 		}
 		List<Node> possibleMoves = findPossibleMoves(playerId);
@@ -103,51 +100,33 @@ public class OthelloImpl implements Othello {
 		nodesToSwap.add(move);
 		List<Node> swappedNodes = swapNodes(nodesToSwap, playerId);
 
-		swapPlayerInTurn();
+		ph.swapPlayerInTurn();
 
 		return swappedNodes;
 	}
 
 	@Override
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
-		if (!playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
+		if (!ph.playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
 			throw new IllegalArgumentException();
 
 		Node move = getNode(nodeId);
 		List<Node> nodesToSwap = getNodesToSwap(playerId, move.getId());
 		nodesToSwap.add(move);
 		List<Node> swappedNodes = swapNodes(nodesToSwap, playerId);
-		swapPlayerInTurn();
+		ph.swapPlayerInTurn();
 		return swappedNodes;
 	}
 
 	@Override
 	public void start() {
-		int player = random.nextInt(2);
-		playerInTurn = players.get(player);
+		int playerId = random.nextInt(2);
+		ph.setPlayerInTurn(ph.getPlayer(playerId));
 	}
 
 	@Override
 	public void start(String playerId) {
-		playerInTurn = getPlayer(playerId);
-	}
-
-	/**
-	 * Retrieves a specific player in the game.
-	 * 
-	 * @param playerId
-	 *            the id of the player to be retrieved
-	 * @return the player with the specified id. Returns null if no player with
-	 *         the specified id exists
-	 */
-	private Player getPlayer(String playerId) {
-		if (players.get(0).getId().equals(playerId)) {
-			return players.get(0);
-		} else if (players.get(1).getId().equals(playerId)) {
-			return players.get(1);
-		} else {
-			return null;
-		}
+		ph.setPlayerInTurn(ph.getPlayer(playerId));
 	}
 
 	/**
@@ -256,33 +235,6 @@ public class OthelloImpl implements Othello {
 			occupyNode(node, playerId);
 		}
 		return nodesToSwap;
-	}
-
-	/**
-	 * Checks if a certain player is in turn
-	 * 
-	 * @param playerId the id of the player to be checked
-	 * @return true if the player is in turn, false otherwise
-	 */
-	private boolean playerIsInTurn(String playerId) {
-		if (getPlayerInTurn().getId().equals(playerId))
-			return true;
-		else
-			return false;
-	}
-
-	/**
-	 * Swap the players in turn. If player 1 is in turn, give the turn to player 2 
-	 * and vice versa.
-	 */
-	private void swapPlayerInTurn() {
-		String currentPlayerId = getPlayerInTurn().getId();
-
-		if (players.get(0).getId().equals(currentPlayerId)) {
-			playerInTurn = players.get(1);
-		} else {
-			playerInTurn = players.get(0);
-		}
 	}
 
 	/**
