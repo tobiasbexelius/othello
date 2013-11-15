@@ -1,0 +1,52 @@
+package kth.game.othello;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import kth.game.othello.player.Player;
+
+public class PlayerHandler {
+	
+	private List<Player> players;
+	private Player playerInTurn;
+	
+	public PlayerHandler(Player player1, Player player2) {
+		players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+	}
+
+	public Player getPlayerInTurn() {
+		return playerInTurn;
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public Player getPlayer(String id) {
+		for(Player p: players) {
+			if(p.getId().equals(id))
+				return p;
+		}
+		return null;
+	}
+
+	public void setPlayerInTurn(Player player) {
+		playerInTurn = player;
+		
+	}
+
+	public Player getPlayer(int playerId) {
+		return getPlayer(Integer.toString(playerId));
+	}
+	
+	public void swapPlayerInTurn() {
+		String currentPlayerId = getPlayerInTurn().getId();
+		if (players.get(0).getId().equals(currentPlayerId)) {
+			playerInTurn = players.get(1);
+		} else {
+			playerInTurn = players.get(0);
+		}
+	}
+}
