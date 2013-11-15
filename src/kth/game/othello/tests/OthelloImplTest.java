@@ -13,6 +13,7 @@ import java.util.List;
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.board.Node;
+import kth.game.othello.player.Player.Type;
 
 import org.junit.Test;
 
@@ -63,21 +64,29 @@ public class OthelloImplTest {
 	 * */
 	@Test
 	public void testMoveComputer() {
-		Othello game = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
-		String startingPlayerId = game.getPlayers().get(0).getId();
-		game.start(startingPlayerId);
-
-		assertEquals(2, game.move().size());
-		assertTrue(!startingPlayerId.equals(game.getPlayerInTurn().getId()));
-		assertEquals(2, game.move().size());
-		assertTrue(startingPlayerId.equals(game.getPlayerInTurn().getId()));
-		int moves = 2;
-		while (game.isActive()) {
-			game.move();
-			if (!game.hasValidMove(game.getPlayerInTurn().getId()))
-				assertTrue(game.move().size() == 0);
-			moves++;
-			System.out.println("Moves made: " + moves);
+		Othello spyOnOthelloGame = spy(new OthelloFactoryImpl().createComputerGameOnClassicalBoard());
+		spyOnOthelloGame.start();
+		assertEquals(2, spyOnOthelloGame.move().size());
+		String startingPlayerId = spyOnOthelloGame.getPlayers().get(0).getId();
+		when(spyOnOthelloGame.getPlayerInTurn().getId()).thenReturn("lol");
+		try{
+			spyOnOthelloGame.move();
+		}catch(IllegalArgumentException e){
+			assertEquals(5,getNumberOfOccupiedNodes(spyOnOthelloGame));
+		}
+		
+		assertEquals(2, spyOnOthelloGame.move().size());	
+		for(int i = 0; i < 10; i++){
+			spyOnOthelloGame.move();
+		}
+		assertEquals(16, getNumberOfOccupiedNodes(spyOnOthelloGame));
+		
+		when(spyOnOthelloGame.isActive()).thenReturn(true).thenReturn(false);
+		when(spyOnOthelloGame.hasValidMove(anyString())).thenReturn(true).thenReturn(false);
+		while (spyOnOthelloGame.isActive()) {
+			spyOnOthelloGame.move();
+			if (!spyOnOthelloGame.hasValidMove(spyOnOthelloGame.getPlayerInTurn().getId()))
+				assertTrue(spyOnOthelloGame.move().size() == 0);
 		}
 	}
 
@@ -160,6 +169,15 @@ public class OthelloImplTest {
 			}
 		}
 		System.out.println("#########");
+	}
+	private Object getNumberOfOccupiedNodes(Othello othello) {
+		int occupiedNodesCounter = 0;
+		for (Node node : othello.getBoard().getNodes()) {
+			if (node.isMarked()) {
+				occupiedNodesCounter++;
+			}
+		}
+		return occupiedNodesCounter;
 	}
 
 }
