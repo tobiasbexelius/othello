@@ -76,7 +76,7 @@ public class OthelloImpl implements Othello {
 		if (move.isMarked())
 			return false;
 		for (int i = 0; i < dY.length; i++) {
-			if (canCaptureInDirection(playerId, move, dX[i], dY[i]))
+			if (canSwapInDirection(playerId, move, dX[i], dY[i]))
 				return true;
 		}
 		return false;
@@ -129,9 +129,21 @@ public class OthelloImpl implements Othello {
 		ph.setPlayerInTurn(ph.getPlayer(playerId));
 	}
 
-
-
-	private boolean canCaptureInDirection(String playerId, Node move, int xDir, int yDir) {
+	/**
+	 * Checks if a player can swap nodes in a certain direction. For example, to
+	 * check left xDir and yDir should be (-1, 0).
+	 * 
+	 * @param playerId
+	 *            the player who is trying to capture nodes
+	 * @param move
+	 *            the move the player makes to capture nodes
+	 * @param xDir
+	 *            the x-axis direction to check in
+	 * @param yDir
+	 *            the y axis direction to check in
+	 * @return true if a capture could be made in the direction, false otherwise
+	 */
+	private boolean canSwapInDirection(String playerId, Node move, int xDir, int yDir) {
 		Node next = getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
 
 		if (next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
@@ -146,6 +158,22 @@ public class OthelloImpl implements Othello {
 		}
 	}
 
+	/**
+	 * Retrieves all the nodes that will be swapped in a certain direction when
+	 * making a move. For example, to retrieve nodes to the left, xDir and yDir
+	 * should be (-1, 0).
+	 * 
+	 * @param playerId
+	 *            the player who is swapping nodes
+	 * @param move
+	 *            the move the player makes to swap nodes
+	 * @param xDir
+	 *            the x-axis direction to check in
+	 * @param yDir
+	 *            the y axis direction to check in
+	 * @return a list of all the nodes that were swapped. Returns null if no
+	 *         node could be swapped
+	 */
 	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
 		Node next = getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
 		if (next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
@@ -160,6 +188,13 @@ public class OthelloImpl implements Othello {
 		return swappedNodes;
 	}
 
+	/**
+	 * Retrieves a node from the board.
+	 * 
+	 * @param nodeId
+	 *            the id of the node to be retrieved
+	 * @return a node with the specified id. Null if no node with the id exists
+	 */
 	private Node getNode(String nodeId) {
 		for (Node node : board.getNodes()) {
 			if (node.getId().equals(nodeId)) {
@@ -169,6 +204,16 @@ public class OthelloImpl implements Othello {
 		return null;
 	}
 
+	/**
+	 * Retrieves a node from the board.
+	 * 
+	 * @param x
+	 *            the x-coordinate of the node
+	 * @param y
+	 *            the y-coordinate of the node
+	 * @return a node with the specified coordinates. Null if the coordinates
+	 *         are outside of the board
+	 */
 	private Node getNode(int x, int y) {
 		int index = 8 * y + x;
 		if (index >= board.getNodes().size() || index < 0)
@@ -176,13 +221,28 @@ public class OthelloImpl implements Othello {
 		return board.getNodes().get(index);
 	}
 
-	private List<Node> swapNodes(List<Node> nodesToCapture, String playerId) {
-		for (Node node : nodesToCapture) {
-			occupyNode(node, board.getNodes(), playerId);
+	/**
+	 * Swaps all nodes in a list so that they belong to a certain player.
+	 * 
+	 * @param nodesToSwap
+	 *            the nodes to be swapped
+	 * @param playerId
+	 *            the id of the player who will own the swapped nodes
+	 * @return a list of all nodes that were swapped
+	 */
+	private List<Node> swapNodes(List<Node> nodesToSwap, String playerId) {
+		for (Node node : nodesToSwap) {
+			occupyNode(node, playerId);
 		}
-		return nodesToCapture;
+		return nodesToSwap;
 	}
 
+	/**
+	 * Checks if a certain player is in turn
+	 * 
+	 * @param playerId the id of the player to be checked
+	 * @return true if the player is in turn, false otherwise
+	 */
 	private boolean playerIsInTurn(String playerId) {
 		if (getPlayerInTurn().getId().equals(playerId))
 			return true;
@@ -190,18 +250,30 @@ public class OthelloImpl implements Othello {
 			return false;
 	}
 
-
-
-	private void occupyNode(Node node, List<Node> nodes, String occupantPlayerId) {
-		int nodeIndex = nodes.indexOf(node);
+	/**
+	 * Occupies a certain node on the board.
+	 * 
+	 * @param node the node to be occupied
+	 * @param occupantPlayerId the player who will occupy the node
+	 * @return true if the node was on the board, false otherwise
+	 */
+	private boolean occupyNode(Node node, String occupantPlayerId) {
+		int nodeIndex = board.getNodes().indexOf(node);
 		if (nodeIndex == -1) {
-			System.out.println("Could not find node: " + node.getId());
+			return false;
 		}
-		nodes.remove(node);
-		nodes.add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
+		board.getNodes().remove(node);
+		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
 				occupantPlayerId));
+		return true;
 	}
-
+	
+	/**
+	 * Finds all possible moves a certain player can make.
+	 * 
+	 * @param playerId the player whom moves will be found for
+	 * @return a list of all the moves for the player
+	 */
 	private List<Node> findPossibleMoves(String playerId) {
 		List<Node> moves = new ArrayList<Node>();
 		for (Node node : board.getNodes()) {

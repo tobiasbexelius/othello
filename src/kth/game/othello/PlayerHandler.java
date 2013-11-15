@@ -24,6 +24,14 @@ public class PlayerHandler {
 		return players;
 	}
 
+	/**
+	 * Retrieves a specific player in the game.
+	 * 
+	 * @param playerId
+	 *            the id of the player to be retrieved
+	 * @return the player with the specified id. Returns null if no player with
+	 *         the specified id exists
+	 */
 	public Player getPlayer(String id) {
 		for(Player p: players) {
 			if(p.getId().equals(id))
@@ -41,6 +49,10 @@ public class PlayerHandler {
 		return getPlayer(Integer.toString(playerId));
 	}
 	
+	/**
+	 * Swap the players in turn. If player 1 is in turn, give the turn to player 2 
+	 * and vice versa.
+	 */
 	public void swapPlayerInTurn() {
 		String currentPlayerId = getPlayerInTurn().getId();
 		if (players.get(0).getId().equals(currentPlayerId)) {
