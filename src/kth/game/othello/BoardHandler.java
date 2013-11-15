@@ -59,6 +59,9 @@ public class BoardHandler {
 	 *         are outside of the board
 	 */
 	public Node getNode(int x, int y) {
+		if((x > 7 || y > 7) || (x < 0 || y < 0)) {
+			return null;
+		}
 		int index = 8 * y + x;
 		if (index >= board.getNodes().size() || index < 0)
 			return null;
