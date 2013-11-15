@@ -18,7 +18,7 @@ import org.junit.Test;
 public class OthelloImplTest {
 
 	@Test
-	public void getNodesToSwapTest() {
+	public void testGetNodesToSwap() {
 		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
 		String startingPlayerId = game.getPlayers().get(0).getId();
 		game.start(startingPlayerId);
@@ -92,10 +92,13 @@ public class OthelloImplTest {
 		assertEquals(2, game.move(startingPlayerId, "29").size());
 		assertEquals(2, game.move(opponentPlayer, "21").size());
 		assertEquals(2, game.move(startingPlayerId, "13").size());
+		boolean threwException = false;
 		try {
-			game.move(startingPlayerId, "13").size();
+			game.move(opponentPlayer, "43").size();
 		} catch(IllegalArgumentException e) {
+			threwException = true;
 		}
+		assertTrue(threwException);
 
 	}
 
@@ -108,6 +111,26 @@ public class OthelloImplTest {
 		assertTrue(spyOnOthello.isActive());
 		assertTrue(spyOnOthello.isActive());
 		assertFalse(spyOnOthello.isActive());
+	}
+	
+	@Test
+	public void testStart() {
+		Othello othello = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
+		assertNull(othello.getPlayerInTurn());
+		othello.start();
+		assertEquals(2, othello.getPlayers().size());
+		assertTrue(othello.getPlayerInTurn() != null);
+		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
+		assertFalse(othello.getPlayers().contains(null));
+		
+		othello = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
+		assertNull(othello.getPlayerInTurn());
+		//othello.start(othello.);
+		assertEquals(2, othello.getPlayers().size());
+		assertTrue(othello.getPlayerInTurn() != null);
+		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
+		assertFalse(othello.getPlayers().contains(null));
+		assertEquals(2, othello.getPlayers().size());
 	}
 	
 
