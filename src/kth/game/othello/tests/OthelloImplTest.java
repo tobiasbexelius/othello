@@ -87,10 +87,13 @@ public class OthelloImplTest {
 		assertEquals(2, game.move(startingPlayerId, "29").size());
 		assertEquals(2, game.move(opponentPlayer, "21").size());
 		assertEquals(2, game.move(startingPlayerId, "13").size());
+		boolean threwException = false;
 		try {
-			game.move(startingPlayerId, "13").size();
+			game.move(opponentPlayer, "43").size();
 		} catch(IllegalArgumentException e) {
+			threwException = true;
 		}
+		assertTrue(threwException);
 
 	}
 	
