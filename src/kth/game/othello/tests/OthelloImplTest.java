@@ -107,7 +107,6 @@ public class OthelloImplTest {
 			threwException = true;
 		}
 		assertTrue(threwException);
-
 	}
 
 	@Test

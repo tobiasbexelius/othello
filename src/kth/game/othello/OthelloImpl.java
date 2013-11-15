@@ -107,7 +107,7 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
-		if (!playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
+		if (!ph.playerIsInTurn(playerId) || !isMoveValid(playerId, nodeId))
 			throw new IllegalArgumentException();
 
 		Node move = getNode(nodeId);
@@ -235,19 +235,6 @@ public class OthelloImpl implements Othello {
 			occupyNode(node, playerId);
 		}
 		return nodesToSwap;
-	}
-
-	/**
-	 * Checks if a certain player is in turn
-	 * 
-	 * @param playerId the id of the player to be checked
-	 * @return true if the player is in turn, false otherwise
-	 */
-	private boolean playerIsInTurn(String playerId) {
-		if (getPlayerInTurn().getId().equals(playerId))
-			return true;
-		else
-			return false;
 	}
 
 	/**
