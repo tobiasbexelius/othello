@@ -91,33 +91,66 @@ public class OthelloImplTest {
 		}
 	}
 
-	/*
-	 * Mock: getplayerinturn, ismovevalid, getNodestoswap
-	 */
 	@Test
-	public void testMoveHuman() {
-//		Othello spyOnOthello = spy(new OthelloFactoryImpl().createHumanGameOnOriginalBoard());
-//		spyOnOthello.start();
-//		Player startingPlayerId = spyOnOthello.getPlayers().get(0);
-//		Player opponentPlayer = spyOnOthello.getPlayers().get(1);
-//		when(spyOnOthello.getPlayerInTurn());
-//		
-//		
-		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
-		String startingPlayerId = game.getPlayers().get(0).getId();
-		String opponentPlayer = game.getPlayers().get(1).getId();
-		game.start(startingPlayerId);
-		assertEquals(2, game.move(startingPlayerId, "29").size());
-		assertEquals(2, game.move(opponentPlayer, "21").size());
-		assertEquals(2, game.move(startingPlayerId, "13").size());
+	public void testMoveHuman1() {
+		Othello othelloSpy = spy(new OthelloFactoryImpl().createHumanGameOnOriginalBoard());
+		String startingPlayerId = othelloSpy.getPlayers().get(0).getId();
+		othelloSpy.start(startingPlayerId);
+		
 		boolean threwException = false;
 		try {
-			game.move(opponentPlayer, "43").size();
+			othelloSpy.move(startingPlayerId, "500");
 		} catch (IllegalArgumentException e) {
 			threwException = true;
 		}
 		assertTrue(threwException);
+		assertTrue(startingPlayerId.equals(othelloSpy.getPlayerInTurn().getId()));
+		
+		threwException = false;
+		when(othelloSpy.isMoveValid(anyString(), anyString())).thenReturn(false);
+		try {
+			othelloSpy.move(startingPlayerId, "29");
+		} catch (IllegalArgumentException e) {
+			threwException = true;
+		}
+		assertTrue(threwException);
+		assertTrue(startingPlayerId.equals(othelloSpy.getPlayerInTurn().getId()));
+		
+		when(othelloSpy.isMoveValid(anyString(), anyString())).thenReturn(true);
+		threwException = false;
+		try {
+			othelloSpy.move(startingPlayerId, "29");
+		} catch (IllegalArgumentException e) {
+			threwException = true;
+		}
+		assertFalse(threwException);
+		assertFalse(startingPlayerId.equals(othelloSpy.getPlayerInTurn().getId()));
 	}
+	
+	@Test
+	public void testMoveHuman2() {
+		Othello othello = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayerId = othello.getPlayers().get(0).getId();
+		String opponentPlayerId = othello.getPlayers().get(1).getId();
+		othello.start(startingPlayerId);
+		
+		assertEquals(2, othello.move(startingPlayerId, "29").size());
+		assertTrue(opponentPlayerId.equals(othello.getPlayerInTurn().getId()));
+		assertEquals(2, othello.move(opponentPlayerId, "21").size());
+		assertTrue(startingPlayerId.equals(othello.getPlayerInTurn().getId()));
+		int[] markedNodes = 
+				{2,2,2,2,2,2,2,2,
+				 0,1,1,1,1,1,1,1,
+				 2,1,1,1,2,2,1,1,
+				 2,1,2,2,2,2,1,1,
+				 2,1,2,2,2,2,1,1,
+				 2,2,2,1,2,2,1,1,
+				 2,1,1,1,1,1,0,0,
+				 2,1,2,2,2,2,2,2};
+		updateBoard(markedNodes, othello, startingPlayerId, opponentPlayerId);
+		
+	}
+	
 
 	@Test
 	public void testIsActive() {
@@ -136,8 +169,6 @@ public class OthelloImplTest {
 		assertNull(othello.getPlayerInTurn());
 		othello.start();
 		assertEquals(2, othello.getPlayers().size());
-		System.out.println(othello.getPlayers().get(0).getId());
-		System.out.println(othello.getPlayers().get(1).getId());
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
@@ -150,7 +181,7 @@ public class OthelloImplTest {
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
 	}
-	
+
 	public void testHasValidMove() {
 		Othello othello = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
 		String startingPlayer = othello.getPlayers().get(0).getId();
