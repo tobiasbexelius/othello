@@ -12,6 +12,7 @@ import java.util.List;
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.board.Node;
+import kth.game.othello.player.Player;
 
 import org.junit.Test;
 
@@ -56,6 +57,10 @@ public class OthelloImplTest {
 		assertFalse(game.isMoveValid(startingPlayerId, "20"));
 	}
 
+	
+	/*
+	 * Mock: getPlayerInTurn, hasValidMove, getNodesToSwap
+	 * */
 	@Test
 	public void testMoveComputer() {
 		Othello game = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
@@ -76,8 +81,18 @@ public class OthelloImplTest {
 		}
 	}
 
+	/*
+	 * Mock: getplayerinturn, ismovevalid, getNodestoswap
+	 */
 	@Test
 	public void testMoveHuman() {
+//		Othello spyOnOthello = spy(new OthelloFactoryImpl().createHumanGameOnOriginalBoard());
+//		spyOnOthello.start();
+//		Player startingPlayerId = spyOnOthello.getPlayers().get(0);
+//		Player opponentPlayer = spyOnOthello.getPlayers().get(1);
+//		when(spyOnOthello.getPlayerInTurn());
+//		
+//		
 		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
 		String startingPlayerId = game.getPlayers().get(0).getId();
 		String opponentPlayer = game.getPlayers().get(1).getId();
@@ -99,10 +114,8 @@ public class OthelloImplTest {
 	public void testIsActive() {
 		Othello spyOnOthello = spy(new OthelloFactoryImpl().createComputerGameOnClassicalBoard());
 		spyOnOthello.start();
-
-		when(spyOnOthello.hasValidMove(anyString())).thenReturn(false).thenReturn(true).thenReturn(false)
-				.thenReturn(true).thenReturn(true).thenReturn(false);
-		assertTrue(spyOnOthello.isActive());
+		
+		when(spyOnOthello.hasValidMove(anyString())).thenReturn(false).thenReturn(true).thenReturn(true).thenReturn(false);
 		assertTrue(spyOnOthello.isActive());
 		assertTrue(spyOnOthello.isActive());
 		assertFalse(spyOnOthello.isActive());
@@ -125,6 +138,10 @@ public class OthelloImplTest {
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
+	}
+	
+	public void testHasValidMove() {
+		
 	}
 
 	public static void printBoard(Othello o) {
