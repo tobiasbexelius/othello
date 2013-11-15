@@ -144,11 +144,13 @@ public class OthelloImpl implements Othello{
 		int moveIndex = random.nextInt(possibleMoves.size());
 		Node move = possibleMoves.get(moveIndex);
 		
-		List<Node> capturedNodes = captureNodes(playerId, move);
+		List<Node> nodesToSwap = getNodesToSwap(playerId, move.getId());
+		nodesToSwap.add(move);
+		List<Node> swappedNodes = swapNodes(nodesToSwap, playerId);
 
 		swapPlayerInTurn();
 		
-		return capturedNodes;
+		return swappedNodes;
 	}
 
 	@Override
@@ -157,18 +159,18 @@ public class OthelloImpl implements Othello{
 			throw new IllegalArgumentException();
 		
 		Node move = getNode(nodeId);
-		List<Node> capturedNodes = captureNodes(playerId, move);
+		List<Node> nodesToSwap = getNodesToSwap(playerId, move.getId());
+		nodesToSwap.add(move);
+		List<Node> swappedNodes = swapNodes(nodesToSwap, playerId);
 		swapPlayerInTurn();
-		return capturedNodes;
+		return swappedNodes;
 	}
 	
-	private List<Node> captureNodes(String playerId, Node move) {
-		List<Node> capturedNodes = getNodesToSwap(playerId, move.getId());
-		capturedNodes.add(move);
-		for(Node node : capturedNodes) {
+	private List<Node> swapNodes(List<Node> nodesToCapture, String playerId) {
+		for(Node node : nodesToCapture) {
 			occupyNode(node, board.getNodes(), playerId);
 		}
-		return capturedNodes;
+		return nodesToCapture;
 	}
 	
 	private boolean playerIsInTurn(String playerId) {
