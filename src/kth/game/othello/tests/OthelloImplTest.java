@@ -4,14 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
-import kth.game.othello.PlayerHandler;
+import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
+import kth.game.othello.board.NodeImpl;
 
 import org.junit.Test;
 
@@ -92,6 +95,7 @@ public class OthelloImplTest {
 			threwException = true;
 		}
 		assertTrue(threwException);
+		assertTrue(startingPlayerId.equals(othelloSpy.getPlayerInTurn().getId()));
 		
 		threwException = false;
 		when(othelloSpy.isMoveValid(anyString(), anyString())).thenReturn(false);
@@ -101,6 +105,7 @@ public class OthelloImplTest {
 			threwException = true;
 		}
 		assertTrue(threwException);
+		assertTrue(startingPlayerId.equals(othelloSpy.getPlayerInTurn().getId()));
 		
 		when(othelloSpy.isMoveValid(anyString(), anyString())).thenReturn(true);
 		threwException = false;
@@ -110,12 +115,33 @@ public class OthelloImplTest {
 			threwException = true;
 		}
 		assertFalse(threwException);
+		assertFalse(startingPlayerId.equals(othelloSpy.getPlayerInTurn().getId()));
 	}
 	
 	@Test
 	public void testMoveHuman2() {
-		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		Othello othello = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayerId = othello.getPlayers().get(0).getId();
+		String opponentPlayerId = othello.getPlayers().get(1).getId();
+		othello.start(startingPlayerId);
+		
+		assertEquals(2, othello.move(startingPlayerId, "29").size());
+		assertTrue(opponentPlayerId.equals(othello.getPlayerInTurn().getId()));
+		assertEquals(2, othello.move(opponentPlayerId, "21").size());
+		assertTrue(startingPlayerId.equals(othello.getPlayerInTurn().getId()));
+		int[] markedNodes = 
+				{2,2,2,2,2,2,2,2,
+				 0,1,1,1,1,1,1,1,
+				 2,1,1,1,2,2,1,1,
+				 2,1,2,2,2,2,1,1,
+				 2,1,2,2,2,2,1,1,
+				 2,2,2,1,2,2,1,1,
+				 2,1,1,1,1,1,0,0,
+				 2,1,2,2,2,2,2,2};
+		updateBoard(markedNodes, othello, startingPlayerId, opponentPlayerId);
+		
 	}
+	
 
 	@Test
 	public void testIsActive() {
@@ -145,6 +171,50 @@ public class OthelloImplTest {
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
+	}
+
+	public void testHasValidMove() {
+		Othello othello = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayer = othello.getPlayers().get(0).getId();
+		String opponentPlayer = othello.getPlayers().get(1).getId();
+		
+		othello.start(startingPlayer);
+		assertTrue(othello.hasValidMove(startingPlayer));
+		int[] markedNodes = {2,2,2,2,2,2,2,2,
+							 0,1,1,1,1,1,1,1,
+							 2,1,1,1,2,2,1,1,
+							 2,1,2,2,2,2,1,1,
+							 2,1,2,2,2,2,1,1,
+							 2,2,2,1,2,2,1,1,
+							 2,1,1,1,1,1,0,0,
+							 2,1,2,2,2,2,2,2};
+		updateBoard(markedNodes, othello, startingPlayer, opponentPlayer);
+		assertFalse(othello.hasValidMove(startingPlayer));
+		assertTrue(othello.hasValidMove(opponentPlayer));
+	}
+	
+	private void updateBoard(int[] state, Othello othello, String player1Id, String player2Id) {
+		for(int i = 0; i < 64; i++) {
+			switch(state[i]) {
+			case 1:
+				occupyNode(othello.getBoard(), othello.getBoard().getNodes().get(i), player1Id);
+				break;
+			case 2:
+				occupyNode(othello.getBoard(), othello.getBoard().getNodes().get(i), player2Id);
+				break;
+			}
+		}
+	}
+	
+	private boolean occupyNode(Board board, Node node, String occupantPlayerId) {
+		int nodeIndex = board.getNodes().indexOf(node);
+		if (nodeIndex == -1) {
+			return false;
+		}
+		board.getNodes().remove(node);
+		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
+				occupantPlayerId));
+		return true;
 	}
 
 	public static void printBoard(Othello o) {

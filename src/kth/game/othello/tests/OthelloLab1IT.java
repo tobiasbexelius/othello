@@ -1,12 +1,14 @@
-package kth.game.othello;
+package kth.game.othello.tests;
 
 import java.util.List;
 
 import junit.framework.Assert;
+import kth.game.othello.Othello;
+import kth.game.othello.OthelloFactory;
+import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
-import kth.game.othello.tests.OthelloImplTest;
 
 import org.junit.Test;
 
