@@ -22,8 +22,9 @@ public interface OthelloFactory {
 	public Othello createHumanGameOnOriginalBoard();
 
 	/**
-	 * Creates an Othello game with an original board with one computer playing against one human. The computer will be
-	 * the first player in the list of players.
+	 * Creates an Othello game with an original board with one computer playing
+	 * against one human. The computer will be the first player in the list of
+	 * players.
 	 * 
 	 * @return An Othello game
 	 */

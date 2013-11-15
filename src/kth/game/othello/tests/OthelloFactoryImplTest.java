@@ -28,5 +28,5 @@ public class OthelloFactoryImplTest {
 		assertEquals(nodes.get(54).getOccupantPlayerId(), null);
 		assertEquals(nodes.size(), 64);
 	}
-	
+
 }
