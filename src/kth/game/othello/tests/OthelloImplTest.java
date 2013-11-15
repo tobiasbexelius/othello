@@ -56,6 +56,10 @@ public class OthelloImplTest {
 		assertFalse(game.isMoveValid(startingPlayerId, "20"));
 	}
 
+	
+	/*
+	 * 
+	 * MOOOOOOOOOOCKKKKKKKKKAAAAAAAA*/
 	@Test
 	public void testMoveComputer() {
 		Othello game = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
@@ -76,6 +80,9 @@ public class OthelloImplTest {
 		}
 	}
 
+	/*
+	 * 
+	 * MOOOOOOOOOOCKKKKKKKKKAAAAAAAA*/
 	@Test
 	public void testMoveHuman() {
 		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
@@ -97,8 +104,7 @@ public class OthelloImplTest {
 		Othello spyOnOthello = spy(new OthelloFactoryImpl().createComputerGameOnClassicalBoard());
 		spyOnOthello.start();
 		
-		when(spyOnOthello.hasValidMove(anyString())).thenReturn(false).thenReturn(true).thenReturn(false).thenReturn(true).thenReturn(true).thenReturn(false);
-		assertTrue(spyOnOthello.isActive());
+		when(spyOnOthello.hasValidMove(anyString())).thenReturn(false).thenReturn(true).thenReturn(true).thenReturn(false);
 		assertTrue(spyOnOthello.isActive());
 		assertTrue(spyOnOthello.isActive());
 		assertFalse(spyOnOthello.isActive());
