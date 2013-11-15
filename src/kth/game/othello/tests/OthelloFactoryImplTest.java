@@ -4,14 +4,10 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import junit.framework.Assert;
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactory;
 import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.board.Node;
-import kth.game.othello.player.PlayerImpl;
-import kth.game.othello.player.Player;
-import kth.game.othello.player.Player.Type;
 
 import org.junit.Test;
 
@@ -32,5 +28,5 @@ public class OthelloFactoryImplTest {
 		assertEquals(nodes.get(54).getOccupantPlayerId(), null);
 		assertEquals(nodes.size(), 64);
 	}
-	
+
 }
