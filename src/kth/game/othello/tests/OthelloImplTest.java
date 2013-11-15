@@ -5,14 +5,14 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 import java.util.List;
 
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
 import kth.game.othello.board.Node;
-import kth.game.othello.player.Player;
 
 import org.junit.Test;
 
@@ -126,6 +126,8 @@ public class OthelloImplTest {
 		assertNull(othello.getPlayerInTurn());
 		othello.start();
 		assertEquals(2, othello.getPlayers().size());
+		System.out.println(othello.getPlayers().get(0).getId());
+		System.out.println(othello.getPlayers().get(1).getId());
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
@@ -138,9 +140,7 @@ public class OthelloImplTest {
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
 	}
-	
 	public void testHasValidMove() {
-		
 	}
 
 	public static void printBoard(Othello o) {

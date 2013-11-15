@@ -63,8 +63,11 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public boolean isActive() {
-		if (hasValidMove(ph.getPlayer(0).getId()) || hasValidMove(ph.getPlayer(1).getId()))
-			return true;
+		List<Player> players = ph.getPlayers();
+		for(Player p: players) {
+			if(hasValidMove(p.getId()))
+				return true;
+		}
 		return false;
 	}
 
@@ -120,8 +123,8 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public void start() {
-		int playerId = random.nextInt(2);
-		ph.setPlayerInTurn(ph.getPlayer(playerId));
+		int index = random.nextInt(getPlayers().size());
+		ph.setPlayerInTurn(getPlayers().get(index));
 	}
 
 	@Override
