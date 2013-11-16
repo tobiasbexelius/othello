@@ -38,7 +38,7 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	}
 	
 	private Othello createGameWithPlayers(Player player1, Player player2) {
-		Dimension boardDimension = new Dimension(8,8);
+		Dimension boardDimension = new Dimension(COLUMNS,ROWS);
 		Board board = createBoard(player1,player2, boardDimension);
 		occupyInitialNodes(board, player1, player2, boardDimension);
 		Othello game = new OthelloImpl(player1, player2, board, boardDimension);
