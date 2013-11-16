@@ -217,13 +217,13 @@ public class OthelloImplTest {
 	}
 
 	public void testHasValidMove() {
-		Othello othello = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
-		String startingPlayer = othello.getPlayers().get(0).getId();
-		String opponentPlayer = othello.getPlayers().get(1).getId();
+		Othello game = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayer = game.getPlayers().get(0).getId();
+		String opponentPlayer = game.getPlayers().get(1).getId();
 		
-		othello.start(startingPlayer);
-		assertTrue(othello.hasValidMove(startingPlayer));
-		int[] markedNodes = {2,2,2,2,2,2,2,2,
+		game.start(startingPlayer);
+		assertTrue(game.hasValidMove(startingPlayer));
+		int[] boardState = 	{2,2,2,2,2,2,2,2,
 							 0,1,1,1,1,1,1,1,
 							 2,1,1,1,2,2,1,1,
 							 2,1,2,2,2,2,1,1,
@@ -231,9 +231,10 @@ public class OthelloImplTest {
 							 2,2,2,1,2,2,1,1,
 							 2,1,1,1,1,1,0,0,
 							 2,1,2,2,2,2,2,2};
-		updateBoard(markedNodes, othello, startingPlayer, opponentPlayer);
-		assertFalse(othello.hasValidMove(startingPlayer));
-		assertTrue(othello.hasValidMove(opponentPlayer));
+		
+		updateBoard(boardState, game, startingPlayer, opponentPlayer);
+		assertFalse(game.hasValidMove(startingPlayer));
+		assertTrue(game.hasValidMove(opponentPlayer));
 	}
 	
 	private void updateBoard(int[] state, Othello othello, String player1Id, String player2Id) {
@@ -278,6 +279,7 @@ public class OthelloImplTest {
 		}
 		System.out.println("#########");
 	}
+	
 	private Object getNumberOfOccupiedNodes(Othello othello) {
 		int occupiedNodesCounter = 0;
 		for (Node node : othello.getBoard().getNodes()) {
