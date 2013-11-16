@@ -1,14 +1,15 @@
 package kth.game.othello;
 
+import java.awt.Dimension;
 import java.util.List;
 
 import kth.game.othello.board.Board;
-import kth.game.othello.board.Node;
 import kth.game.othello.board.BoardImpl;
+import kth.game.othello.board.Node;
 import kth.game.othello.board.NodeImpl;
-import kth.game.othello.player.PlayerImpl;
 import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
+import kth.game.othello.player.PlayerImpl;
 
 public class OthelloFactoryImpl implements OthelloFactory{
 	
@@ -19,29 +20,28 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	public Othello createComputerGameOnClassicalBoard() {
 		Player player1 = new PlayerImpl("1", "Computer 1", Type.COMPUTER);
 		Player player2 = new PlayerImpl("2", "Computer 2", Type.COMPUTER);
-		Board board = createBoard(player1,player2);
-		occupyInitialNodes(board, player1, player2);
-		Othello game = new OthelloImpl(player1, player2, board);
-		return game;
+		return createGameWithPlayers(player1, player2);
 	}
 	
 	@Override
 	public Othello createHumanGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Human 2", Type.HUMAN);
-		Board board = createBoard(player1,player2);
-		occupyInitialNodes(board, player1, player2);
-		Othello game = new OthelloImpl(player1, player2, board);
-		return game;
+		return createGameWithPlayers(player1, player2);
 	}
 
 	@Override
 	public Othello createHumanVersusComputerGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Computer 1", Type.COMPUTER);
-		Board board = createBoard(player1,player2);
-		occupyInitialNodes(board, player1, player2);
-		Othello game = new OthelloImpl(player1, player2, board);
+		return createGameWithPlayers(player1, player2);
+	}
+	
+	private Othello createGameWithPlayers(Player player1, Player player2) {
+		Dimension boardDimension = new Dimension(8,8);
+		Board board = createBoard(player1,player2, boardDimension);
+		occupyInitialNodes(board, player1, player2, boardDimension);
+		Othello game = new OthelloImpl(player1, player2, board, boardDimension);
 		return game;
 	}
 	
@@ -50,10 +50,10 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * 
 	 * @return a new othello board filled with nodes.
 	 */
-	private Board createBoard(Player player1, Player player2) {
+	private Board createBoard(Player player1, Player player2, Dimension dimension) {
 		Board board = new BoardImpl();
 		List<Node> nodes = board.getNodes();
-		fillBoard(nodes);
+		fillBoard(nodes, dimension);
 		return board;
 	}
 
@@ -61,10 +61,10 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * Fill the board with nodes. All nodes except for the four middle ones (27,28,35,36) will 
 	 * be unoccupied. Nodes 27 and 35 will be occupied by player 1, and 28 and 36 by player 2.
 	 */
-	private void fillBoard(List<Node> nodes) {
-		for(int row = 0; row < ROWS; row++)  {
-			for(int column = 0; column < COLUMNS; column++) {
-				String id = Integer.toString((COLUMNS*row+column));
+	private void fillBoard(List<Node> nodes, Dimension dimension) {
+		for(int row = 0; row < dimension.getHeight(); row++)  {
+			for(int column = 0; column < dimension.getWidth(); column++) {
+				String id = Integer.toString(((int)dimension.getWidth()*row+column));
 				nodes.add(new NodeImpl(column, row, false, id, null));
 			}
 		}
@@ -77,12 +77,17 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * @param player1 the player who will occupy node 27 and 36
 	 * @param player2 the player who will occupy node 28 and 35
 	 */
-	private void occupyInitialNodes(Board board, Player player1, Player player2) {
+	private void occupyInitialNodes(Board board, Player player1, Player player2, Dimension dimension) {
 		List<Node> nodes = board.getNodes();
-		occupyNode(nodes.get(27), nodes, player1.getId());
-		occupyNode(nodes.get(28), nodes, player2.getId());
-		occupyNode(nodes.get(35), nodes, player2.getId());
-		occupyNode(nodes.get(36), nodes, player1.getId());
+		int firstBlack = ((int)dimension.getHeight()/2-1)*(int)dimension.getWidth()-1 + (int)dimension.getWidth()/2;
+		int firstWhite = ((int)dimension.getHeight()/2-1)*(int)dimension.getWidth() + (int)dimension.getWidth()/2;
+		int secondWhite = ((int)dimension.getHeight()/2)*(int)dimension.getWidth()-1 + (int)dimension.getWidth()/2;
+		int secondBlack = ((int)dimension.getHeight()/2)*(int)dimension.getWidth() + (int)dimension.getWidth()/2;
+
+		occupyNode(nodes.get(firstBlack), nodes, player1.getId());
+		occupyNode(nodes.get(firstWhite), nodes, player2.getId());
+		occupyNode(nodes.get(secondWhite), nodes, player2.getId());
+		occupyNode(nodes.get(secondBlack), nodes, player1.getId());
 	}
 	
 	/**

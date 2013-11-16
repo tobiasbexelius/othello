@@ -1,5 +1,6 @@
 package kth.game.othello;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,8 +18,8 @@ public class OthelloImpl implements Othello {
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
 	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
 
-	public OthelloImpl(Player player1, Player player2, Board board) {
-		bh = new BoardHandler(board);
+	public OthelloImpl(Player player1, Player player2, Board board, Dimension boardDimension) {
+		bh = new BoardHandler(board, boardDimension);
 		ph = new PlayerHandler(player1, player2); 		
 		random = new Random();
 	}
