@@ -12,12 +12,10 @@ import java.util.List;
 
 import kth.game.othello.Othello;
 import kth.game.othello.OthelloFactoryImpl;
-import kth.game.othello.PlayerHandler;
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.board.NodeImpl;
 import kth.game.othello.player.Player;
-import kth.game.othello.player.Player.Type;
 
 import org.junit.Test;
 
