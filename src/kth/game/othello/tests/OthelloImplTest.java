@@ -182,7 +182,7 @@ public class OthelloImplTest {
 				 2,1,1,1,1,1,0,0,
 				 2,1,2,2,2,2,2,2};
 		updateBoard(markedNodes, othello, startingPlayerId, opponentPlayerId);
-		
+		//TODO ska det inte göras något mer här?
 	}
 	
 
@@ -202,15 +202,22 @@ public class OthelloImplTest {
 		Othello othello = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
 		assertNull(othello.getPlayerInTurn());
 		othello.start();
-		assertEquals(2, othello.getPlayers().size());
+		
+		int numberOfPlayers = othello.getPlayers().size();
+		assertEquals(2, numberOfPlayers);
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
-
-		othello = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
+	}
+	
+	@Test
+	public void testStartWithParameters() {
+		Othello othello = new OthelloFactoryImpl().createComputerGameOnClassicalBoard();
 		assertNull(othello.getPlayerInTurn());
 		othello.start(othello.getPlayers().get(0).getId());
-		assertEquals(2, othello.getPlayers().size());
+		
+		int numberOfPlayers = othello.getPlayers().size();
+		assertEquals(2, numberOfPlayers);
 		assertTrue(othello.getPlayerInTurn() != null);
 		assertTrue(othello.getPlayers().contains(othello.getPlayerInTurn()));
 		assertFalse(othello.getPlayers().contains(null));
