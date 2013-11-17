@@ -17,21 +17,21 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	public Othello createComputerGameOnClassicalBoard() {
 		Player player1 = new PlayerImpl("1", "Computer 1", Type.COMPUTER);
 		Player player2 = new PlayerImpl("2", "Computer 2", Type.COMPUTER);
-		return createGameWithPlayers(player1, player2, 8, 8);
+		return createGame(player1, player2, 8, 8);
 	}
 	
 	@Override
 	public Othello createHumanGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Human 2", Type.HUMAN);
-		return createGameWithPlayers(player1, player2, 8 ,8);
+		return createGame(player1, player2, 8 ,8);
 	}
 
 	@Override
 	public Othello createHumanVersusComputerGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Computer 1", Type.COMPUTER);
-		return createGameWithPlayers(player1, player2, 8, 8);
+		return createGame(player1, player2, 8, 8);
 	}
 	
 	/**
@@ -43,7 +43,7 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * @param boardHeight the height of the othello board (in squares)
 	 * @return a new othello
 	 */
-	private Othello createGameWithPlayers(Player player1, Player player2, int boardWidth, int boardHeight) {
+	private Othello createGame(Player player1, Player player2, int boardWidth, int boardHeight) {
 		Dimension boardDimension = new Dimension(boardWidth,boardHeight);
 		Board board = createBoard(player1,player2, boardDimension);
 		occupyInitialNodes(board, player1, player2, boardDimension);
