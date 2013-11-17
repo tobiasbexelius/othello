@@ -13,32 +13,38 @@ import kth.game.othello.player.PlayerImpl;
 
 public class OthelloFactoryImpl implements OthelloFactory{
 	
-	private static final int ROWS = 8;
-	private static final int COLUMNS = 8;
-	
 	@Override
 	public Othello createComputerGameOnClassicalBoard() {
 		Player player1 = new PlayerImpl("1", "Computer 1", Type.COMPUTER);
 		Player player2 = new PlayerImpl("2", "Computer 2", Type.COMPUTER);
-		return createGameWithPlayers(player1, player2);
+		return createGameWithPlayers(player1, player2, 8, 8);
 	}
 	
 	@Override
 	public Othello createHumanGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Human 2", Type.HUMAN);
-		return createGameWithPlayers(player1, player2);
+		return createGameWithPlayers(player1, player2, 8 ,8);
 	}
 
 	@Override
 	public Othello createHumanVersusComputerGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Computer 1", Type.COMPUTER);
-		return createGameWithPlayers(player1, player2);
+		return createGameWithPlayers(player1, player2, 8, 8);
 	}
 	
-	private Othello createGameWithPlayers(Player player1, Player player2) {
-		Dimension boardDimension = new Dimension(COLUMNS,ROWS);
+	/**
+	 * Create a new othello with two players and a set board width and height.
+	 * 
+	 * @param player1 the first player
+	 * @param player2 the second player
+	 * @param boardWidth the width of the othello board (in squares)
+	 * @param boardHeight the height of the othello board (in squares)
+	 * @return a new othello
+	 */
+	private Othello createGameWithPlayers(Player player1, Player player2, int boardWidth, int boardHeight) {
+		Dimension boardDimension = new Dimension(boardWidth,boardHeight);
 		Board board = createBoard(player1,player2, boardDimension);
 		occupyInitialNodes(board, player1, player2, boardDimension);
 		Othello game = new OthelloImpl(player1, player2, board, boardDimension);
