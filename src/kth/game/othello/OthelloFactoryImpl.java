@@ -1,6 +1,5 @@
 package kth.game.othello;
 
-import java.awt.Dimension;
 import java.util.List;
 
 import kth.game.othello.board.Board;
@@ -44,10 +43,9 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * @return a new othello
 	 */
 	private Othello createGame(Player player1, Player player2, int boardWidth, int boardHeight) {
-		Dimension boardDimension = new Dimension(boardWidth,boardHeight);
-		Board board = createBoard(player1,player2, boardDimension);
-		occupyInitialNodes(board, player1, player2, boardDimension);
-		Othello game = new OthelloImpl(player1, player2, board, boardDimension);
+		Board board = createBoard(player1,player2);
+		occupyInitialNodes(board, player1, player2);
+		Othello game = new OthelloImpl(player1, player2, board);
 		return game;
 	}
 	
@@ -56,10 +54,10 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * 
 	 * @return a new othello board filled with nodes.
 	 */
-	private Board createBoard(Player player1, Player player2, Dimension dimension) {
+	private Board createBoard(Player player1, Player player2) {
 		Board board = new BoardImpl();
 		List<Node> nodes = board.getNodes();
-		fillBoard(nodes, dimension);
+		fillBoard(nodes);
 		return board;
 	}
 
@@ -67,10 +65,10 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * Fill the board with nodes. All nodes except for the four middle ones (27,28,35,36) will 
 	 * be unoccupied. Nodes 27 and 35 will be occupied by player 1, and 28 and 36 by player 2.
 	 */
-	private void fillBoard(List<Node> nodes, Dimension dimension) {
-		for(int row = 0; row < dimension.getHeight(); row++)  {
-			for(int column = 0; column < dimension.getWidth(); column++) {
-				String id = Integer.toString(((int)dimension.getWidth()*row+column));
+	private void fillBoard(List<Node> nodes) {
+		for(int row = 0; row < 8; row++)  {
+			for(int column = 0; column < 8; column++) {
+				String id = Integer.toString((8*row+column));
 				nodes.add(new NodeImpl(column, row, false, id, null));
 			}
 		}
@@ -83,17 +81,13 @@ public class OthelloFactoryImpl implements OthelloFactory{
 	 * @param player1 the player who will occupy node 27 and 36
 	 * @param player2 the player who will occupy node 28 and 35
 	 */
-	private void occupyInitialNodes(Board board, Player player1, Player player2, Dimension dimension) {
+	private void occupyInitialNodes(Board board, Player player1, Player player2) {
 		List<Node> nodes = board.getNodes();
-		int firstBlack = ((int)dimension.getHeight()/2-1)*(int)dimension.getWidth()-1 + (int)dimension.getWidth()/2;
-		int firstWhite = ((int)dimension.getHeight()/2-1)*(int)dimension.getWidth() + (int)dimension.getWidth()/2;
-		int secondWhite = ((int)dimension.getHeight()/2)*(int)dimension.getWidth()-1 + (int)dimension.getWidth()/2;
-		int secondBlack = ((int)dimension.getHeight()/2)*(int)dimension.getWidth() + (int)dimension.getWidth()/2;
 
-		occupyNode(nodes.get(firstBlack), nodes, player1.getId());
-		occupyNode(nodes.get(firstWhite), nodes, player2.getId());
-		occupyNode(nodes.get(secondWhite), nodes, player2.getId());
-		occupyNode(nodes.get(secondBlack), nodes, player1.getId());
+		occupyNode(nodes.get(27), nodes, player1.getId());
+		occupyNode(nodes.get(28), nodes, player2.getId());
+		occupyNode(nodes.get(35), nodes, player2.getId());
+		occupyNode(nodes.get(36), nodes, player1.getId());
 	}
 	
 	/**

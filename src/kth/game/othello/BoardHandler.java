@@ -1,6 +1,5 @@
 package kth.game.othello;
 
-import java.awt.Dimension;
 import java.util.List;
 
 import kth.game.othello.board.Board;
@@ -10,10 +9,8 @@ import kth.game.othello.board.NodeImpl;
 public class BoardHandler {
 
 	private Board board;
-	private Dimension boardDimension;
 	
-	public BoardHandler(Board board, Dimension boardDimension) {
-		this.boardDimension = boardDimension;
+	public BoardHandler(Board board) {
 		this.board = board;
 	}
 
@@ -62,7 +59,7 @@ public class BoardHandler {
 	 *         are outside of the board
 	 */
 	public Node getNode(int x, int y) {
-		if(!(x < boardDimension.getWidth() || y < boardDimension.getHeight()) || (x < 0 || y < 0)) {
+		if(!(x < 8 || y < 8) || (x < 0 || y < 0)) {
 			return null;
 		}
 		int index = 8 * y + x;
