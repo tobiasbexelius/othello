@@ -5,6 +5,10 @@ import java.util.List;
 
 import kth.game.othello.player.Player;
 
+/**
+ * This class handles retrieval logic for the players and keeps tabs on which player is in turn.
+ * 
+ */
 public class PlayerHandler {
 
 	private List<Player> players;
