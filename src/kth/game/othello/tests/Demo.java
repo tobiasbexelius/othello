@@ -25,7 +25,8 @@ public class Demo {
 		}
 		int player1Nodes = getNumberOfNodesForPlayer(game.getPlayers().get(0), game.getBoard());
 		int player2Nodes = getNumberOfNodesForPlayer(game.getPlayers().get(1), game.getBoard());
-		Assert.assertEquals(getNumberOfOccupiedNodes(game), player1Nodes + player2Nodes);
+		Assert.assertEquals(getNumberOfOccupiedNodes(game.getBoard()), player1Nodes + player2Nodes);
+		
 		if (player1Nodes > player2Nodes) {
 			System.out.println("Player " + game.getPlayers().get(0).getName() + " won!");
 		} else if (player2Nodes > player1Nodes) {
@@ -47,14 +48,14 @@ public class Demo {
 		return playerNodes;
 	}
 
-	private Object getNumberOfOccupiedNodes(Othello othello) {
-		int occupiedNodesCounter = 0;
-		for (Node node : othello.getBoard().getNodes()) {
+	private int getNumberOfOccupiedNodes(Board board) {
+		int occupiedNodes = 0;
+		for (Node node : board.getNodes()) {
 			if (node.isMarked()) {
-				occupiedNodesCounter++;
+				occupiedNodes++;
 			}
 		}
-		return occupiedNodesCounter;
+		return occupiedNodes;
 	}
 
 	@Test
@@ -75,7 +76,8 @@ public class Demo {
 		}
 		int player1Nodes = getNumberOfNodesForPlayer(game.getPlayers().get(0), game.getBoard());
 		int player2Nodes = getNumberOfNodesForPlayer(game.getPlayers().get(1), game.getBoard());
-		Assert.assertEquals(getNumberOfOccupiedNodes(game), player1Nodes + player2Nodes);
+		Assert.assertEquals(getNumberOfOccupiedNodes(game.getBoard()), player1Nodes + player2Nodes);
+		
 		if (player1Nodes > player2Nodes) {
 			System.out.println("Player " + game.getPlayers().get(0).getName() + " won!");
 		} else if (player2Nodes > player1Nodes) {
