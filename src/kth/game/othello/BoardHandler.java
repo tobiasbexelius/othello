@@ -6,6 +6,11 @@ import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.board.NodeImpl;
 
+/**
+ * 
+ * This class handles operations on a board made up of nodes.
+ * 
+ */
 public class BoardHandler {
 
 	private Board board;
