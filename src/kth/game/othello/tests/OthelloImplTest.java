@@ -170,19 +170,35 @@ public class OthelloImplTest {
 		assertTrue(opponentPlayerId.equals(othello.getPlayerInTurn().getId()));
 		assertEquals(2, othello.move(opponentPlayerId, "21").size());
 		assertTrue(startingPlayerId.equals(othello.getPlayerInTurn().getId()));
-		int[] markedNodes = 
-				{2,2,2,2,2,2,2,2,
-				 0,1,1,1,1,1,1,1,
-				 2,1,1,1,2,2,1,1,
-				 2,1,2,2,2,2,1,1,
-				 2,1,2,2,2,2,1,1,
-				 2,2,2,1,2,2,1,1,
-				 2,1,1,1,1,1,0,0,
-				 2,1,2,2,2,2,2,2};
-		updateBoard(markedNodes, othello, startingPlayerId, opponentPlayerId);
-		//TODO ska det inte göras något mer här?
 	}
 	
+	@Test
+	public void testMoveHuman3() {
+		Othello othello = new OthelloFactoryImpl().createHumanGameOnOriginalBoard();
+		String startingPlayerId = othello.getPlayers().get(0).getId();
+		String opponentPlayerId = othello.getPlayers().get(1).getId();
+		othello.start(opponentPlayerId);
+		int[] markedNodes = 
+				{2,1,1,1,1,1,1,2,
+				 1,1,1,1,1,1,1,1,
+				 1,1,1,1,1,1,1,1,
+				 1,1,1,1,1,1,1,1,
+				 1,1,1,1,1,1,1,1,
+				 1,1,1,1,1,1,1,1,
+				 1,1,1,1,1,1,1,1,
+				 2,1,1,1,1,1,1,0};
+		updateBoard(markedNodes, othello, startingPlayerId, opponentPlayerId);
+		assertEquals(19, othello.move(opponentPlayerId, "63").size());
+	
+		boolean threwException = false;
+		assertTrue(startingPlayerId.equals(othello.getPlayerInTurn().getId()));
+		try {
+			othello.move(startingPlayerId, "63");
+		} catch (IllegalArgumentException e) {
+			threwException = true;
+		}
+		assertTrue(threwException);
+	}
 
 	@Test
 	public void testIsActive() {
