@@ -55,7 +55,7 @@ public class OthelloImplTest {
 		assertFalse(game.isMoveValid(startingPlayerId, "28"));
 		assertTrue(game.isMoveValid(startingPlayerId, "20"));
 		assertTrue(game.isMoveValid(startingPlayerId, "29"));
-
+		
 		game.move(startingPlayerId, "20");
 		assertFalse(game.isMoveValid(startingPlayerId, "20"));
 	}
