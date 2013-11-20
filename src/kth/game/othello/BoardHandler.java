@@ -64,13 +64,12 @@ public class BoardHandler {
 	 *         are outside of the board
 	 */
 	public Node getNode(int x, int y) {
-		if(!(x < 8 || y < 8) || (x < 0 || y < 0)) {
-			return null;
+		for(Node node : board.getNodes()) {
+			if(node.getXCoordinate() == x && node.getYCoordinate() == y) {
+				return node;
+			}
 		}
-		int index = 8 * y + x;
-		if (index >= board.getNodes().size() || index < 0)
-			return null;
-		return board.getNodes().get(index);
+		return null;
 	}
 	
 	/**
