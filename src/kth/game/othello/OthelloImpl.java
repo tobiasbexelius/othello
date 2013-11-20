@@ -14,12 +14,12 @@ public class OthelloImpl implements Othello {
 	private BoardHandler boardHandler;
 	private Random random;
 	private PlayerHandler playerHandler;
-	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
-	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
+	private RuleHandler ruleHandler;
 
 	public OthelloImpl(Player player1, Player player2, Board board) {
 		boardHandler = new BoardHandler(board);
-		playerHandler = new PlayerHandler(player1, player2); 		
+		playerHandler = new PlayerHandler(player1, player2); 
+		ruleHandler = new RuleHandler(boardHandler, playerHandler);
 		random = new Random();
 	}
 
@@ -30,17 +30,7 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
-		List<Node> swappedNodes = new ArrayList<Node>();
-		Node move = boardHandler.getNode(nodeId);
-		if (move == null)
-			return swappedNodes;
-
-		for (int i = 0; i < dY.length; i++) {
-			List<Node> nodesInDirection = getNodesToSwapInDirection(playerId, move, dX[i], dY[i]);
-			if (nodesInDirection != null)
-				swappedNodes.addAll(nodesInDirection);
-		}
-		return swappedNodes;
+		return ruleHandler.getNodesToSwap(playerId, nodeId);
 	}
 
 	@Override
@@ -62,26 +52,12 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public boolean isActive() {
-		List<Player> players = playerHandler.getPlayers();
-		for(Player p: players) {
-			if(hasValidMove(p.getId()))
-				return true;
-		}
-		return false;
+		return ruleHandler.isActive();
 	}
 
 	@Override
 	public boolean isMoveValid(String playerId, String nodeId) {
-		Node move = boardHandler.getNode(nodeId);
-		if (move == null)
-			return false;
-		if (move.isMarked())
-			return false;
-		for (int i = 0; i < dY.length; i++) {
-			if (canSwapInDirection(playerId, move, dX[i], dY[i]))
-				return true;
-		}
-		return false;
+		return ruleHandler.isMoveValid(playerId, nodeId);
 	}
 
 	@Override
@@ -129,65 +105,6 @@ public class OthelloImpl implements Othello {
 	@Override
 	public void start(String playerId) {
 		playerHandler.setPlayerInTurn(playerHandler.getPlayer(playerId));
-	}
-
-	/**
-	 * Checks if a player can swap nodes in a certain direction. For example, to
-	 * check left xDir and yDir should be (-1, 0).
-	 * 
-	 * @param playerId
-	 *            the player who is trying to capture nodes
-	 * @param move
-	 *            the move the player makes to capture nodes
-	 * @param xDir
-	 *            the x-axis direction to check in
-	 * @param yDir
-	 *            the y axis direction to check in
-	 * @return true if a capture could be made in the direction, false otherwise
-	 */
-	private boolean canSwapInDirection(String playerId, Node move, int xDir, int yDir) {
-		Node next = boardHandler.getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
-
-		if (next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
-			return false;
-
-		while (true) {
-			next = boardHandler.getNode(next.getXCoordinate() + xDir, next.getYCoordinate() + yDir);
-			if (next == null || !next.isMarked())
-				return false;
-			if (next.getOccupantPlayerId().equals(playerId))
-				return true;
-		}
-	}
-
-	/**
-	 * Retrieves all the nodes that will be swapped in a certain direction when
-	 * making a move. For example, to retrieve nodes to the left, xDir and yDir
-	 * should be (-1, 0).
-	 * 
-	 * @param playerId
-	 *            the player who is swapping nodes
-	 * @param move
-	 *            the move the player makes to swap nodes
-	 * @param xDir
-	 *            the x-axis direction to check in
-	 * @param yDir
-	 *            the y axis direction to check in
-	 * @return a list of all the nodes that were swapped. Returns null if no
-	 *         node could be swapped
-	 */
-	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
-		Node next = boardHandler.getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
-		if (next == null || !next.isMarked() || next.getOccupantPlayerId().equals(playerId))
-			return null;
-		List<Node> swappedNodes = new ArrayList<Node>();
-		while (!next.getOccupantPlayerId().equals(playerId)) {
-			swappedNodes.add(next);
-			next = boardHandler.getNode(next.getXCoordinate() + xDir, next.getYCoordinate() + yDir);
-			if (next == null || !next.isMarked())
-				return null;
-		}
-		return swappedNodes;
 	}
 	
 	/**
