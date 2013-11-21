@@ -15,7 +15,6 @@ public class PlayerHandlerTest {
 		Mockito.when(player1.getId()).thenReturn("player1");
 		Player player2 = Mockito.mock(Player.class);
 		Mockito.when(player2.getId()).thenReturn("player2");
-		
 		PlayerHandler playerHandler = new PlayerHandler(player1, player2);
 		Assert.assertNotNull(playerHandler.getPlayer("player1"));
 		Assert.assertNotNull(playerHandler.getPlayer("player2"));

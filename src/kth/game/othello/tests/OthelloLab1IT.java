@@ -48,18 +48,14 @@ public class OthelloLab1IT {
 			human = othello.getPlayers().get(0);
 		}
 		othello.start(human.getId());
-		OthelloImplTest.printBoard(othello);
 		Assert.assertEquals(4, getNumberOfOccupiedNodes(othello));
 		makeAHumanMove(othello, human);
-		OthelloImplTest.printBoard(othello);
 		Assert.assertEquals(5, getNumberOfOccupiedNodes(othello));
 		othello.move();
-		OthelloImplTest.printBoard(othello);
 		Assert.assertEquals(6, getNumberOfOccupiedNodes(othello));
 		Assert.assertEquals(human.getId(), othello.getPlayerInTurn().getId());
 		Assert.assertTrue(othello.hasValidMove(human.getId()));
 		makeAHumanMove(othello, human);
-		OthelloImplTest.printBoard(othello);
 		Assert.assertEquals(7, getNumberOfOccupiedNodes(othello)); //fail
 		othello.move();
 		Assert.assertEquals(8, getNumberOfOccupiedNodes(othello));
