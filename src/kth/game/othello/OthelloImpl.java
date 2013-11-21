@@ -15,7 +15,7 @@ public class OthelloImpl implements Othello {
 	private RuleHandler ruleHandler;
 	private MoveHandler moveHandler;
 
-	public OthelloImpl(Player player1, Player player2, Board board) {
+	public OthelloImpl(Player player1, Player player2, Board board) { //TODO ändra så att den tar in en lista till sprint 2
 		boardHandler = new BoardHandler(board);
 		playerHandler = new PlayerHandler(player1, player2); 
 		ruleHandler = new RuleHandler(boardHandler, playerHandler);

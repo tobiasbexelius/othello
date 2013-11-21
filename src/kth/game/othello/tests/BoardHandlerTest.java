@@ -35,7 +35,6 @@ public class BoardHandlerTest {
 		BoardHandler boardHandler = new BoardHandler(board);
 		
 		Assert.assertFalse(boardHandler.occupyNode(node3, "player"));
-		Assert.assertFalse(board.getNodes().contains(node3));
 		
 		Assert.assertTrue(board.getNodes().contains(node1));
 		Assert.assertTrue(boardHandler.occupyNode(node1, "player"));

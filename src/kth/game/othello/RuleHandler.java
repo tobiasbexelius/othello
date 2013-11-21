@@ -33,10 +33,14 @@ public class RuleHandler {
 	}
 	
 	public boolean hasValidMove(String playerId) {
-		if(findPossibleMoves(playerId).size() == 0) {
-			return false;
+		for (Node node : boardHandler.getNodes()) {
+			if (!node.isMarked()) {
+				if (isMoveValid(playerId, node.getId())) {
+					return true;
+				}
+			}
 		}
-		return true;
+		return false;
 	}
 	
 	public boolean isActive() {
@@ -119,23 +123,5 @@ public class RuleHandler {
 				return null;
 		}
 		return swappedNodes;
-	}
-	
-	/**
-	 * Finds all possible moves a certain player can make.
-	 * 
-	 * @param playerId the player whom moves will be found for
-	 * @return a list of all the moves for the player
-	 */
-	public List<Node> findPossibleMoves(String playerId) {
-		List<Node> moves = new ArrayList<Node>();
-		for (Node node : boardHandler.getNodes()) {
-			if (!node.isMarked()) {
-				if (isMoveValid(playerId, node.getId())) {
-					moves.add(node);
-				}
-			}
-		}
-		return moves;
 	}
 }

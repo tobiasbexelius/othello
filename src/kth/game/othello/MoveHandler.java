@@ -30,7 +30,7 @@ public class MoveHandler {
 			playerHandler.swapPlayerInTurn();
 			return new ArrayList<Node>();
 		}
-		List<Node> possibleMoves = ruleHandler.findPossibleMoves(playerId);
+		List<Node> possibleMoves = findPossibleMoves(playerId);
 		int moveIndex = random.nextInt(possibleMoves.size());
 		Node move = possibleMoves.get(moveIndex);
 
@@ -53,6 +53,24 @@ public class MoveHandler {
 		List<Node> swappedNodes = boardHandler.swapNodes(nodesToSwap, playerId);
 		playerHandler.swapPlayerInTurn();
 		return swappedNodes;
+	}
+	
+	/**
+	 * Finds all possible moves a certain player can make.
+	 * 
+	 * @param playerId the player whom moves will be found for
+	 * @return a list of all the moves for the player
+	 */
+	public List<Node> findPossibleMoves(String playerId) {
+		List<Node> moves = new ArrayList<Node>();
+		for (Node node : boardHandler.getNodes()) {
+			if (!node.isMarked()) {
+				if (ruleHandler.isMoveValid(playerId, node.getId())) {
+					moves.add(node);
+				}
+			}
+		}
+		return moves;
 	}
 	
 }
