@@ -1,5 +1,6 @@
 package kth.game.othello;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import kth.game.othello.board.Board;
@@ -10,20 +11,20 @@ import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
 import kth.game.othello.player.PlayerImpl;
 
-public class OthelloFactoryImpl implements OthelloFactory{
-	
+public class OthelloFactoryImpl implements OthelloFactory {
+
 	@Override
 	public Othello createComputerGameOnClassicalBoard() {
 		Player player1 = new PlayerImpl("1", "Computer 1", Type.COMPUTER);
 		Player player2 = new PlayerImpl("2", "Computer 2", Type.COMPUTER);
 		return createGame(player1, player2, 8, 8);
 	}
-	
+
 	@Override
 	public Othello createHumanGameOnOriginalBoard() {
 		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
 		Player player2 = new PlayerImpl("2", "Human 2", Type.HUMAN);
-		return createGame(player1, player2, 8 ,8);
+		return createGame(player1, player2, 8, 8);
 	}
 
 	@Override
@@ -32,54 +33,52 @@ public class OthelloFactoryImpl implements OthelloFactory{
 		Player player2 = new PlayerImpl("2", "Computer 1", Type.COMPUTER);
 		return createGame(player1, player2, 8, 8);
 	}
-	
+
 	/**
 	 * Create a new othello with two players and a set board width and height.
 	 * 
-	 * @param player1 the first player
-	 * @param player2 the second player
-	 * @param boardWidth the width of the othello board (in squares)
-	 * @param boardHeight the height of the othello board (in squares)
+	 * @param player1
+	 *            the first player
+	 * @param player2
+	 *            the second player
+	 * @param boardWidth
+	 *            the width of the othello board (in squares)
+	 * @param boardHeight
+	 *            the height of the othello board (in squares)
 	 * @return a new othello
 	 */
 	private Othello createGame(Player player1, Player player2, int boardWidth, int boardHeight) {
-		Board board = createBoard(player1,player2);
+		Board board = createBoard(player1, player2);
 		occupyInitialNodes(board, player1, player2);
 		Othello game = new OthelloImpl(player1, player2, board);
 		return game;
 	}
-	
+
 	/**
-	 * Create a new board and fill it with nodes. 
+	 * Create a new board with the given players.
 	 * 
 	 * @return a new othello board filled with nodes.
 	 */
 	private Board createBoard(Player player1, Player player2) {
-		Board board = new BoardImpl();
-		List<Node> nodes = board.getNodes();
-		fillBoard(nodes);
-		return board;
-	}
-
-	/**
-	 * Fill the board with nodes. All nodes except for the four middle ones (27,28,35,36) will 
-	 * be unoccupied. Nodes 27 and 35 will be occupied by player 1, and 28 and 36 by player 2.
-	 */
-	private void fillBoard(List<Node> nodes) {
-		for(int row = 0; row < 8; row++)  {
-			for(int column = 0; column < 8; column++) {
-				String id = Integer.toString((8*row+column));
+		List<Node> nodes = new ArrayList<Node>();
+		for (int row = 0; row < 8; row++) {
+			for (int column = 0; column < 8; column++) {
+				String id = Integer.toString((8 * row + column));
 				nodes.add(new NodeImpl(column, row, false, id, null));
 			}
 		}
+		return new BoardImpl(nodes);
 	}
-	
+
 	/**
-	 * Occupies the four middle nodes of the board. 
+	 * Occupies the four middle nodes of the board.
 	 * 
-	 * @param board the board which will have it's nodes occupied
-	 * @param player1 the player who will occupy node 27 and 36
-	 * @param player2 the player who will occupy node 28 and 35
+	 * @param board
+	 *            the board which will have it's nodes occupied
+	 * @param player1
+	 *            the player who will occupy node 27 and 36
+	 * @param player2
+	 *            the player who will occupy node 28 and 35
 	 */
 	private void occupyInitialNodes(Board board, Player player1, Player player2) {
 		List<Node> nodes = board.getNodes();
@@ -89,19 +88,23 @@ public class OthelloFactoryImpl implements OthelloFactory{
 		occupyNode(nodes.get(35), nodes, player2.getId());
 		occupyNode(nodes.get(36), nodes, player1.getId());
 	}
-	
+
 	/**
 	 * Occupies a certain node on the board.
 	 * 
-	 * @param node the node to be occupied
-	 * @param a list of nodes which contains the node to be occupied
-	 * @param occupantPlayerId the player who will occupy the node
+	 * @param node
+	 *            the node to be occupied
+	 * @param a
+	 *            list of nodes which contains the node to be occupied
+	 * @param occupantPlayerId
+	 *            the player who will occupy the node
 	 * @return true if the node was on the board, false otherwise
 	 */
 	private void occupyNode(Node node, List<Node> nodes, String occupantPlayerId) {
 		int nodeIndex = nodes.indexOf(node);
 		nodes.remove(node);
-		nodes.add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(), occupantPlayerId));
+		nodes.add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
+				occupantPlayerId));
 	}
-	
+
 }

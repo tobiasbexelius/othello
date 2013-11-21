@@ -47,4 +47,17 @@ public class NodeImpl implements Node {
 			return true;
 		return false;
 	}
+
+	@Override
+	public int compareTo(Node o) {
+		if (this.y < o.getYCoordinate())
+			return -1;
+		if (this.y > o.getYCoordinate())
+			return 1;
+		if (this.x < o.getXCoordinate())
+			return -1;
+		if (this.x > o.getXCoordinate())
+			return 1;
+		return 0;
+	}
 }
