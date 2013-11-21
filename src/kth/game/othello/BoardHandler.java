@@ -42,7 +42,7 @@ public class BoardHandler {
 	 * @param occupantPlayerId the player who will occupy the node
 	 * @return true if the node was on the board, false otherwise
 	 */
-	public boolean occupyNode(Node node, String occupantPlayerId) {
+	private boolean occupyNode(Node node, String occupantPlayerId) {
 		int nodeIndex = board.getNodes().indexOf(node);
 		if (nodeIndex == -1) {
 			return false;
