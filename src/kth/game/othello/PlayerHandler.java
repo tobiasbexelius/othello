@@ -45,7 +45,6 @@ public class PlayerHandler {
 
 	public void setPlayerInTurn(Player player) {
 		playerInTurn = player;
-
 	}
 
 	public Player getPlayer(int playerId) {
