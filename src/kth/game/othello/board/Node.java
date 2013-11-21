@@ -1,13 +1,11 @@
 package kth.game.othello.board;
 
 /**
- * The responsibility of a node is to keep information of which player is
- * occupying it.
+ * The responsibility of a node is to keep information of which player is occupying it.
  * 
  * @author Tomas Ekholm
  */
-public interface Node {
-
+public interface Node extends Comparable<Node> {
 	/**
 	 * The unique identifier of a node
 	 * 

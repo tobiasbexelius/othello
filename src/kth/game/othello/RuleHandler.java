@@ -7,18 +7,18 @@ import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 
 public class RuleHandler {
-	
+
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
 	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
-	
+
 	private BoardHandler boardHandler;
 	private PlayerHandler playerHandler;
-	
+
 	public RuleHandler(BoardHandler boardHandler, PlayerHandler playerHandler) {
 		this.boardHandler = boardHandler;
 		this.playerHandler = playerHandler;
 	}
-	
+
 	public boolean isMoveValid(String playerId, String nodeId) {
 		Node move = boardHandler.getNode(nodeId);
 		if (move == null)
@@ -31,7 +31,7 @@ public class RuleHandler {
 		}
 		return false;
 	}
-	
+
 	public boolean hasValidMove(String playerId) {
 		for (Node node : boardHandler.getNodes()) {
 			if (!node.isMarked()) {
@@ -42,16 +42,16 @@ public class RuleHandler {
 		}
 		return false;
 	}
-	
+
 	public boolean isActive() {
 		List<Player> players = playerHandler.getPlayers();
-		for(Player p: players) {
-			if(hasValidMove(p.getId()))
+		for (Player p : players) {
+			if (hasValidMove(p.getId()))
 				return true;
 		}
 		return false;
 	}
-	
+
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
 		List<Node> swappedNodes = new ArrayList<Node>();
 		Node move = boardHandler.getNode(nodeId);
@@ -65,10 +65,10 @@ public class RuleHandler {
 		}
 		return swappedNodes;
 	}
-	
+
 	/**
-	 * Checks if a player can swap nodes in a certain direction. For example, to
-	 * check left xDir and yDir should be (-1, 0).
+	 * Checks if a player can swap nodes in a certain direction. For example, to check left xDir and yDir should be (-1,
+	 * 0).
 	 * 
 	 * @param playerId
 	 *            the player who is trying to capture nodes
@@ -96,9 +96,8 @@ public class RuleHandler {
 	}
 
 	/**
-	 * Retrieves all the nodes that will be swapped in a certain direction when
-	 * making a move. For example, to retrieve nodes to the left, xDir and yDir
-	 * should be (-1, 0).
+	 * Retrieves all the nodes that will be swapped in a certain direction when making a move. For example, to retrieve
+	 * nodes to the left, xDir and yDir should be (-1, 0).
 	 * 
 	 * @param playerId
 	 *            the player who is swapping nodes
@@ -108,8 +107,7 @@ public class RuleHandler {
 	 *            the x-axis direction to check in
 	 * @param yDir
 	 *            the y axis direction to check in
-	 * @return a list of all the nodes that were swapped. Returns null if no
-	 *         node could be swapped
+	 * @return a list of all the nodes that were swapped. Returns null if no node could be swapped
 	 */
 	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
 		Node next = boardHandler.getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);
