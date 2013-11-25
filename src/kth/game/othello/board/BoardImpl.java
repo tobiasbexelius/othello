@@ -17,9 +17,23 @@ public class BoardImpl implements Board {
 		return nodes;
 	}
 
+	/**
+	 * Retrieves a node from the board.
+	 * 
+	 * @param x
+	 *            the x-coordinate of the node
+	 * @param y
+	 *            the y-coordinate of the node
+	 * @return a node with the specified coordinates. Null if the coordinates
+	 *         are outside of the board
+	 */
 	@Override
 	public Node getNode(int x, int y) {
-		// TODO Auto-generated method stub
+		for(Node node : getNodes()) {
+			if(node.getXCoordinate() == x && node.getYCoordinate() == y) {
+				return node;
+			}
+		}
 		return null;
 	}
 

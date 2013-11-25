@@ -1,6 +1,7 @@
 package kth.game.othello.tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,6 @@ import kth.game.othello.BoardHandler;
 import kth.game.othello.MoveHandler;
 import kth.game.othello.PlayerHandler;
 import kth.game.othello.RuleHandler;
-import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 
 import org.junit.Test;

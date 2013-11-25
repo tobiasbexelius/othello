@@ -51,9 +51,7 @@ public class BoardHandler {
 		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
 				occupantPlayerId));
 		return true;
-	}
-	
-	/**
+	}/**
 	 * Retrieves a node from the board.
 	 * 
 	 * @param x
@@ -64,12 +62,7 @@ public class BoardHandler {
 	 *         are outside of the board
 	 */
 	public Node getNode(int x, int y) {
-		for(Node node : board.getNodes()) {
-			if(node.getXCoordinate() == x && node.getYCoordinate() == y) {
-				return node;
-			}
-		}
-		return null;
+		return board.getNode(x, y);
 	}
 	
 	/**
