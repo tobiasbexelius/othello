@@ -6,9 +6,17 @@ public class PlayerImpl implements Player {
 	
 	private String id, name;
 	private Type type;
+	private MoveStrategy strategy;
 	
 	public PlayerImpl(String id, String name, Type type) {
 		this.id = id;
+		this.name = name;
+		this.type = type;
+	}
+	
+	public PlayerImpl(String id, String name, Type type, MoveStrategy strategy) {
+		this.id = id;
+		this.strategy = strategy;
 		this.name = name;
 		this.type = type;
 	}
@@ -30,14 +38,12 @@ public class PlayerImpl implements Player {
 
 	@Override
 	public MoveStrategy getMoveStrategy() {
-		// TODO Auto-generated method stub
-		return null;
+		return strategy;
 	}
 
 	@Override
 	public void setMoveStrategy(MoveStrategy moveStrategy) {
-		// TODO Auto-generated method stub
-		
+		strategy = moveStrategy;
 	}
 
 }
