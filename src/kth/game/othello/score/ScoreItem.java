@@ -3,7 +3,7 @@ package kth.game.othello.score;
 /**
  * An instance of this class contains the score of a player.
  */
-public class ScoreItem {
+public class ScoreItem implements Comparable<ScoreItem>{
 
 	private String playerId;
 	private int score;
@@ -25,6 +25,25 @@ public class ScoreItem {
 	 */
 	public int getScore() {
 		return score;
+	}
+	
+	public void incrementScore() {
+		score ++;
+	}
+	
+	public void decrementScore() {
+		score --;
+	}
+
+	@Override
+	public int compareTo(ScoreItem o) {
+		if(o.getScore() < getScore()) {
+			return 1;
+		} else if(o.getScore() > getScore()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 
 }
