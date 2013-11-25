@@ -1,8 +1,8 @@
 package kth.game.othello.board;
 
-import java.util.Observer;
+import java.util.Observable;
 
-public class NodeImpl implements Node {
+public class NodeImpl extends Observable implements Node {
 
 	private String occupantPlayerId;
 	private int x, y;
@@ -40,9 +40,7 @@ public class NodeImpl implements Node {
 		}
 		return true;
 	}
-
 	
-
 	@Override
 	public int compareTo(Node other) {
 		if (this.y < other.getYCoordinate())
@@ -54,12 +52,6 @@ public class NodeImpl implements Node {
 		if (this.x > other.getXCoordinate())
 			return 1;
 		return 0;
-	}
-
-	@Override
-	public void addObserver(Observer observer) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -81,7 +73,12 @@ public class NodeImpl implements Node {
 		return false;
 	}
 
-
+	public void updateOccupantPlayer(String playerId) {
+		String oldOccupant = occupantPlayerId;
+		occupantPlayerId = playerId;
+		notifyObservers(oldOccupant);
+	}
+	
 	@Override
 	public String toString() {
 		return "[X: " + x + ", Y: " + y + "]";
