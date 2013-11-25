@@ -6,21 +6,22 @@ import java.util.Random;
 
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player.Type;
+import kth.game.othello.player.movestrategy.MoveStrategy;
 
 public class MoveHandler {
-	
+
 	private BoardHandler boardHandler;
 	private PlayerHandler playerHandler;
 	private RuleHandler ruleHandler;
 	private Random random;
-	
+
 	public MoveHandler(BoardHandler boardHandler, PlayerHandler playerHandler, RuleHandler ruleHandler) {
 		this.boardHandler = boardHandler;
 		this.playerHandler = playerHandler;
 		this.ruleHandler = ruleHandler;
 		random = new Random();
 	}
-	
+
 	public List<Node> move() {
 		if (playerHandler.getPlayerInTurn().getType() != Type.COMPUTER)
 			throw new IllegalArgumentException();
@@ -30,9 +31,8 @@ public class MoveHandler {
 			playerHandler.swapPlayerInTurn();
 			return new ArrayList<Node>();
 		}
-		List<Node> possibleMoves = findPossibleMoves(playerId);
-		int moveIndex = random.nextInt(possibleMoves.size());
-		Node move = possibleMoves.get(moveIndex);
+		MoveStrategy moveStrategy = playerHandler.getPlayer(playerId).getMoveStrategy();
+		Node move = moveStrategy.move(playerId, ruleHandler, boardHandler.getBoard());
 
 		List<Node> nodesToSwap = ruleHandler.getNodesToSwap(playerId, move.getId());
 		nodesToSwap.add(move);
@@ -42,7 +42,7 @@ public class MoveHandler {
 
 		return swappedNodes;
 	}
-	
+
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
 		if (!playerHandler.playerIsInTurn(playerId) || !ruleHandler.isMoveValid(playerId, nodeId))
 			throw new IllegalArgumentException();
@@ -54,23 +54,4 @@ public class MoveHandler {
 		playerHandler.swapPlayerInTurn();
 		return swappedNodes;
 	}
-	
-	/**
-	 * Finds all possible moves a certain player can make.
-	 * 
-	 * @param playerId the player whom moves will be found for
-	 * @return a list of all the moves for the player
-	 */
-	public List<Node> findPossibleMoves(String playerId) {
-		List<Node> moves = new ArrayList<Node>();
-		for (Node node : boardHandler.getNodes()) {
-			if (!node.isMarked()) {
-				if (ruleHandler.isMoveValid(playerId, node.getId())) {
-					moves.add(node);
-				}
-			}
-		}
-		return moves;
-	}
-	
 }
