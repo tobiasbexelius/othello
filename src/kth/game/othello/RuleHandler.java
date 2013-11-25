@@ -6,7 +6,7 @@ import java.util.List;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 
-public class RuleHandler {
+public class RuleHandler implements Rules {
 
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
 	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
@@ -19,6 +19,7 @@ public class RuleHandler {
 		this.playerHandler = playerHandler;
 	}
 
+	@Override
 	public boolean isMoveValid(String playerId, String nodeId) {
 		Node move = boardHandler.getNode(nodeId);
 		if (move == null)
@@ -32,6 +33,7 @@ public class RuleHandler {
 		return false;
 	}
 
+	@Override
 	public boolean hasValidMove(String playerId) {
 		for (Node node : boardHandler.getNodes()) {
 			if (!node.isMarked()) {
@@ -52,6 +54,7 @@ public class RuleHandler {
 		return false;
 	}
 
+	@Override
 	public List<Node> getNodesToSwap(String playerId, String nodeId) {
 		List<Node> swappedNodes = new ArrayList<Node>();
 		Node move = boardHandler.getNode(nodeId);
