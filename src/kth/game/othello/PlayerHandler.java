@@ -1,6 +1,5 @@
 package kth.game.othello;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import kth.game.othello.player.Player;
@@ -14,10 +13,8 @@ public class PlayerHandler {
 	private List<Player> players;
 	private Player playerInTurn;
 
-	public PlayerHandler(Player player1, Player player2) {
-		players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
+	public PlayerHandler(List<Player> players) {
+		this.players = players;
 	}
 
 	public Player getPlayerInTurn() {
