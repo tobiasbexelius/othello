@@ -64,7 +64,7 @@ public class OthelloFactoryImpl  {
 		for (int row = 0; row < 8; row++) {
 			for (int column = 0; column < 8; column++) {
 				String id = Integer.toString((8 * row + column));
-				nodes.add(new NodeImpl(column, row, id, null));
+				nodes.add(new NodeImpl(column, row, null));
 			}
 		}
 		return new BoardImpl(nodes);
@@ -103,7 +103,7 @@ public class OthelloFactoryImpl  {
 	private void occupyNode(Node node, List<Node> nodes, String occupantPlayerId) {
 		int nodeIndex = nodes.indexOf(node);
 		nodes.remove(node);
-		nodes.add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), node.getId(),
+		nodes.add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(),
 				occupantPlayerId));
 	}
 

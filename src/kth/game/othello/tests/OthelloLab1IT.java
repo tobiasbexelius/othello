@@ -30,6 +30,9 @@ public class OthelloLab1IT {
 
 	private void makeAHumanMove(Othello othello, Player human) {
 		for (Node node : othello.getBoard().getNodes()) {
+			System.out.println(node.getId());
+			System.out.println(node);
+			System.out.println("HashCode: " + node.hashCode());
 			if (othello.isMoveValid(human.getId(), node.getId())) {
 				othello.move(human.getId(), node.getId());
 				return;
