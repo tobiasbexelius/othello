@@ -24,7 +24,7 @@ public class OthelloLab1IT {
 		return occupiedNodesCounter;
 	}
 
-	private OthelloFactory getOthelloFactory() {
+	private OthelloFactoryImpl getOthelloFactory() {
 		return new OthelloFactoryImpl();
 	}
 

@@ -15,7 +15,7 @@ public class OthelloFactoryImplTest {
 
 	@Test
 	public void createComputerGameOnClassicalBoardTest() {
-		OthelloFactory factory = new OthelloFactoryImpl();
+		OthelloFactoryImpl factory = new OthelloFactoryImpl();
 		Othello game = factory.createComputerGameOnClassicalBoard();
 		List<Node> nodes = game.getBoard().getNodes();
 		assertEquals(nodes.get(27).getOccupantPlayerId(), "1");

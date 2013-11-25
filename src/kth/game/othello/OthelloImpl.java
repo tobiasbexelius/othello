@@ -6,6 +6,7 @@ import java.util.Random;
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
+import kth.game.othello.score.Score;
 
 public class OthelloImpl implements Othello {
 
@@ -77,6 +78,12 @@ public class OthelloImpl implements Othello {
 	@Override
 	public void start(String playerId) {
 		playerHandler.setPlayerInTurn(playerHandler.getPlayer(playerId));
+	}
+
+	@Override
+	public Score getScore() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }

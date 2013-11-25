@@ -11,9 +11,8 @@ import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
 import kth.game.othello.player.PlayerImpl;
 
-public class OthelloFactoryImpl implements OthelloFactory {
+public class OthelloFactoryImpl  {
 
-	@Override
 	public Othello createComputerGameOnClassicalBoard() {
 		List<Player> players = new ArrayList<Player>();
 		players.add(new PlayerImpl("1", "Computer 1", Type.COMPUTER));
@@ -21,7 +20,6 @@ public class OthelloFactoryImpl implements OthelloFactory {
 		return createGame(players, 8, 8);
 	}
 
-	@Override
 	public Othello createHumanGameOnOriginalBoard() {
 		List<Player> players = new ArrayList<Player>();
 		players.add(new PlayerImpl("1", "Human 1", Type.HUMAN));
@@ -29,7 +27,6 @@ public class OthelloFactoryImpl implements OthelloFactory {
 		return createGame(players, 8, 8);
 	}
 
-	@Override
 	public Othello createHumanVersusComputerGameOnOriginalBoard() {
 		List<Player> players = new ArrayList<Player>();
 		players.add(new PlayerImpl("1", "Computer 1", Type.COMPUTER));
