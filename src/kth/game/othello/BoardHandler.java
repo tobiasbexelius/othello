@@ -48,7 +48,7 @@ public class BoardHandler {
 			return false;
 		}
 		board.getNodes().remove(node);
-		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), true, node.getId(),
+		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), node.getId(),
 				occupantPlayerId));
 		return true;
 	}/**

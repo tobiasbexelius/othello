@@ -6,10 +6,8 @@ public class NodeImpl implements Node {
 
 	private String id, occupantPlayerId;
 	private int x, y;
-	private boolean marked;
 
-	public NodeImpl(int x, int y, boolean marked, String id, String occupantPlayerId) {
-		this.marked = marked;
+	public NodeImpl(int x, int y, String id, String occupantPlayerId) {
 		this.id = id;
 		this.occupantPlayerId = occupantPlayerId;
 		this.x = x;
@@ -38,7 +36,10 @@ public class NodeImpl implements Node {
 
 	@Override
 	public boolean isMarked() {
-		return marked;
+		if(occupantPlayerId == null) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
