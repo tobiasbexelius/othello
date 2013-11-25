@@ -17,4 +17,10 @@ public class BoardImpl implements Board {
 		return nodes;
 	}
 
+	@Override
+	public Node getNode(int x, int y) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
