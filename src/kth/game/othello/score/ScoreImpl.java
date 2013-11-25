@@ -1,9 +1,10 @@
 package kth.game.othello.score;
 
 import java.util.List;
+import java.util.Observable;
 import java.util.Observer;
 
-public class ScoreImpl implements Score{
+public class ScoreImpl implements Score, Observer{
 
 	@Override
 	public void addObserver(Observer observer) {
@@ -20,6 +21,12 @@ public class ScoreImpl implements Score{
 	public int getPoints(String playerId) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

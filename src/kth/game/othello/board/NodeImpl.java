@@ -1,16 +1,20 @@
 package kth.game.othello.board;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observer;
 
 public class NodeImpl implements Node {
 
 	private String occupantPlayerId;
 	private int x, y;
+	private List<Observer> observers;
 
 	public NodeImpl(int x, int y, String occupantPlayerId) {
 		this.occupantPlayerId = occupantPlayerId;
 		this.x = x;
 		this.y = y;
+		observers = new ArrayList<Observer>();
 	}
 
 	@Override
@@ -40,9 +44,7 @@ public class NodeImpl implements Node {
 		}
 		return true;
 	}
-
 	
-
 	@Override
 	public int compareTo(Node other) {
 		if (this.y < other.getYCoordinate())
@@ -58,8 +60,7 @@ public class NodeImpl implements Node {
 
 	@Override
 	public void addObserver(Observer observer) {
-		// TODO Auto-generated method stub
-		
+		observers.add(observer);
 	}
 
 	@Override
@@ -81,7 +82,18 @@ public class NodeImpl implements Node {
 		return false;
 	}
 
-
+	public void setOccupantPlayer(String playerId) {
+		String oldOccupant = occupantPlayerId;
+		occupantPlayerId = playerId;
+		notifyObservers(oldOccupant);
+	}
+	
+	private void notifyObservers(String oldOccupant) {
+		for(Observer observer : observers) {
+			observer.
+		}
+	}
+	
 	@Override
 	public String toString() {
 		return "[X: " + x + ", Y: " + y + "]";
