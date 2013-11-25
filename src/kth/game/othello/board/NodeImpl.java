@@ -7,8 +7,8 @@ public class NodeImpl implements Node {
 	private String id, occupantPlayerId;
 	private int x, y;
 
-	public NodeImpl(int x, int y, String id, String occupantPlayerId) {
-		this.id = id;
+	public NodeImpl(int x, int y, String occupantPlayerId) {
+		this.id = Integer.toString(hashCode());
 		this.occupantPlayerId = occupantPlayerId;
 		this.x = x;
 		this.y = y;
@@ -42,14 +42,7 @@ public class NodeImpl implements Node {
 		return true;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		Node other = (Node) o;
-		if (other.getXCoordinate() == getXCoordinate() && other.getYCoordinate() == getYCoordinate()
-				&& getId().equals(other.getId()))
-			return true;
-		return false;
-	}
+	
 
 	@Override
 	public int compareTo(Node other) {
@@ -68,6 +61,26 @@ public class NodeImpl implements Node {
 	public void addObserver(Observer observer) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((occupantPlayerId == null) ? 0 : occupantPlayerId.hashCode());
+		result = prime * result + x;
+		result = prime * result + y;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		Node other = (Node) o;
+		if (other.getXCoordinate() == getXCoordinate() && other.getYCoordinate() == getYCoordinate()
+				&& getId().equals(other.getId()))
+			return true;
+		return false;
 	}
 
 
