@@ -1,5 +1,8 @@
 package kth.game.othello.tests;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import kth.game.othello.PlayerHandler;
 import kth.game.othello.player.Player;
 
@@ -15,7 +18,10 @@ public class PlayerHandlerTest {
 		Mockito.when(player1.getId()).thenReturn("player1");
 		Player player2 = Mockito.mock(Player.class);
 		Mockito.when(player2.getId()).thenReturn("player2");
-		PlayerHandler playerHandler = new PlayerHandler(player1, player2);
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		PlayerHandler playerHandler = new PlayerHandler(players);
 		Assert.assertNotNull(playerHandler.getPlayer("player1"));
 		Assert.assertNotNull(playerHandler.getPlayer("player2"));
 		Assert.assertNull(playerHandler.getPlayer("player3"));
@@ -28,7 +34,11 @@ public class PlayerHandlerTest {
 		Player player2 = Mockito.mock(Player.class);
 		Mockito.when(player2.getId()).thenReturn("player2");
 		
-		PlayerHandler playerHandler = new PlayerHandler(player1, player2);
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		
+		PlayerHandler playerHandler = new PlayerHandler(players);
 		
 		playerHandler.setPlayerInTurn(player1);
 		Assert.assertTrue(playerHandler.playerIsInTurn(player1.getId()));
@@ -46,8 +56,11 @@ public class PlayerHandlerTest {
 		Mockito.when(player1.getId()).thenReturn("player1");
 		Player player2 = Mockito.mock(Player.class);
 		Mockito.when(player2.getId()).thenReturn("player2");
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
 		
-		PlayerHandler playerHandler = new PlayerHandler(player1, player2);
+		PlayerHandler playerHandler = new PlayerHandler(players);
 		
 		playerHandler.setPlayerInTurn(player1);
 		Assert.assertTrue(playerHandler.playerIsInTurn(player1.getId()));

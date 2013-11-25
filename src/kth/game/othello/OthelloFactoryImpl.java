@@ -15,23 +15,26 @@ public class OthelloFactoryImpl implements OthelloFactory {
 
 	@Override
 	public Othello createComputerGameOnClassicalBoard() {
-		Player player1 = new PlayerImpl("1", "Computer 1", Type.COMPUTER);
-		Player player2 = new PlayerImpl("2", "Computer 2", Type.COMPUTER);
-		return createGame(player1, player2, 8, 8);
+		List<Player> players = new ArrayList<Player>();
+		players.add(new PlayerImpl("1", "Computer 1", Type.COMPUTER));
+		players.add(new PlayerImpl("2", "Computer 2", Type.COMPUTER));
+		return createGame(players, 8, 8);
 	}
 
 	@Override
 	public Othello createHumanGameOnOriginalBoard() {
-		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
-		Player player2 = new PlayerImpl("2", "Human 2", Type.HUMAN);
-		return createGame(player1, player2, 8, 8);
+		List<Player> players = new ArrayList<Player>();
+		players.add(new PlayerImpl("1", "Human 1", Type.HUMAN));
+		players.add(new PlayerImpl("2", "Human 2", Type.HUMAN));
+		return createGame(players, 8, 8);
 	}
 
 	@Override
 	public Othello createHumanVersusComputerGameOnOriginalBoard() {
-		Player player1 = new PlayerImpl("1", "Human 1", Type.HUMAN);
-		Player player2 = new PlayerImpl("2", "Computer 1", Type.COMPUTER);
-		return createGame(player1, player2, 8, 8);
+		List<Player> players = new ArrayList<Player>();
+		players.add(new PlayerImpl("1", "Computer 1", Type.COMPUTER));
+		players.add(new PlayerImpl("2", "Human 1", Type.HUMAN));
+		return createGame(players, 8, 8);
 	}
 
 	/**
@@ -47,10 +50,10 @@ public class OthelloFactoryImpl implements OthelloFactory {
 	 *            the height of the othello board (in squares)
 	 * @return a new othello
 	 */
-	private Othello createGame(Player player1, Player player2, int boardWidth, int boardHeight) {
-		Board board = createBoard(player1, player2);
-		occupyInitialNodes(board, player1, player2);
-		Othello game = new OthelloImpl(player1, player2, board);
+	private Othello createGame(List<Player> players, int boardWidth, int boardHeight) {
+		Board board = createBoard();
+		occupyInitialNodes(board, players.get(0), players.get(1));
+		Othello game = new OthelloImpl(players, board);
 		return game;
 	}
 
@@ -59,7 +62,7 @@ public class OthelloFactoryImpl implements OthelloFactory {
 	 * 
 	 * @return a new othello board filled with nodes.
 	 */
-	private Board createBoard(Player player1, Player player2) {
+	private Board createBoard() {
 		List<Node> nodes = new ArrayList<Node>();
 		for (int row = 0; row < 8; row++) {
 			for (int column = 0; column < 8; column++) {
