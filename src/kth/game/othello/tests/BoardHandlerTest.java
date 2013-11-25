@@ -49,28 +49,6 @@ public class BoardHandlerTest {
 		Assert.assertFalse(nodes.get(2).isMarked());
 		Assert.assertNull(nodes.get(2).getOccupantPlayerId());		
 	}
-
-	@Test
-	public void getNodeWithCoordinatesTest() {
-		Board board = Mockito.mock(Board.class);
-		
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(1);
-		Mockito.when(node1.getYCoordinate()).thenReturn(2);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(2);
-		Mockito.when(node2.getYCoordinate()).thenReturn(2);
-
-		Mockito.when(board.getNode(1,2)).thenReturn(node1);
-		Mockito.when(board.getNode(2,2)).thenReturn(node2);
-		
-		BoardHandler boardHandler = new BoardHandler(board);
-		
-		Assert.assertNotNull(boardHandler.getNode(1, 2));
-		Assert.assertNotNull(boardHandler.getNode(2, 2));
-		Assert.assertNull(boardHandler.getNode(3, 2));
-	}
 	
 	@Test
 	public void getNodeWithIdTest() {
