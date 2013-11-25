@@ -1,14 +1,20 @@
 package kth.game.othello.tests;
 
-import java.util.List;
-
 import junit.framework.Assert;
 import kth.game.othello.Othello;
+import kth.game.othello.OthelloCreator;
+import kth.game.othello.OthelloCreatorImpl;
 import kth.game.othello.OthelloFactory;
-import kth.game.othello.OthelloFactoryImpl;
+import kth.game.othello.board.BoardCreator;
+import kth.game.othello.board.BoardCreatorImpl;
 import kth.game.othello.board.Node;
+import kth.game.othello.board.NodeCreator;
+import kth.game.othello.board.NodeCreatorImpl;
+import kth.game.othello.board.factory.BoardFactory;
 import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
+import kth.game.othello.player.PlayerCreator;
+import kth.game.othello.player.PlayerCreatorImpl;
 
 import org.junit.Test;
 
@@ -24,8 +30,13 @@ public class OthelloLab1IT {
 		return occupiedNodesCounter;
 	}
 
-	private OthelloFactoryImpl getOthelloFactory() {
-		return new OthelloFactoryImpl();
+	private OthelloFactory getOthelloFactory() {
+		OthelloCreator othelloCreator = new OthelloCreatorImpl();
+		NodeCreator nodeCreator = new NodeCreatorImpl();
+		BoardCreator boardCreator = new BoardCreatorImpl();
+		BoardFactory boardFactory = new BoardFactory(nodeCreator, boardCreator);
+		PlayerCreator playerCreator = new PlayerCreatorImpl();
+		return new OthelloFactory(othelloCreator, boardFactory, playerCreator);
 	}
 
 	private void makeAHumanMove(Othello othello, Player human) {
@@ -59,7 +70,7 @@ public class OthelloLab1IT {
 		Assert.assertEquals(human.getId(), othello.getPlayerInTurn().getId());
 		Assert.assertTrue(othello.hasValidMove(human.getId()));
 		makeAHumanMove(othello, human);
-		Assert.assertEquals(7, getNumberOfOccupiedNodes(othello)); //fail
+		Assert.assertEquals(7, getNumberOfOccupiedNodes(othello)); // fail
 		othello.move();
 		Assert.assertEquals(8, getNumberOfOccupiedNodes(othello));
 		makeAHumanMove(othello, human);
