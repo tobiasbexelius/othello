@@ -51,16 +51,8 @@ public class BoardHandler {
 		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), 
 				occupantPlayerId));
 		return true;
-	}/**
-	 * Retrieves a node from the board.
-	 * 
-	 * @param x
-	 *            the x-coordinate of the node
-	 * @param y
-	 *            the y-coordinate of the node
-	 * @return a node with the specified coordinates. Null if the coordinates
-	 *         are outside of the board
-	 */
+	}
+	
 	public Node getNode(int x, int y) {
 		return board.getNode(x, y);
 	}
