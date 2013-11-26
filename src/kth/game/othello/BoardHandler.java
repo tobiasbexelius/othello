@@ -40,12 +40,10 @@ public class BoardHandler {
 	 * 
 	 * @param node the node to be occupied
 	 * @param occupantPlayerId the player who will occupy the node
-	 * @return true if the node was on the board, false otherwise
 	 */
-	private boolean occupyNode(Node node, String occupantPlayerId) {
+	private void occupyNode(Node node, String occupantPlayerId) {
 		NodeImpl nodeImpl = (NodeImpl)  node;
 		nodeImpl.updateOccupantPlayer(occupantPlayerId);
-		return true;
 	}
 	
 	public Node getNode(int x, int y) {
