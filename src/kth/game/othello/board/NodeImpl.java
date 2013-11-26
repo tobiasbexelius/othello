@@ -82,6 +82,6 @@ public class NodeImpl extends Observable implements Node {
 	
 	@Override
 	public String toString() {
-		return "[X: " + x + ", Y: " + y + "]";
+		return "[X: " + x + ", Y: " + y + ", Occupant: "+ occupantPlayerId + "]";
 	}
 }

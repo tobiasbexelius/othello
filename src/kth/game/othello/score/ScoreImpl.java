@@ -21,7 +21,14 @@ public class ScoreImpl extends Observable implements Score, Observer{
 		}
 	}
 	
-	public void listenToNodes(Board board) {
+	/**
+	 * Takes a board and starts observing all nodes on the board. If the board
+	 * has nodes already occupied, the occupying player will be awarded with this
+	 * score (one for each occupied node).
+	 * 
+	 * @param board The board with nodes which will be observed.
+	 */
+	public void observeNodesOnBoard(Board board) {
 		for(Node node : board.getNodes()) {
 			if(node.isMarked()) {
 				incrementScore(node.getOccupantPlayerId());
@@ -56,10 +63,20 @@ public class ScoreImpl extends Observable implements Score, Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		System.out.println("Updated Board!");
 		Node node = (Node) o;
 		String oldOccupant = (String) arg;
 		String newOccupant = node.getOccupantPlayerId();
+		updateNodeOccupantScores(oldOccupant, newOccupant);
+		
+	}
+	
+	/**
+	 * Updates the scores for two node occupants. It notifies all observers of the change.
+	 * 
+	 * @param oldOccupant The old occupant of the node. Decrease this score.
+	 * @param newOccupant The new occupant of the node. Increase this score
+	 */
+	private void updateNodeOccupantScores(String oldOccupant, String newOccupant) {
 		for(ScoreItem item : playersScores) {
 			if(item.getPlayerId().equals(oldOccupant)) {
 				item.decrementScore();
@@ -68,6 +85,8 @@ public class ScoreImpl extends Observable implements Score, Observer{
 				item.incrementScore();
 			}
 		}
+		setChanged();
+		notifyObservers();
 	}
 
 }

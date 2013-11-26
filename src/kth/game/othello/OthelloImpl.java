@@ -25,7 +25,7 @@ public class OthelloImpl implements Othello {
 		moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
 		random = new Random();
 		score = new ScoreImpl(players);
-		score.listenToNodes(board);
+		score.observeNodesOnBoard(board);
 	}
 	
 	@Override
