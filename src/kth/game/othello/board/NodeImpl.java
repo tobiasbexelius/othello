@@ -74,6 +74,7 @@ public class NodeImpl extends Observable implements Node {
 	}
 
 	public void updateOccupantPlayer(String playerId) {
+		System.out.println("updated!");
 		String oldOccupant = occupantPlayerId;
 		occupantPlayerId = playerId;
 		notifyObservers(oldOccupant);

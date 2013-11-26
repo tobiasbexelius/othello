@@ -43,7 +43,8 @@ public class BoardHandler {
 	 * @return true if the node was on the board, false otherwise
 	 */
 	private boolean occupyNode(Node node, String occupantPlayerId) {
-		node.updateOccupantPlayer(occupantPlayerId);
+		NodeImpl nodeImpl = (NodeImpl)  node;
+		nodeImpl.updateOccupantPlayer(occupantPlayerId);
 		return true;
 	}
 	
