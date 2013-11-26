@@ -6,7 +6,6 @@ import java.util.List;
 
 import kth.game.othello.BoardHandler;
 import kth.game.othello.MoveHandler;
-import kth.game.othello.PlayerHandler;
 import kth.game.othello.RuleHandler;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
@@ -21,19 +20,18 @@ public class MoveHandlerTest {
 	public void testComputerMoveWithHumanType() {
 		BoardHandler boardHandler = Mockito.mock(BoardHandler.class);
 		RuleHandler ruleHandler = Mockito.mock(RuleHandler.class);
-		PlayerHandler playerHandler = Mockito.mock(PlayerHandler.class);
 		Player player = Mockito.mock(Player.class);
 
-		Mockito.when(playerHandler.getPlayerInTurn()).thenReturn(player);
+		Mockito.when(ruleHandler.getPlayerInTurn()).thenReturn(player);
 		Mockito.when(player.getType()).thenReturn(Type.HUMAN);
 
-		MoveHandler moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
 
 		boolean illegalArgumentHappend = false;
 		try {
 			moveHandler.move();
 
-		} catch (IllegalArgumentException e) {
+		} catch (IllegalStateException e) {
 			illegalArgumentHappend = true;
 		}
 		assertTrue(illegalArgumentHappend);
@@ -43,14 +41,13 @@ public class MoveHandlerTest {
 	public void testComputerMoveWithoutValidMove() {
 		BoardHandler boardHandler = Mockito.mock(BoardHandler.class);
 		RuleHandler ruleHandler = Mockito.mock(RuleHandler.class);
-		PlayerHandler playerHandler = Mockito.mock(PlayerHandler.class);
 		Player player = Mockito.mock(Player.class);
 
-		Mockito.when(playerHandler.getPlayerInTurn()).thenReturn(player);
+		Mockito.when(ruleHandler.getPlayerInTurn()).thenReturn(player);
 		Mockito.when(player.getType()).thenReturn(Type.COMPUTER);
 		Mockito.when(ruleHandler.hasValidMove(Mockito.anyString())).thenReturn(false);
 
-		MoveHandler moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
 		List<Node> nodes = moveHandler.move();
 
 		assertTrue(nodes.isEmpty());
