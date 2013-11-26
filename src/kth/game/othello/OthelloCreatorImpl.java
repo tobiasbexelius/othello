@@ -10,7 +10,6 @@ public class OthelloCreatorImpl implements OthelloCreator {
 	@Override
 	public Othello createOthello(Board board, List<Player> players) {
 		OthelloImpl othello = new OthelloImpl(players, board);
-		othello.listenToNodes();
 		return othello;
 	}
 

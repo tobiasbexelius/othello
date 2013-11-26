@@ -24,17 +24,8 @@ public class OthelloImpl implements Othello {
 		ruleHandler = new RuleHandler(boardHandler, playerHandler);
 		moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
 		random = new Random();
-		score = new ScoreImpl();
-	}
-	
-	public void listenToNodes() {
-		score.generateScoreItems(playerHandler.getPlayers());
-		for(Node node : boardHandler.getNodes()) {
-			if(node.isMarked()) {
-				score.incrementScore(node.getOccupantPlayerId());
-			}
-			node.addObserver(score);
-		}
+		score = new ScoreImpl(players);
+		score.listenToNodes(board);
 	}
 	
 	@Override

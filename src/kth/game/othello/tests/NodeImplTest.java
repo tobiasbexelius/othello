@@ -32,11 +32,10 @@ public class NodeImplTest {
 	@Test
 	public void notifyObserversTest() {
 		NodeImpl node = new NodeImpl(1,1,null);
-		ScoreImpl score = new ScoreImpl();
-		node.addObserver(score);
 		List<Player> players = new ArrayList<Player>();
 		players.add(new PlayerImpl("player1", "player1", Player.Type.HUMAN));
-		score.generateScoreItems(players);
+		ScoreImpl score = new ScoreImpl(players);
+		node.addObserver(score);
 		assertEquals(0, score.getPoints("player1"));
 		node.updateOccupantPlayer("player1");
 		assertEquals(1, score.getPoints("player1"));
