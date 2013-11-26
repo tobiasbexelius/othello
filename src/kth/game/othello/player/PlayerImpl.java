@@ -1,5 +1,6 @@
 package kth.game.othello.player;
 
+import kth.game.othello.player.movestrategy.GreedyMoveStrategy;
 import kth.game.othello.player.movestrategy.MoveStrategy;
 
 public class PlayerImpl implements Player {
@@ -12,6 +13,7 @@ public class PlayerImpl implements Player {
 		this.id = id;
 		this.name = name;
 		this.type = type;
+		strategy = new GreedyMoveStrategy();
 	}
 	
 	public PlayerImpl(String id, String name, Type type, MoveStrategy strategy) {

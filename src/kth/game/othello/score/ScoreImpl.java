@@ -7,6 +7,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import kth.game.othello.board.Node;
+import kth.game.othello.player.Player;
 
 public class ScoreImpl extends Observable implements Score, Observer{
 
@@ -14,6 +15,12 @@ public class ScoreImpl extends Observable implements Score, Observer{
 	
 	public ScoreImpl() {
 		playersScores = new ArrayList<ScoreItem>();
+	}
+	
+	public void generateScoreItems(List<Player> players) {
+		for(Player player : players) {
+			playersScores.add(new ScoreItem(player.getId(), 0));
+		}
 	}
 	
 	@Override
@@ -31,9 +38,18 @@ public class ScoreImpl extends Observable implements Score, Observer{
 		}
 		return -1;
 	}
+	
+	public void incrementScore(String playerId) {
+		for(ScoreItem item : playersScores) {
+			if(item.getPlayerId().equals(playerId)) {
+				item.incrementScore();
+			}
+		}
+	}
 
 	@Override
 	public void update(Observable o, Object arg) {
+		System.out.println("Updated Board!");
 		Node node = (Node) o;
 		String oldOccupant = (String) arg;
 		String newOccupant = node.getOccupantPlayerId();

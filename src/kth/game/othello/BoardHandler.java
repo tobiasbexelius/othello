@@ -43,13 +43,7 @@ public class BoardHandler {
 	 * @return true if the node was on the board, false otherwise
 	 */
 	private boolean occupyNode(Node node, String occupantPlayerId) {
-		int nodeIndex = board.getNodes().indexOf(node);
-		if (nodeIndex == -1) {
-			return false;
-		}
-		board.getNodes().remove(node);
-		board.getNodes().add(nodeIndex, new NodeImpl(node.getXCoordinate(), node.getYCoordinate(), 
-				occupantPlayerId));
+		node.updateOccupantPlayer(occupantPlayerId);
 		return true;
 	}
 	

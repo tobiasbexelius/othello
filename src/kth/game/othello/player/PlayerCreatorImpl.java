@@ -11,7 +11,7 @@ public class PlayerCreatorImpl implements PlayerCreator {
 
 	@Override
 	public Player createComputerPlayer(String name, MoveStrategy moveStrategy) {
-		return new PlayerImpl(name, name, Player.Type.COMPUTER);
+		return new PlayerImpl(name, name, Player.Type.COMPUTER, moveStrategy);
 	}
 
 	@Override

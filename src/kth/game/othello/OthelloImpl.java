@@ -7,6 +7,7 @@ import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 import kth.game.othello.score.Score;
+import kth.game.othello.score.ScoreImpl;
 
 public class OthelloImpl implements Othello {
 
@@ -15,6 +16,7 @@ public class OthelloImpl implements Othello {
 	private PlayerHandler playerHandler;
 	private RuleHandler ruleHandler;
 	private MoveHandler moveHandler;
+	private ScoreImpl score;
 
 	public OthelloImpl(List<Player> players, Board board) { //TODO ändra så att den tar in en lista till sprint 2
 		boardHandler = new BoardHandler(board);
@@ -22,8 +24,19 @@ public class OthelloImpl implements Othello {
 		ruleHandler = new RuleHandler(boardHandler, playerHandler);
 		moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
 		random = new Random();
+		score = new ScoreImpl();
 	}
-
+	
+	public void listenToNodes() {
+		score.generateScoreItems(playerHandler.getPlayers());
+		for(Node node : boardHandler.getNodes()) {
+			if(node.isMarked()) {
+				score.incrementScore(node.getOccupantPlayerId());
+			}
+			node.addObserver(score);
+		}
+	}
+	
 	@Override
 	public Board getBoard() {
 		return boardHandler.getBoard();
@@ -82,8 +95,7 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public Score getScore() {
-		// TODO Auto-generated method stub
-		return null;
+		return score;
 	}
 	
 }
