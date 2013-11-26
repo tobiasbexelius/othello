@@ -10,6 +10,7 @@ import kth.game.othello.RuleHandler;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
+import kth.game.othello.player.movestrategy.RandomMoveStrategy;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -54,32 +55,32 @@ public class MoveHandlerTest {
 
 	}
 
-	// @Test
-	// public void testComputerMoveWithValidMove() {
-	// BoardHandler boardHandler = Mockito.mock(BoardHandler.class);
-	// RuleHandler ruleHandler = Mockito.mock(RuleHandler.class);
-	// PlayerHandler playerHandler = Mockito.mock(PlayerHandler.class);
-	// Player player = Mockito.mock(Player.class);
-	// Node node1 = Mockito.mock(Node.class);
-	//
-	// MoveHandler moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
-	// MoveHandler moveHandlerSpy = Mockito.spy(moveHandler);
-	//
-	// Mockito.when(playerHandler.getPlayerInTurn()).thenReturn(player);
-	// Mockito.when(player.getType()).thenReturn(Type.COMPUTER);
-	// Mockito.when(ruleHandler.hasValidMove(Mockito.anyString())).thenReturn(true);
-	// List<Node> mockedNodes = Mockito.mock(ArrayList.class);
-	// mockedNodes.add(node1);
-	//
-	// Mockito.doReturn(mockedNodes).when(moveHandlerSpy).findPossibleMoves(Mockito.anyString());
-	// Mockito.when(mockedNodes.size()).thenReturn(1);
-	// Mockito.when(mockedNodes.get(Mockito.anyInt())).thenReturn(node1);
-	// Mockito.when(ruleHandler.getNodesToSwap(Mockito.anyString(), Mockito.anyString())).thenReturn(mockedNodes);
-	// Mockito.when(boardHandler.swapNodes(Mockito.anyList(), Mockito.anyString())).thenReturn(mockedNodes);
-	// // Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);
-	// List<Node> nodes = moveHandlerSpy.move();
-	//
-	// assertEquals(1, nodes.size());
-	// assertEquals(mockedNodes, nodes);
-	// }
+	@Test
+	public void testComputerMoveWithValidMove() {
+		BoardHandler boardHandler = Mockito.mock(BoardHandler.class);
+		RuleHandler ruleHandler = Mockito.mock(RuleHandler.class);
+		Player player = Mockito.mock(Player.class);
+		Node node = Mockito.mock(Node.class);
+		RandomMoveStrategy randomMoveStrategy = Mockito.mock(RandomMoveStrategy.class);
+
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
+		// Mockito.when(methodCall)
+
+		// Mockito.when(randomMoveStrategy.move(player.getId(), ruleHandler, boardHandler)).thenReturn();
+		Mockito.when(player.getType()).thenReturn(Type.COMPUTER);
+		Mockito.when(player.getMoveStrategy()).thenReturn(randomMoveStrategy);
+
+		// Mockito.when(ruleHandler.hasValidMove(Mockito.anyString())).thenReturn(true);
+		// List<Node> mockedNodes = Mockito.mock(ArrayList.class);
+		// mockedNodes.add(node);
+		//
+		// Mockito.when(mockedNodes.size()).thenReturn(1);
+		// Mockito.when(mockedNodes.get(Mockito.anyInt())).thenReturn(node);
+		// Mockito.when(ruleHandler.getNodesToSwap(Mockito.anyString(), Mockito.anyString())).thenReturn(mockedNodes);
+		// Mockito.when(boardHandler.swapNodes(Mockito.anyList(), Mockito.anyString())).thenReturn(mockedNodes);
+		// List<Node> nodes = moveHandler.move();
+		//
+		// Assert.assertEquals(1, nodes.size());
+		// Assert.assertEquals(mockedNodes, nodes);
+	}
 }
