@@ -18,16 +18,16 @@ public class OthelloImpl implements Othello {
 	private MoveHandler moveHandler;
 	private ScoreImpl score;
 
-	public OthelloImpl(List<Player> players, Board board) { //TODO ändra så att den tar in en lista till sprint 2
+	public OthelloImpl(List<Player> players, Board board) { // TODO ändra så att den tar in en lista till sprint 2
 		boardHandler = new BoardHandler(board);
-		playerHandler = new PlayerHandler(players); 
+		playerHandler = new PlayerHandler(players);
 		ruleHandler = new RuleHandler(boardHandler, playerHandler);
-		moveHandler = new MoveHandler(boardHandler, playerHandler, ruleHandler);
+		moveHandler = new MoveHandler(boardHandler, ruleHandler);
 		random = new Random();
 		score = new ScoreImpl(players);
 		score.observeNodesOnBoard(board);
 	}
-	
+
 	@Override
 	public Board getBoard() {
 		return boardHandler.getBoard();
@@ -65,12 +65,16 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public List<Node> move() throws IllegalArgumentException {
-		return moveHandler.move();
+		List<Node> swappedNodes = moveHandler.move();
+		ruleHandler.swapPlayerInTurn();
+		return swappedNodes;
 	}
 
 	@Override
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
-		return moveHandler.move(playerId, nodeId);
+		List<Node> swappedNodes = moveHandler.move(playerId, nodeId);
+		ruleHandler.swapPlayerInTurn();
+		return swappedNodes;
 	}
 
 	@Override
@@ -88,5 +92,5 @@ public class OthelloImpl implements Othello {
 	public Score getScore() {
 		return score;
 	}
-	
+
 }

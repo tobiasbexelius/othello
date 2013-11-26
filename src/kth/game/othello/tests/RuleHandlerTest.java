@@ -16,7 +16,9 @@ import kth.game.othello.RuleHandler;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 
+import org.junit.Assert;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 public class RuleHandlerTest {
 
@@ -184,4 +186,36 @@ public class RuleHandlerTest {
 		assertEquals(1, rh.getNodesToSwap("player1", moveTo.getId()).size());
 	}
 
+	@Test
+	public void swapPlayerInTurnTest() {
+		Player player1 = Mockito.mock(Player.class);
+		Mockito.when(player1.getId()).thenReturn("player1");
+		Player player2 = Mockito.mock(Player.class);
+		Mockito.when(player2.getId()).thenReturn("player2");
+		Player player3 = Mockito.mock(Player.class);
+		Mockito.when(player3.getId()).thenReturn("player3");
+		Player player4 = Mockito.mock(Player.class);
+		Mockito.when(player4.getId()).thenReturn("player4");
+
+		List<Player> players = new ArrayList<Player>();
+		players.add(player1);
+		players.add(player2);
+		players.add(player3);
+		players.add(player4);
+
+		PlayerHandler playerHandler = new PlayerHandler(players);
+		RuleHandler ruleHandler = new RuleHandler(mock(BoardHandler.class), playerHandler);
+
+		playerHandler.setPlayerInTurn(player1);
+		Assert.assertTrue(ruleHandler.getPlayerInTurn().getId().equals(player1.getId()));
+		Assert.assertFalse(ruleHandler.getPlayerInTurn().getId().equals(player2.getId()));
+		ruleHandler.swapPlayerInTurn();
+		Assert.assertTrue(ruleHandler.getPlayerInTurn().getId().equals(player2.getId()));
+		ruleHandler.swapPlayerInTurn();
+		Assert.assertTrue(ruleHandler.getPlayerInTurn().getId().equals(player3.getId()));
+		ruleHandler.swapPlayerInTurn();
+		Assert.assertTrue(ruleHandler.getPlayerInTurn().getId().equals(player4.getId()));
+		ruleHandler.swapPlayerInTurn();
+		Assert.assertTrue(ruleHandler.getPlayerInTurn().getId().equals(player1.getId()));
+	}
 }

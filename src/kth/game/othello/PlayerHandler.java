@@ -43,34 +43,4 @@ public class PlayerHandler {
 	public void setPlayerInTurn(Player player) {
 		playerInTurn = player;
 	}
-
-	public Player getPlayer(int playerId) {
-		return getPlayer(Integer.toString(playerId));
-	}
-
-	/**
-	 * Swap the players in turn. If player 1 is in turn, give the turn to player 2 and vice versa.
-	 */
-	public void swapPlayerInTurn() {
-		String currentPlayerId = getPlayerInTurn().getId();
-		if (players.get(0).getId().equals(currentPlayerId)) {
-			playerInTurn = players.get(1);
-		} else {
-			playerInTurn = players.get(0);
-		}
-	}
-
-	/**
-	 * Checks if a certain player is in turn
-	 * 
-	 * @param playerId
-	 *            the id of the player to be checked
-	 * @return true if the player is in turn, false otherwise
-	 */
-	public boolean playerIsInTurn(String playerId) {
-		if (getPlayerInTurn().getId().equals(playerId))
-			return true;
-		else
-			return false;
-	}
 }

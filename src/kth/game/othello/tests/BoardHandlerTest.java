@@ -12,11 +12,11 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 public class BoardHandlerTest {
-	
+
 	@Test
 	public void getNodeWithIdTest() {
 		Board board = Mockito.mock(Board.class);
-		
+
 		Node node1 = Mockito.mock(Node.class);
 		Mockito.when(node1.getId()).thenReturn("1");
 
@@ -27,9 +27,9 @@ public class BoardHandlerTest {
 		nodes.add(node1);
 		nodes.add(node2);
 		Mockito.when(board.getNodes()).thenReturn(nodes);
-		
+
 		BoardHandler boardHandler = new BoardHandler(board);
-		
+
 		Assert.assertNotNull(boardHandler.getNode("2"));
 		Assert.assertNotNull(boardHandler.getNode("1"));
 		Assert.assertNull(boardHandler.getNode("3"));

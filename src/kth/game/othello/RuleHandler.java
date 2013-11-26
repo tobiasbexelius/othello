@@ -6,6 +6,10 @@ import java.util.List;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 
+/**
+ * TODO
+ * 
+ */
 public class RuleHandler implements Rules {
 
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
@@ -125,4 +129,26 @@ public class RuleHandler implements Rules {
 		}
 		return swappedNodes;
 	}
+
+	/**
+	 * Swap the players in turn. Turns rotate Round Robin-style.
+	 */
+	public void swapPlayerInTurn() {
+		Player currentPlayer = playerHandler.getPlayerInTurn();
+		List<Player> players = playerHandler.getPlayers();
+		for (int i = 0; i < players.size(); i++) {
+			if (currentPlayer.equals(players.get(i))) {
+				if (i == players.size() - 1)
+					playerHandler.setPlayerInTurn(players.get(0));
+				else
+					playerHandler.setPlayerInTurn(players.get(i + 1));
+				break;
+			}
+		}
+	}
+
+	public Player getPlayerInTurn() {
+		return playerHandler.getPlayerInTurn();
+	}
+
 }

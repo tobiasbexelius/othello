@@ -26,47 +26,4 @@ public class PlayerHandlerTest {
 		Assert.assertNotNull(playerHandler.getPlayer("player2"));
 		Assert.assertNull(playerHandler.getPlayer("player3"));
 	}
-	
-	@Test
-	public void swapPlayerInTurnTest() {
-		Player player1 = Mockito.mock(Player.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(Player.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		
-		List<Player> players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
-		
-		PlayerHandler playerHandler = new PlayerHandler(players);
-		
-		playerHandler.setPlayerInTurn(player1);
-		Assert.assertTrue(playerHandler.playerIsInTurn(player1.getId()));
-		Assert.assertFalse(playerHandler.playerIsInTurn(player2.getId()));
-		
-		playerHandler.swapPlayerInTurn();
-		Assert.assertTrue(playerHandler.playerIsInTurn(player2.getId()));
-		playerHandler.swapPlayerInTurn();
-		Assert.assertTrue(playerHandler.playerIsInTurn(player1.getId()));
-	}
-	
-	@Test
-	public void playerIsInTurnTest() {
-		Player player1 = Mockito.mock(Player.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(Player.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		List<Player> players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
-		
-		PlayerHandler playerHandler = new PlayerHandler(players);
-		
-		playerHandler.setPlayerInTurn(player1);
-		Assert.assertTrue(playerHandler.playerIsInTurn(player1.getId()));
-		playerHandler.setPlayerInTurn(player2);
-		Assert.assertTrue(playerHandler.playerIsInTurn(player2.getId()));
-		Assert.assertFalse(playerHandler.playerIsInTurn(player1.getId()));
-	}
-
 }
