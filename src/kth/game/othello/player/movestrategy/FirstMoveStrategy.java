@@ -19,6 +19,8 @@ public class FirstMoveStrategy implements MoveStrategy {
 	@Override
 	public Node move(String playerId, Rules rules, Board board) {
 		List<Node> possibleMoves = findPossibleMoves(playerId, rules, board);
+		if(possibleMoves.size() == 0)
+			return null;
 		return possibleMoves.get(0);
 	}
 
