@@ -20,6 +20,8 @@ public class RandomMoveStrategy implements MoveStrategy {
 	@Override
 	public Node move(String playerId, Rules rules, Board board) {
 		List<Node> possibleMoves = findPossibleMoves(playerId, rules, board);
+		if(possibleMoves.size() == 0)
+			return null;
 		int index = new Random().nextInt(possibleMoves.size());
 		return possibleMoves.get(index);
 	}
