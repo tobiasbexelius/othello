@@ -7,7 +7,7 @@ import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
 
 /**
- * TODO
+ * The responsibility of this class is to handle the rules of an othello game.
  * 
  */
 public class RuleHandler implements Rules {
@@ -150,5 +150,4 @@ public class RuleHandler implements Rules {
 	public Player getPlayerInTurn() {
 		return playerHandler.getPlayerInTurn();
 	}
-
 }

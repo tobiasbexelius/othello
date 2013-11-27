@@ -9,7 +9,7 @@ import kth.game.othello.player.movestrategy.MoveStrategy;
 
 /**
  * 
- * This class handles player moves on a board using the rules
+ * The responsibility of this class is to handle logic for moving a player.
  * 
  */
 public class MoveHandler {
