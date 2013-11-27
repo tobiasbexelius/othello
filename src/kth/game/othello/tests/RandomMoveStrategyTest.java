@@ -1,5 +1,10 @@
 package kth.game.othello.tests;
 
+import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import kth.game.othello.Rules;
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
@@ -12,41 +17,58 @@ import org.mockito.Mockito;
 public class RandomMoveStrategyTest {
 
 	@Test
-	public void test() {
+	public void makeValidMove() {
 		Rules ruleHandler = Mockito.mock(Rules.class);
 		Board board = Mockito.mock(Board.class);
+	
+		Node node1 = newMockedNode(5,2,null);
+		Node node2 = newMockedNode(4,2,null);
 		
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(3);
-		Mockito.when(node1.getYCoordinate()).thenReturn(3);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player1");
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(4);
-		Mockito.when(node2.getYCoordinate()).thenReturn(3);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player1");
-		Node node3 = Mockito.mock(Node.class);
-		Mockito.when(node3.getXCoordinate()).thenReturn(5);
-		Mockito.when(node3.getYCoordinate()).thenReturn(3);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player1");
-		Node node4 = Mockito.mock(Node.class);
-		Mockito.when(node4.getXCoordinate()).thenReturn(3);
-		Mockito.when(node4.getYCoordinate()).thenReturn(4);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player2");
-		Node node5 = Mockito.mock(Node.class);
-		Mockito.when(node5.getXCoordinate()).thenReturn(4);
-		Mockito.when(node5.getYCoordinate()).thenReturn(4);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player2");
-		Node node6 = Mockito.mock(Node.class);
-		Mockito.when(node6.getXCoordinate()).thenReturn(5);
-		Mockito.when(node6.getYCoordinate()).thenReturn(4);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player2");
-		Node node7 = Mockito.mock(Node.class);
-		Mockito.when(node7.getXCoordinate()).thenReturn(3);
-		Mockito.when(node7.getYCoordinate()).thenReturn(3);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn(null);
+		List<Node> nodes = new ArrayList<Node>();
+	
+		nodes.add(node1);
+		nodes.add(node2);
+		
+		Mockito.when(board.getNodes()).thenReturn(nodes);
+		Mockito.when(ruleHandler.isMoveValid(Mockito.anyString(), Mockito.anyString())).thenReturn(true);
 
-		//TODO SHIT 
 		MoveStrategy moveStrategy = new RandomMoveStrategy();
+		assertNotNull(moveStrategy.move("player2", ruleHandler, board));
+		assertNotNull(moveStrategy.move("player2", ruleHandler, board));
+	}
+	
+	@Test
+	public void tryToMoveWhenNoValidMoveExists() {
+		Rules ruleHandler = Mockito.mock(Rules.class);
+		Board board = Mockito.mock(Board.class);
+	
+		Node node1 = newMockedNode(5,2,null);
+		Node node2 = newMockedNode(4,2,null);
+		
+		List<Node> nodes = new ArrayList<Node>();
+		
+		nodes.add(node1);
+		nodes.add(node2);
+		
+		Mockito.when(board.getNodes()).thenReturn(nodes);
+		Mockito.when(ruleHandler.isMoveValid(Mockito.anyString(), Mockito.anyString())).thenReturn(false);
+
+		MoveStrategy moveStrategy = new RandomMoveStrategy();
+		assertNull(moveStrategy.move("player1", ruleHandler, board));
+		assertNull(moveStrategy.move("player1", ruleHandler, board));
+	}
+	
+	private Node newMockedNode(int x, int y, String occupantPlayer) {
+		Node node = Mockito.mock(Node.class);
+		Mockito.when(node.getXCoordinate()).thenReturn(x);
+		Mockito.when(node.getYCoordinate()).thenReturn(y);
+		Mockito.when(node.getOccupantPlayerId()).thenReturn(occupantPlayer);
+		if(occupantPlayer == null) {
+			Mockito.when(node.isMarked()).thenReturn(false);
+		} else {
+			Mockito.when(node.isMarked()).thenReturn(true);
+		}
+		return node;
 	}
 
 }
