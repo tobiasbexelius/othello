@@ -12,6 +12,9 @@ import kth.game.othello.board.Node;
 import kth.game.othello.board.NodeImpl;
 import kth.game.othello.player.Player;
 import kth.game.othello.player.PlayerImpl;
+import kth.game.othello.player.movestrategy.GreedyMoveStrategy;
+import kth.game.othello.player.movestrategy.MoveStrategy;
+import kth.game.othello.tests.MockCreator;
 
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -21,12 +24,12 @@ public class ScoreImplTest {
 	@Test
 	public void constructorTest() {
 		List<Player> players = new ArrayList<Player>();
-		Player player1 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		Player player3 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player3.getId()).thenReturn("player3");
+		MoveStrategy strategy = Mockito.mock(GreedyMoveStrategy.class);
+		Player player1 = MockCreator.createMockedComputerPlayer("player1", "player1", strategy);
+
+		Player player2 = MockCreator.createMockedComputerPlayer("player2", "player2", strategy);
+
+		Player player3 = MockCreator.createMockedComputerPlayer("player3", "player3", strategy);
 
 		players.add(player1);
 		players.add(player2);
