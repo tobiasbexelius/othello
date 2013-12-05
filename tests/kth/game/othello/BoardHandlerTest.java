@@ -57,7 +57,7 @@ public class BoardHandlerTest {
 		}
 
 		Castle castle = new Castle(nodeCreator, new BoardCreatorImpl());
-		Board board = castle.getBoard(MockCreator.createMockedPlayers(2));
+		Board board = castle.getBoard(MockCreator.createMockedHumanPlayers(2));
 
 		for (int i = 0; i < board.getNodes().size(); i++) {
 			for (int j = 0; j < board.getNodes().size(); j++) {

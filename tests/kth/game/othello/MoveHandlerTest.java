@@ -13,7 +13,6 @@ import java.util.List;
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
-import kth.game.othello.player.Player.Type;
 import kth.game.othello.player.movestrategy.RandomMoveStrategy;
 import kth.game.othello.tests.MockCreator;
 
@@ -25,21 +24,18 @@ public class MoveHandlerTest {
 	public void computerMoveWithHumanPlayer() {
 		BoardHandler boardHandler = mock(BoardHandler.class);
 		RuleHandler ruleHandler = mock(RuleHandler.class);
-		Player player = mock(Player.class);
-
+		Player player = MockCreator.createMockedHumanPlayer("player1", "player1");
 		when(ruleHandler.getPlayerInTurn()).thenReturn(player);
-		when(player.getType()).thenReturn(Type.HUMAN);
-
 		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
 
-		boolean illegalArgumentHappend = false;
+		boolean illegalStateHappend = false;
 		try {
 			moveHandler.move();
 
 		} catch (IllegalStateException e) {
-			illegalArgumentHappend = true;
+			illegalStateHappend = true;
 		}
-		assertTrue(illegalArgumentHappend);
+		assertTrue(illegalStateHappend);
 	}
 
 	@Test
@@ -55,7 +51,6 @@ public class MoveHandlerTest {
 		List<Node> nodes = moveHandler.move();
 
 		assertTrue(nodes.isEmpty());
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -93,7 +88,69 @@ public class MoveHandlerTest {
 	}
 
 	@Test
-	public void humanMoveWithoutValidMove() {
+	public void humanMoveWithInvalidPlayer() {
+		Player playerInTurn = MockCreator.createMockedHumanPlayer("playerInTurn", "playerInTurn");
+		RuleHandler ruleHandler = mock(RuleHandler.class);
+		BoardHandler boardHandler = mock(BoardHandler.class);
+		when(ruleHandler.getPlayerInTurn()).thenReturn(playerInTurn);
+		when(ruleHandler.isMoveValid(anyString(), anyString())).thenReturn(true);
 
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
+
+		boolean illegalArgumentHappend = false;
+		try {
+			moveHandler.move("otherPlayer", "nullNode");
+		} catch (IllegalArgumentException e) {
+			illegalArgumentHappend = true;
+		}
+		assertTrue(illegalArgumentHappend);
+	}
+
+	@Test
+	public void humanMoveWithInvalidMove() {
+		Player playerInTurn = MockCreator.createMockedHumanPlayer("playerInTurn", "playerInTurn");
+		RuleHandler ruleHandler = mock(RuleHandler.class);
+		when(ruleHandler.getPlayerInTurn()).thenReturn(playerInTurn);
+		BoardHandler boardHandler = mock(BoardHandler.class);
+		when(ruleHandler.isMoveValid(anyString(), anyString())).thenReturn(false);
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
+
+		boolean illegalArgumentHappend = false;
+		try {
+			moveHandler.move("playerInTurn", "nullNode");
+		} catch (IllegalArgumentException e) {
+			illegalArgumentHappend = true;
+		}
+		assertTrue(illegalArgumentHappend);
+	}
+
+	@Test
+	public void humanMoveWithValidMove() {
+		BoardHandler boardHandler = mock(BoardHandler.class);
+		RuleHandler ruleHandler = mock(RuleHandler.class);
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
+		Player player = MockCreator.createMockedHumanPlayer("player1", "player1");
+		Board board = mock(Board.class);
+		Node node1 = MockCreator.createMockedNode(3, 3, "player1");
+		Node node2 = MockCreator.createMockedNode(3, 4, "player2");
+		Node node3 = MockCreator.createMockedNode(4, 3, "player1");
+		Node node4 = MockCreator.createMockedNode(4, 4, "player2");
+		Node toBeOccupied = MockCreator.createMockedNode(3, 5, null);
+		when(boardHandler.getNode(node1.getId())).thenReturn(node1);
+		when(boardHandler.getNode(node2.getId())).thenReturn(node2);
+		when(boardHandler.getNode(node3.getId())).thenReturn(node3);
+		when(boardHandler.getNode(node4.getId())).thenReturn(node4);
+		when(boardHandler.getNode(toBeOccupied.getId())).thenReturn(toBeOccupied);
+
+		List<Node> nodesToSwap = new ArrayList<Node>();
+		nodesToSwap.add(node2);
+		when(ruleHandler.isMoveValid(player.getId(), toBeOccupied.getId())).thenReturn(true);
+		when(ruleHandler.getNodesToSwap(anyString(), anyString())).thenReturn(nodesToSwap);
+		when(ruleHandler.getPlayerInTurn()).thenReturn(player);
+		when(boardHandler.getBoard()).thenReturn(board);
+		when(boardHandler.swapNodes(anyList(), anyString())).thenReturn(nodesToSwap);
+
+		List<Node> swappedNodes = moveHandler.move(player.getId(), toBeOccupied.getId());
+		assertEquals(2, swappedNodes.size());
 	}
 }
