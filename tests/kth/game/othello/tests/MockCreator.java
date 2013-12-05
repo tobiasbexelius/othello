@@ -9,7 +9,9 @@ import java.util.List;
 import kth.game.othello.board.Node;
 import kth.game.othello.board.NodeImpl;
 import kth.game.othello.player.Player;
+import kth.game.othello.player.Player.Type;
 import kth.game.othello.player.PlayerImpl;
+import kth.game.othello.player.movestrategy.MoveStrategy;
 
 public class MockCreator {
 
@@ -39,5 +41,14 @@ public class MockCreator {
 			players.add(new PlayerImpl("player" + i, "player" + i, Player.Type.HUMAN));
 		}
 		return players;
+	}
+
+	public static Player createMockedComputerPlayer(String id, String name, MoveStrategy strategy) {
+		Player player = mock(PlayerImpl.class);
+		when(player.getType()).thenReturn(Type.COMPUTER);
+		when(player.getId()).thenReturn(id);
+		when(player.getName()).thenReturn(name);
+		when(player.getMoveStrategy()).thenReturn(strategy);
+		return player;
 	}
 }
