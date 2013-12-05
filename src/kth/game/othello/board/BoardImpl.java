@@ -24,7 +24,8 @@ public class BoardImpl implements Board {
 	 *            the x-coordinate of the node
 	 * @param y
 	 *            the y-coordinate of the node
-	 * @return a node with the specified coordinates. Null if the coordinates are outside of the board
+	 * @return a node with the specified coordinates. Null if the coordinates
+	 *         are outside of the board
 	 */
 	@Override
 	public Node getNode(int x, int y) {
@@ -34,6 +35,24 @@ public class BoardImpl implements Board {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public int getMaxX() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getMaxY() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean hasNode(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

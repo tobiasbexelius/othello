@@ -6,5 +6,6 @@
 	<classpathentry kind="lib" path="separate-jars/mockito-core-1.9.5.jar"/>
 	<classpathentry kind="lib" path="separate-jars/com.springsource.org.hamcrest.core-1.1.0.jar"/>
 	<classpathentry kind="lib" path="separate-jars/com.springsource.org.objenesis-1.0.0.jar"/>
+	<classpathentry kind="lib" path="OthelloView.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

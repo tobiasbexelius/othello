@@ -1,6 +1,7 @@
 package kth.game.othello;
 
 import java.util.List;
+import java.util.Observer;
 import java.util.Random;
 
 import kth.game.othello.board.Board;
@@ -18,7 +19,7 @@ public class OthelloImpl implements Othello {
 	private MoveHandler moveHandler;
 	private ScoreImpl score;
 
-	public OthelloImpl(List<Player> players, Board board) { // TODO ändra så att den tar in en lista till sprint 2
+	public OthelloImpl(List<Player> players, Board board) {
 		boardHandler = new BoardHandler(board);
 		playerHandler = new PlayerHandler(players);
 		ruleHandler = new RuleHandler(boardHandler, playerHandler);
@@ -91,6 +92,24 @@ public class OthelloImpl implements Othello {
 	@Override
 	public Score getScore() {
 		return score;
+	}
+
+	@Override
+	public void addGameFinishedObserver(Observer observer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addMoveObserver(Observer observer) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
