@@ -35,12 +35,12 @@ public class NodeImpl extends Observable implements Node {
 
 	@Override
 	public boolean isMarked() {
-		if(occupantPlayerId == null) {
+		if (occupantPlayerId == null) {
 			return false;
 		}
 		return true;
 	}
-	
+
 	@Override
 	public int compareTo(Node other) {
 		if (this.y < other.getYCoordinate())
@@ -68,8 +68,13 @@ public class NodeImpl extends Observable implements Node {
 	public boolean equals(Object o) {
 		Node other = (Node) o;
 		if (other.getXCoordinate() == getXCoordinate() && other.getYCoordinate() == getYCoordinate()
-				&& getId().equals(other.getId()))
-			return true;
+				&& getId().equals(other.getId())) {
+			if ((occupantPlayerId == null && other.getOccupantPlayerId() == null)
+					|| (occupantPlayerId != null && occupantPlayerId != null && occupantPlayerId.equals(other
+							.getOccupantPlayerId()))) {
+				return true;
+			}
+		}
 		return false;
 	}
 
@@ -79,9 +84,9 @@ public class NodeImpl extends Observable implements Node {
 		setChanged();
 		notifyObservers(oldOccupant);
 	}
-	
+
 	@Override
 	public String toString() {
-		return "[X: " + x + ", Y: " + y + ", Occupant: "+ occupantPlayerId + "]";
+		return "[X: " + x + ", Y: " + y + ", Occupant: " + occupantPlayerId + "]";
 	}
 }
