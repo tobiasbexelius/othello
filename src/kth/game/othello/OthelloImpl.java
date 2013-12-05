@@ -21,6 +21,7 @@ public class OthelloImpl extends Observable implements Othello {
 	private ObserverHandler observerHandler;
 	private ScoreImpl score;
 	private String id;
+	private boolean hasFinished;
 
 	public OthelloImpl(List<Player> players, Board board) {
 		boardHandler = new BoardHandler(board);
@@ -32,6 +33,7 @@ public class OthelloImpl extends Observable implements Othello {
 		score.observeNodesOnBoard(board);
 		id = players.get(0).getId() + " vs " + players.get(1).getId();
 		observerHandler = new ObserverHandler(this);
+		hasFinished = false;
 	}
 
 	@Override
@@ -61,6 +63,13 @@ public class OthelloImpl extends Observable implements Othello {
 
 	@Override
 	public boolean isActive() {
+		if (!ruleHandler.isActive()) {
+			if (!hasFinished) {
+				hasFinished = true;
+				observerHandler.setChanged("finish");
+				observerHandler.notifyObservers("finish", null);
+			}
+		}
 		return ruleHandler.isActive();
 	}
 
@@ -73,10 +82,8 @@ public class OthelloImpl extends Observable implements Othello {
 	public List<Node> move() throws IllegalArgumentException {
 		List<Node> swappedNodes = moveHandler.move();
 		ruleHandler.swapPlayerInTurn();
+		observerHandler.setChanged("move");
 		observerHandler.notifyObservers("move", swappedNodes);
-		
-		if (!isActive())
-			observerHandler.notifyObservers("finish", null);
 		return swappedNodes;
 	}
 

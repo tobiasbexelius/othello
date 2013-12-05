@@ -22,6 +22,7 @@ public class ObserverHandlerTest {
 		Observer observer2 = mock(Observer.class);
 		handler.addObserver("move", observer);
 		handler.addObserver("move", observer2);
+		handler.setChanged("move");
 		handler.notifyObservers("move", list);
 
 		verify(observer).update(othello, list);
@@ -36,6 +37,7 @@ public class ObserverHandlerTest {
 		Observer observer2 = mock(Observer.class);
 		handler.addObserver("finish", observer2);
 		handler.addObserver("finish", observer);
+		handler.setChanged("finish");
 		handler.notifyObservers("finish", null);
 
 		verify(observer).update(othello, null);
