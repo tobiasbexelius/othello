@@ -10,9 +10,6 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import kth.game.othello.BoardHandler;
-import kth.game.othello.MoveHandler;
-import kth.game.othello.RuleHandler;
 import kth.game.othello.board.Board;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
@@ -21,18 +18,17 @@ import kth.game.othello.player.movestrategy.RandomMoveStrategy;
 import kth.game.othello.tests.MockCreator;
 
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class MoveHandlerTest {
 
 	@Test
-	public void testComputerMoveWithHumanType() {
-		BoardHandler boardHandler = Mockito.mock(BoardHandler.class);
-		RuleHandler ruleHandler = Mockito.mock(RuleHandler.class);
-		Player player = Mockito.mock(Player.class);
+	public void computerMoveWithHumanPlayer() {
+		BoardHandler boardHandler = mock(BoardHandler.class);
+		RuleHandler ruleHandler = mock(RuleHandler.class);
+		Player player = mock(Player.class);
 
-		Mockito.when(ruleHandler.getPlayerInTurn()).thenReturn(player);
-		Mockito.when(player.getType()).thenReturn(Type.HUMAN);
+		when(ruleHandler.getPlayerInTurn()).thenReturn(player);
+		when(player.getType()).thenReturn(Type.HUMAN);
 
 		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
 
@@ -47,7 +43,7 @@ public class MoveHandlerTest {
 	}
 
 	@Test
-	public void testComputerMoveWithoutValidMove() {
+	public void computerMoveWithoutValidMove() {
 		BoardHandler boardHandler = mock(BoardHandler.class);
 		RuleHandler ruleHandler = mock(RuleHandler.class);
 		Player player = mock(Player.class);
@@ -65,8 +61,13 @@ public class MoveHandlerTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testComputerMoveWithValidMove() {
+	public void computerMoveWithValidMove() {
 		BoardHandler boardHandler = mock(BoardHandler.class);
+		RuleHandler ruleHandler = mock(RuleHandler.class);
+		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
+		RandomMoveStrategy randomMoveStrategy = mock(RandomMoveStrategy.class);
+		Player player = MockCreator.createMockedComputerPlayer("player1", "player1", randomMoveStrategy);
+		Board board = mock(Board.class);
 		Node node1 = MockCreator.createMockedNode(3, 3, "player1");
 		Node node2 = MockCreator.createMockedNode(3, 4, "player2");
 		Node node3 = MockCreator.createMockedNode(4, 3, "player1");
@@ -77,22 +78,16 @@ public class MoveHandlerTest {
 		when(boardHandler.getNode(4, 3)).thenReturn(node3);
 		when(boardHandler.getNode(4, 4)).thenReturn(node4);
 		when(boardHandler.getNode(3, 5)).thenReturn(toBeOccupied);
-		Board board = mock(Board.class);
-		when(boardHandler.getBoard()).thenReturn(board);
 
-		RuleHandler ruleHandler = mock(RuleHandler.class);
-		when(ruleHandler.hasValidMove(anyString())).thenReturn(true);
 		List<Node> nodesToSwap = new ArrayList<Node>();
 		nodesToSwap.add(node2);
+		when(ruleHandler.hasValidMove(anyString())).thenReturn(true);
 		when(ruleHandler.getNodesToSwap(anyString(), anyString())).thenReturn(nodesToSwap);
-		when(boardHandler.swapNodes(anyList(), anyString())).thenReturn(nodesToSwap);
-		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
-		RandomMoveStrategy randomMoveStrategy = mock(RandomMoveStrategy.class);
-		Player player = Mockito.mock(Player.class);
-		when(player.getId()).thenReturn(("player1"));
-		when(player.getType()).thenReturn(Type.COMPUTER);
-		when(player.getMoveStrategy()).thenReturn(randomMoveStrategy);
 		when(ruleHandler.getPlayerInTurn()).thenReturn(player);
+
+		when(boardHandler.getBoard()).thenReturn(board);
+		when(boardHandler.swapNodes(anyList(), anyString())).thenReturn(nodesToSwap);
+
 		when(randomMoveStrategy.move("player1", ruleHandler, board)).thenReturn(toBeOccupied);
 		List<Node> swappedNodes = moveHandler.move();
 		assertEquals(2, swappedNodes.size());
