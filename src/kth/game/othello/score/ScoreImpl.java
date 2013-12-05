@@ -66,6 +66,7 @@ public class ScoreImpl extends Observable implements Score, Observer{
 		Node node = (Node) o;
 		String oldOccupant = (String) arg;
 		String newOccupant = node.getOccupantPlayerId();
+		System.out.println(oldOccupant +"<-Old "+ newOccupant+"<-new ");
 		updateNodeOccupantScores(oldOccupant, newOccupant);	
 	}
 	
