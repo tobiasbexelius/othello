@@ -18,10 +18,10 @@ public class Tournament {
 
 	public Tournament() {
 		NodeCreator nc = new NodeCreatorImpl();
-		BoardCreator bc = new BoardCreatorImpl(); 
+		BoardCreator bc = new BoardCreatorImpl();
 		PlayerCreator pc = new PlayerCreatorImpl();
 		BoardFactory bf = new BoardFactory(nc, bc);
-		OthelloCreatorImpl oc  = new OthelloCreatorImpl();
+		OthelloCreatorImpl oc = new OthelloCreatorImpl();
 		OthelloFactory of = new OthelloFactory(oc, bf, pc);
 
 		Othello othello = of.createComputerGameOnClassicalBoard();
@@ -32,12 +32,10 @@ public class Tournament {
 	public static void main(String[] args) {
 		Tournament tornament = new Tournament();
 	}
+	
 	private Player PlayAGame(){
 		
 		return null;
 		
 	}
-	
-
-
 }

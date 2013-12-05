@@ -28,13 +28,19 @@ public class OthelloFactory {
 	public Othello createComputerGameOnClassicalBoard() {
 		List<Player> players = new ArrayList<Player>();
 		players.add(playerCreator.createComputerPlayer("Computer 1"));
+<<<<<<< HEAD
 		players.add(playerCreator.createComputerPlayer("Computer "));
+=======
+		players.add(playerCreator.createComputerPlayer("Computer 2"));
+>>>>>>> 56744c7e82a83a8c8f290f4a701c24c2a6ca0e12
 		return othelloCreator.createOthello(boardFactory.getQuadraticBoard(8, players), players);
 	}
 
 	/**
-	 * @param board the board
-	 * @param players the players of the game
+	 * @param board
+	 *            the board
+	 * @param players
+	 *            the players of the game
 	 * @return An Othello game
 	 */
 	public Othello createGame(Board board, List<Player> players) {
@@ -48,15 +54,16 @@ public class OthelloFactory {
 	 */
 	public Othello createHumanGameOnOriginalBoard() {
 		List<Player> players = new ArrayList<Player>();
-		players.add(playerCreator.createHumanPlayer("HUMAN"));
-		players.add(playerCreator.createHumanPlayer("human"));
+		players.add(playerCreator.createHumanPlayer("Human 1"));
+		players.add(playerCreator.createHumanPlayer("Human 2"));
 		Board board = boardFactory.getQuadraticBoard(8, players);
 		return othelloCreator.createOthello(board, players);
 	}
 
 	/**
-	 * Creates an Othello game on an original board with one computer playing against one human. The computer will be
-	 * the first player in the list of players.
+	 * Creates an Othello game on an original board with one computer playing
+	 * against one human. The computer will be the first player in the list of
+	 * players.
 	 * 
 	 * @return An Othello game
 	 */

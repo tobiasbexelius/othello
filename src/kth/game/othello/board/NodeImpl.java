@@ -15,7 +15,7 @@ public class NodeImpl extends Observable implements Node {
 
 	@Override
 	public String getId() {
-		return Integer.toString(hashCode());
+		return x + ":" + y;
 	}
 
 	@Override
