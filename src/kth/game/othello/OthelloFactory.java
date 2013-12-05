@@ -27,8 +27,8 @@ public class OthelloFactory {
 	 */
 	public Othello createComputerGameOnClassicalBoard() {
 		List<Player> players = new ArrayList<Player>();
-		players.add(playerCreator.createComputerPlayer("Computer"));
-		players.add(playerCreator.createComputerPlayer("computer"));
+		players.add(playerCreator.createComputerPlayer("Computer 1"));
+		players.add(playerCreator.createComputerPlayer("Computer "));
 		return othelloCreator.createOthello(boardFactory.getQuadraticBoard(8, players), players);
 	}
 

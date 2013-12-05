@@ -8,13 +8,14 @@ import kth.game.othello.board.BoardCreatorImpl;
 import kth.game.othello.board.NodeCreator;
 import kth.game.othello.board.NodeCreatorImpl;
 import kth.game.othello.board.factory.BoardFactory;
+import kth.game.othello.player.Player;
 import kth.game.othello.player.PlayerCreator;
 import kth.game.othello.player.PlayerCreatorImpl;
 import kth.game.othello.view.swing.OthelloView;
 import kth.game.othello.view.swing.OthelloViewFactory;
 
 public class Tournament {
-	
+
 	public Tournament() {
 		NodeCreator nc = new NodeCreatorImpl();
 		BoardCreator bc = new BoardCreatorImpl(); 
@@ -22,15 +23,21 @@ public class Tournament {
 		BoardFactory bf = new BoardFactory(nc, bc);
 		OthelloCreatorImpl oc  = new OthelloCreatorImpl();
 		OthelloFactory of = new OthelloFactory(oc, bf, pc);
-		
+
 		Othello othello = of.createComputerGameOnClassicalBoard();
-		OthelloView othelloView = OthelloViewFactory.create(othello, 10, 10);
+		OthelloView othelloView = OthelloViewFactory.create(othello, 100, 100);
 		othello.start();
 		othelloView.start();
-			}
+	}
 	public static void main(String[] args) {
-		Tournament t = new Tournament();
+		Tournament tornament = new Tournament();
+	}
+	private Player PlayAGame(){
+		
+		return null;
+		
 	}
 	
-	
+
+
 }

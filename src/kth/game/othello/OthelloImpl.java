@@ -73,7 +73,9 @@ public class OthelloImpl extends Observable implements Othello {
 	public List<Node> move() throws IllegalArgumentException {
 		List<Node> swappedNodes = moveHandler.move();
 		ruleHandler.swapPlayerInTurn();
+		System.out.println(swappedNodes.get(0) +" " + swappedNodes.get(1));
 		observerHandler.notifyObservers("move", swappedNodes);
+		
 		if (!isActive())
 			observerHandler.notifyObservers("finish", null);
 		return swappedNodes;
