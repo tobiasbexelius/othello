@@ -10,10 +10,9 @@ import static org.mockito.Mockito.when;
 import java.util.ArrayList;
 import java.util.List;
 
-import kth.game.othello.BoardHandler;
-import kth.game.othello.RuleHandler;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
+import kth.game.othello.tests.MockCreator;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -22,13 +21,20 @@ import org.mockito.Mockito;
 public class RuleHandlerTest {
 
 	@Test
-	public void testIsMoveValidFails() {
+	public void isMoveValidFailsWithNullArgument() {
 		BoardHandler bh = mock(BoardHandler.class);
 		PlayerHandler ph = mock(PlayerHandler.class);
 		RuleHandler rh = new RuleHandler(bh, ph);
 
 		when(bh.getNode(anyString())).thenReturn(null);
 		assertFalse(rh.isMoveValid("player1", "node1"));
+	}
+
+	@Test
+	public void testIsMoveValidFailsWithMarkedNodeArgument() {
+		BoardHandler bh = mock(BoardHandler.class);
+		PlayerHandler ph = mock(PlayerHandler.class);
+		RuleHandler rh = new RuleHandler(bh, ph);
 
 		Node node = mock(Node.class);
 		when(node.isMarked()).thenReturn(true);
@@ -37,28 +43,14 @@ public class RuleHandlerTest {
 	}
 
 	@Test
-	public void testIsMoveValid() {
+	public void testIsMoveValidWithValidMove() {
 		BoardHandler bh = mock(BoardHandler.class);
 		PlayerHandler ph = mock(PlayerHandler.class);
 		RuleHandler rh = new RuleHandler(bh, ph);
 
-		Node moveTo = mock(Node.class);
-		when(moveTo.getXCoordinate()).thenReturn(1);
-		when(moveTo.getYCoordinate()).thenReturn(1);
-		when(moveTo.isMarked()).thenReturn(false);
-		when(moveTo.getOccupantPlayerId()).thenReturn(null);
-
-		Node node2 = mock(Node.class);
-		when(node2.getXCoordinate()).thenReturn(1);
-		when(node2.getYCoordinate()).thenReturn(2);
-		when(node2.isMarked()).thenReturn(true);
-		when(node2.getOccupantPlayerId()).thenReturn("player2");
-
-		Node node3 = mock(Node.class);
-		when(node3.getXCoordinate()).thenReturn(1);
-		when(node3.getYCoordinate()).thenReturn(3);
-		when(node3.isMarked()).thenReturn(true);
-		when(node3.getOccupantPlayerId()).thenReturn("player1");
+		Node moveTo = MockCreator.createMockedNode(1, 1);
+		Node node2 = MockCreator.createMockedNode(1, 1, "player2");
+		Node node3 = MockCreator.createMockedNode(1, 3, "player1");
 
 		when(bh.getNode(anyString())).thenReturn(moveTo);
 		when(bh.getNode(1, 2)).thenReturn(node2);
@@ -68,28 +60,37 @@ public class RuleHandlerTest {
 	}
 
 	@Test
-	public void testHasValidMove() {
+	public void hasValidMoveFailsWithInValidMove() {
 		BoardHandler bh = mock(BoardHandler.class);
 		PlayerHandler ph = mock(PlayerHandler.class);
 		RuleHandler rh = new RuleHandler(bh, ph);
 
-		Node moveTo = mock(Node.class);
-		when(moveTo.getXCoordinate()).thenReturn(1);
-		when(moveTo.getYCoordinate()).thenReturn(1);
-		when(moveTo.isMarked()).thenReturn(false);
-		when(moveTo.getOccupantPlayerId()).thenReturn(null);
+		Node moveTo = MockCreator.createMockedNode(1, 1);
+		Node node2 = MockCreator.createMockedNode(1, 1, "player2");
+		Node node3 = MockCreator.createMockedNode(1, 3, "player1");
 
-		Node node2 = mock(Node.class);
-		when(node2.getXCoordinate()).thenReturn(1);
-		when(node2.getYCoordinate()).thenReturn(2);
-		when(node2.isMarked()).thenReturn(true);
-		when(node2.getOccupantPlayerId()).thenReturn("player2");
+		when(bh.getNode(anyString())).thenReturn(moveTo);
+		when(bh.getNode(1, 2)).thenReturn(node2);
+		when(bh.getNode(1, 3)).thenReturn(node3);
 
-		Node node3 = mock(Node.class);
-		when(node3.getXCoordinate()).thenReturn(1);
-		when(node3.getYCoordinate()).thenReturn(3);
-		when(node3.isMarked()).thenReturn(true);
-		when(node3.getOccupantPlayerId()).thenReturn("player1");
+		List<Node> nodeList = new ArrayList<Node>();
+		nodeList.add(moveTo);
+		nodeList.add(node2);
+		nodeList.add(node3);
+
+		when(bh.getNodes()).thenReturn(nodeList);
+		assertFalse(rh.hasValidMove("player2"));
+	}
+
+	@Test
+	public void hasValidMoveWithValidMove() {
+		BoardHandler bh = mock(BoardHandler.class);
+		PlayerHandler ph = mock(PlayerHandler.class);
+		RuleHandler rh = new RuleHandler(bh, ph);
+
+		Node moveTo = MockCreator.createMockedNode(1, 1);
+		Node node2 = MockCreator.createMockedNode(1, 2, "player2");
+		Node node3 = MockCreator.createMockedNode(1, 3, "player1");
 
 		when(bh.getNode(anyString())).thenReturn(moveTo);
 		when(bh.getNode(1, 2)).thenReturn(node2);
@@ -102,7 +103,6 @@ public class RuleHandlerTest {
 
 		when(bh.getNodes()).thenReturn(nodeList);
 		assertTrue(rh.hasValidMove("player1"));
-		assertFalse(rh.hasValidMove("player2"));
 	}
 
 	@Test
@@ -111,23 +111,9 @@ public class RuleHandlerTest {
 		PlayerHandler ph = mock(PlayerHandler.class);
 		RuleHandler rh = new RuleHandler(bh, ph);
 
-		Node moveTo = mock(Node.class);
-		when(moveTo.getXCoordinate()).thenReturn(1);
-		when(moveTo.getYCoordinate()).thenReturn(1);
-		when(moveTo.isMarked()).thenReturn(false);
-		when(moveTo.getOccupantPlayerId()).thenReturn(null);
-
-		Node node2 = mock(Node.class);
-		when(node2.getXCoordinate()).thenReturn(1);
-		when(node2.getYCoordinate()).thenReturn(2);
-		when(node2.isMarked()).thenReturn(true);
-		when(node2.getOccupantPlayerId()).thenReturn("player2");
-
-		Node node3 = mock(Node.class);
-		when(node3.getXCoordinate()).thenReturn(1);
-		when(node3.getYCoordinate()).thenReturn(3);
-		when(node3.isMarked()).thenReturn(true);
-		when(node3.getOccupantPlayerId()).thenReturn("player1");
+		Node moveTo = MockCreator.createMockedNode(1, 1);
+		Node node2 = MockCreator.createMockedNode(1, 2, "player2");
+		Node node3 = MockCreator.createMockedNode(1, 3, "player1");
 
 		when(bh.getNode(anyString())).thenReturn(moveTo);
 		when(bh.getNode(1, 2)).thenReturn(node2);
@@ -160,23 +146,9 @@ public class RuleHandlerTest {
 		when(bh.getNode(anyString())).thenReturn(null);
 		assertEquals(0, rh.getNodesToSwap("player1", "node1").size());
 
-		Node moveTo = mock(Node.class);
-		when(moveTo.getXCoordinate()).thenReturn(1);
-		when(moveTo.getYCoordinate()).thenReturn(1);
-		when(moveTo.isMarked()).thenReturn(false);
-		when(moveTo.getOccupantPlayerId()).thenReturn(null);
-
-		Node node2 = mock(Node.class);
-		when(node2.getXCoordinate()).thenReturn(1);
-		when(node2.getYCoordinate()).thenReturn(2);
-		when(node2.isMarked()).thenReturn(true);
-		when(node2.getOccupantPlayerId()).thenReturn("player2");
-
-		Node node3 = mock(Node.class);
-		when(node3.getXCoordinate()).thenReturn(1);
-		when(node3.getYCoordinate()).thenReturn(3);
-		when(node3.isMarked()).thenReturn(true);
-		when(node3.getOccupantPlayerId()).thenReturn("player1");
+		Node moveTo = MockCreator.createMockedNode(1, 1);
+		Node node2 = MockCreator.createMockedNode(1, 2, "player2");
+		Node node3 = MockCreator.createMockedNode(1, 3, "player1");
 
 		when(bh.getNode(anyString())).thenReturn(moveTo);
 		when(bh.getNode(1, 2)).thenReturn(node2);
