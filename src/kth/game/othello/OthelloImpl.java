@@ -35,8 +35,7 @@ public class OthelloImpl extends Observable implements Othello {
 	}
 
 	/**
-	 * This constructor is only used for testing. Do NOT use this in your
-	 * project.
+	 * This constructor is only used for testing. Do NOT use this in your project.
 	 */
 	private OthelloImpl(List<Player> players, Board board, RuleHandler ruleHandler, MoveHandler moveHandler,
 			BoardHandler boardHandler, PlayerHandler playerHandler) {
@@ -74,11 +73,7 @@ public class OthelloImpl extends Observable implements Othello {
 
 	@Override
 	public boolean isActive() {
-		if (!ruleHandler.isActive()) {
-			observerHandler.notifyGameFinishedObservers();
-			return false;
-		}
-		return true;
+		return ruleHandler.isActive();
 	}
 
 	@Override
@@ -91,6 +86,8 @@ public class OthelloImpl extends Observable implements Othello {
 		List<Node> swappedNodes = moveHandler.move();
 		ruleHandler.swapPlayerInTurn();
 		observerHandler.notifyMoveObservers(swappedNodes);
+		if (!isActive())
+			observerHandler.notifyGameFinishedObservers();
 		return swappedNodes;
 	}
 
