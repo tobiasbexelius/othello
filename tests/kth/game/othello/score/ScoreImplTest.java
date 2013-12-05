@@ -1,6 +1,9 @@
 package kth.game.othello.score;
 
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +27,9 @@ public class ScoreImplTest {
 	@Test
 	public void constructorTest() {
 		List<Player> players = new ArrayList<Player>();
-		MoveStrategy strategy = Mockito.mock(GreedyMoveStrategy.class);
+		MoveStrategy strategy = mock(GreedyMoveStrategy.class);
 		Player player1 = MockCreator.createMockedComputerPlayer("player1", "player1", strategy);
-
 		Player player2 = MockCreator.createMockedComputerPlayer("player2", "player2", strategy);
-
 		Player player3 = MockCreator.createMockedComputerPlayer("player3", "player3", strategy);
 
 		players.add(player1);
@@ -44,19 +45,19 @@ public class ScoreImplTest {
 
 	@Test
 	public void initialScoresAfterObservingBoard() {
-		Board board = Mockito.mock(BoardImpl.class);
+		Board board = mock(BoardImpl.class);
 		List<Node> nodes = new ArrayList<Node>();
-		NodeImpl node1 = Mockito.mock(NodeImpl.class);
-		Mockito.when(node1.isMarked()).thenReturn(true);
-		Mockito.when(node1.getOccupantPlayerId()).thenReturn("player1");
+		Node node1 = mock(NodeImpl.class);
+		when(node1.isMarked()).thenReturn(true);
+		when(node1.getOccupantPlayerId()).thenReturn("player1");
 
-		NodeImpl node2 = Mockito.mock(NodeImpl.class);
-		Mockito.when(node2.isMarked()).thenReturn(true);
-		Mockito.when(node2.getOccupantPlayerId()).thenReturn("player1");
+		Node node2 = mock(NodeImpl.class);
+		when(node2.isMarked()).thenReturn(true);
+		when(node2.getOccupantPlayerId()).thenReturn("player1");
 
-		NodeImpl node3 = Mockito.mock(NodeImpl.class);
-		Mockito.when(node3.isMarked()).thenReturn(true);
-		Mockito.when(node3.getOccupantPlayerId()).thenReturn("player2");
+		Node node3 = mock(NodeImpl.class);
+		when(node3.isMarked()).thenReturn(true);
+		when(node3.getOccupantPlayerId()).thenReturn("player2");
 		nodes.add(node1);
 		nodes.add(node2);
 		nodes.add(node3);
@@ -64,12 +65,9 @@ public class ScoreImplTest {
 		Mockito.when(board.getNodes()).thenReturn(nodes);
 
 		List<Player> players = new ArrayList<Player>();
-		Player player1 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		Player player3 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player3.getId()).thenReturn("player3");
+		Player player1 = MockCreator.createMockedHumanPlayer("player1", "player1");
+		Player player2 = MockCreator.createMockedHumanPlayer("player2", "player2");
+		Player player3 = MockCreator.createMockedHumanPlayer("player3", "player3");
 		players.add(player1);
 		players.add(player2);
 		players.add(player3);
@@ -85,18 +83,15 @@ public class ScoreImplTest {
 	@Test
 	public void getPointsTest() {
 		List<Player> players = new ArrayList<Player>();
-		Player player1 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		Player player3 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player3.getId()).thenReturn("player3");
+		Player player1 = MockCreator.createMockedHumanPlayer("player1", "player1");
+		Player player2 = MockCreator.createMockedHumanPlayer("player2", "player2");
+		Player player3 = MockCreator.createMockedHumanPlayer("player3", "player3");
 		players.add(player1);
 		players.add(player2);
 		players.add(player3);
 
-		NodeImpl node = Mockito.mock(NodeImpl.class);
-		Mockito.when(node.getOccupantPlayerId()).thenReturn("player1");
+		NodeImpl node = mock(NodeImpl.class);
+		when(node.getOccupantPlayerId()).thenReturn("player1");
 
 		ScoreImpl score = new ScoreImpl(players);
 		assertEquals(0, score.getPoints("player1"));
@@ -108,7 +103,7 @@ public class ScoreImplTest {
 		score.update(node, null);
 		assertEquals(2, score.getPoints("player1"));
 
-		Mockito.when(node.getOccupantPlayerId()).thenReturn("player2");
+		when(node.getOccupantPlayerId()).thenReturn("player2");
 		score.update(node, null);
 		score.update(node, null);
 		score.update(node, null);
@@ -121,12 +116,9 @@ public class ScoreImplTest {
 	@Test
 	public void getPlayerScoresWith3Players() {
 		List<Player> players = new ArrayList<Player>();
-		Player player1 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		Player player3 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player3.getId()).thenReturn("player3");
+		Player player1 = MockCreator.createMockedHumanPlayer("player1", "player1");
+		Player player2 = MockCreator.createMockedHumanPlayer("player2", "player2");
+		Player player3 = MockCreator.createMockedHumanPlayer("player3", "player3");
 		players.add(player1);
 		players.add(player2);
 		players.add(player3);
@@ -138,21 +130,18 @@ public class ScoreImplTest {
 	@Test
 	public void getPlayerScoresWith6Players() {
 		List<Player> players = new ArrayList<Player>();
-		Player player1 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
-		Player player3 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player3.getId()).thenReturn("player3");
+		Player player1 = MockCreator.createMockedHumanPlayer("player1", "player1");
+		Player player2 = MockCreator.createMockedHumanPlayer("player2", "player2");
+		Player player3 = MockCreator.createMockedHumanPlayer("player3", "player3");
 		players.add(player1);
 		players.add(player2);
 		players.add(player3);
-		Player player4 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player4");
-		Player player5 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player5");
-		Player player6 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player3.getId()).thenReturn("player6");
+		Player player4 = mock(PlayerImpl.class);
+		when(player1.getId()).thenReturn("player4");
+		Player player5 = mock(PlayerImpl.class);
+		when(player2.getId()).thenReturn("player5");
+		Player player6 = mock(PlayerImpl.class);
+		when(player3.getId()).thenReturn("player6");
 		players.add(player4);
 		players.add(player5);
 		players.add(player6);
@@ -164,17 +153,15 @@ public class ScoreImplTest {
 	@Test
 	public void updateAndNotifyObservers() {
 		List<Player> players = new ArrayList<Player>();
-		Player player1 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player1.getId()).thenReturn("player1");
-		Player player2 = Mockito.mock(PlayerImpl.class);
-		Mockito.when(player2.getId()).thenReturn("player2");
+		Player player1 = MockCreator.createMockedHumanPlayer("player1", "player1");
+		Player player2 = MockCreator.createMockedHumanPlayer("player2", "player2");
 		players.add(player1);
 		players.add(player2);
 
-		Observer observer = Mockito.mock(Observer.class);
+		Observer observer = mock(Observer.class);
 
-		NodeImpl node = Mockito.mock(NodeImpl.class);
-		Mockito.when(node.getOccupantPlayerId()).thenReturn("player1");
+		NodeImpl node = mock(NodeImpl.class);
+		when(node.getOccupantPlayerId()).thenReturn("player1");
 
 		ScoreImpl score = new ScoreImpl(players);
 		assertEquals(0, score.getPoints("player1"));
@@ -183,6 +170,6 @@ public class ScoreImplTest {
 		assertEquals(1, score.getPoints("player1"));
 		List<String> stuff = new ArrayList<String>();
 		stuff.add("player1");
-		Mockito.verify(observer).update(score, stuff);
+		verify(observer).update(score, stuff);
 	}
 }
