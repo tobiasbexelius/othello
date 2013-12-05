@@ -14,23 +14,23 @@ import kth.game.othello.view.swing.OthelloView;
 import kth.game.othello.view.swing.OthelloViewFactory;
 
 public class Tournament {
-	
+
 	public Tournament() {
 		NodeCreator nc = new NodeCreatorImpl();
-		BoardCreator bc = new BoardCreatorImpl(); 
+		BoardCreator bc = new BoardCreatorImpl();
 		PlayerCreator pc = new PlayerCreatorImpl();
 		BoardFactory bf = new BoardFactory(nc, bc);
-		OthelloCreatorImpl oc  = new OthelloCreatorImpl();
+		OthelloCreatorImpl oc = new OthelloCreatorImpl();
 		OthelloFactory of = new OthelloFactory(oc, bf, pc);
-		
+
 		Othello othello = of.createComputerGameOnClassicalBoard();
-		OthelloView othelloView = OthelloViewFactory.create(othello, 10, 10);
+		OthelloView othelloView = OthelloViewFactory.create(othello, 100, 100);
 		othello.start();
 		othelloView.start();
-			}
+	}
+
 	public static void main(String[] args) {
 		Tournament t = new Tournament();
 	}
-	
-	
+
 }

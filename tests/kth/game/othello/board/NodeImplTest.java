@@ -65,4 +65,12 @@ public class NodeImplTest {
 		assertFalse(node.equals(node2));
 		assertFalse(node.equals(node3));
 	}
+
+	@Test
+	public void idDoesNotChangeWithOccupyingPlayer() {
+		NodeImpl node = new NodeImpl(1, 1, null);
+		String oldId = node.getId();
+		node.updateOccupantPlayer("player2");
+		assertEquals(oldId, node.getId());
+	}
 }
