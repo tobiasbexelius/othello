@@ -73,9 +73,9 @@ public class OthelloImpl extends Observable implements Othello {
 	public List<Node> move() throws IllegalArgumentException {
 		List<Node> swappedNodes = moveHandler.move();
 		ruleHandler.swapPlayerInTurn();
-		observerHandler.notifyMoveObservers(swappedNodes);
+		observerHandler.notifyObservers("move", swappedNodes);
 		if (!isActive())
-			observerHandler.notifyGameFinishedObservers();
+			observerHandler.notifyObservers("finish", null);
 		return swappedNodes;
 	}
 
@@ -83,7 +83,7 @@ public class OthelloImpl extends Observable implements Othello {
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
 		List<Node> swappedNodes = moveHandler.move(playerId, nodeId);
 		ruleHandler.swapPlayerInTurn();
-		observerHandler.notifyMoveObservers(swappedNodes);
+		observerHandler.notifyObservers("move", swappedNodes);
 		return swappedNodes;
 	}
 
@@ -105,12 +105,12 @@ public class OthelloImpl extends Observable implements Othello {
 
 	@Override
 	public void addGameFinishedObserver(Observer observer) {
-		observerHandler.addGameFinishedObserver(observer);
+		observerHandler.addObserver("finish", observer);
 	}
 
 	@Override
 	public void addMoveObserver(Observer observer) {
-		observerHandler.addMoveObserver(observer);
+		observerHandler.addObserver("move", observer);
 	}
 
 	@Override
