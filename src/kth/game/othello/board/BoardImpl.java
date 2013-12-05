@@ -6,10 +6,14 @@ import java.util.List;
 public class BoardImpl implements Board {
 
 	private List<Node> nodes;
+	private int maxX;
+	private int maxY;
 
 	public BoardImpl(List<Node> nodes) {
 		Collections.sort(nodes);
 		this.nodes = nodes;
+		maxX = -1;
+		maxY = -1;
 	}
 
 	@Override
@@ -39,19 +43,39 @@ public class BoardImpl implements Board {
 
 	@Override
 	public int getMaxX() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (maxX == -1) {
+			int max = Integer.MIN_VALUE;
+			for (Node node : getNodes()) {
+				if (node.getXCoordinate() > max) {
+					max = node.getXCoordinate();
+				}
+			}
+			maxX = max;
+		}
+		return maxX;
 	}
 
 	@Override
 	public int getMaxY() {
-		// TODO Auto-generated method stub
-		return 0;
+		if (maxY == -1) {
+			int max = Integer.MIN_VALUE;
+			for (Node node : getNodes()) {
+				if (node.getYCoordinate() > max) {
+					max = node.getYCoordinate();
+				}
+			}
+			maxY = max;
+		}
+		return maxY;
 	}
 
 	@Override
 	public boolean hasNode(int x, int y) {
-		// TODO Auto-generated method stub
+		for (Node node : getNodes()) {
+			if (node.getXCoordinate() == x && node.getYCoordinate() == y) {
+				return true;
+			}
+		}
 		return false;
 	}
 
