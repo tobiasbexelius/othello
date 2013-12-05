@@ -1,6 +1,7 @@
 package kth.game.othello;
 
 import java.util.List;
+import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
@@ -10,14 +11,16 @@ import kth.game.othello.player.Player;
 import kth.game.othello.score.Score;
 import kth.game.othello.score.ScoreImpl;
 
-public class OthelloImpl implements Othello {
+public class OthelloImpl extends Observable implements Othello {
 
 	private BoardHandler boardHandler;
 	private Random random;
 	private PlayerHandler playerHandler;
 	private RuleHandler ruleHandler;
 	private MoveHandler moveHandler;
+	private ObserverHandler observerHandler;
 	private ScoreImpl score;
+	private String id;
 
 	public OthelloImpl(List<Player> players, Board board) {
 		boardHandler = new BoardHandler(board);
@@ -27,6 +30,21 @@ public class OthelloImpl implements Othello {
 		random = new Random();
 		score = new ScoreImpl(players);
 		score.observeNodesOnBoard(board);
+		id = players.get(0).getId() + " vs " + players.get(1).getId();
+		observerHandler = new ObserverHandler(this);
+	}
+
+	/**
+	 * This constructor is only used for testing. Do NOT use this in your
+	 * project.
+	 */
+	private OthelloImpl(List<Player> players, Board board, RuleHandler ruleHandler, MoveHandler moveHandler,
+			BoardHandler boardHandler, PlayerHandler playerHandler) {
+		this.boardHandler = boardHandler;
+		this.playerHandler = playerHandler;
+		this.ruleHandler = ruleHandler;
+		this.moveHandler = moveHandler;
+		id = players.get(0).getId() + " vs " + players.get(1).getId();
 	}
 
 	@Override
@@ -56,7 +74,11 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public boolean isActive() {
-		return ruleHandler.isActive();
+		if (!ruleHandler.isActive()) {
+			observerHandler.notifyGameFinishedObservers();
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -68,6 +90,7 @@ public class OthelloImpl implements Othello {
 	public List<Node> move() throws IllegalArgumentException {
 		List<Node> swappedNodes = moveHandler.move();
 		ruleHandler.swapPlayerInTurn();
+		observerHandler.notifyMoveObservers(swappedNodes);
 		return swappedNodes;
 	}
 
@@ -75,6 +98,7 @@ public class OthelloImpl implements Othello {
 	public List<Node> move(String playerId, String nodeId) throws IllegalArgumentException {
 		List<Node> swappedNodes = moveHandler.move(playerId, nodeId);
 		ruleHandler.swapPlayerInTurn();
+		observerHandler.notifyMoveObservers(swappedNodes);
 		return swappedNodes;
 	}
 
@@ -96,20 +120,16 @@ public class OthelloImpl implements Othello {
 
 	@Override
 	public void addGameFinishedObserver(Observer observer) {
-		// TODO Auto-generated method stub
-
+		observerHandler.addGameFinishedObserver(observer);
 	}
 
 	@Override
 	public void addMoveObserver(Observer observer) {
-		// TODO Auto-generated method stub
-
+		observerHandler.addMoveObserver(observer);
 	}
 
 	@Override
 	public String getId() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
-
 }
