@@ -49,7 +49,7 @@ public class RuleHandlerTest {
 		RuleHandler rh = new RuleHandler(bh, ph);
 
 		Node moveTo = MockCreator.createMockedNode(1, 1);
-		Node node2 = MockCreator.createMockedNode(1, 1, "player2");
+		Node node2 = MockCreator.createMockedNode(1, 2, "player2");
 		Node node3 = MockCreator.createMockedNode(1, 3, "player1");
 
 		when(bh.getNode(anyString())).thenReturn(moveTo);
