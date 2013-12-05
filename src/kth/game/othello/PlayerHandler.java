@@ -4,11 +4,13 @@ import java.util.List;
 
 import kth.game.othello.player.Player;
 
+
 /**
- * This class handles retrieval logic for the players and keeps tabs on which player is in turn.
+ * This class handles retrieval logic for the players and keeps tabs on which
+ * player is in turn.
  * 
  */
-public class PlayerHandler {
+class PlayerHandler {
 
 	private List<Player> players;
 	private Player playerInTurn;
@@ -30,7 +32,8 @@ public class PlayerHandler {
 	 * 
 	 * @param playerId
 	 *            the id of the player to be retrieved
-	 * @return the player with the specified id. Returns null if no player with the specified id exists
+	 * @return the player with the specified id. Returns null if no player with
+	 *         the specified id exists
 	 */
 	public Player getPlayer(String id) {
 		for (Player p : players) {

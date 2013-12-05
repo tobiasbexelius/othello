@@ -10,7 +10,7 @@ import kth.game.othello.player.Player;
  * The responsibility of this class is to handle the rules of an othello game.
  * 
  */
-public class RuleHandler implements Rules {
+class RuleHandler implements Rules {
 
 	private int[] dX = { 0, 0, 1, -1, 1, -1, -1, 1 };
 	private int[] dY = { 1, -1, 0, 0, 1, -1, 1, -1 };
@@ -74,8 +74,8 @@ public class RuleHandler implements Rules {
 	}
 
 	/**
-	 * Checks if a player can swap nodes in a certain direction. For example, to check left xDir and yDir should be (-1,
-	 * 0).
+	 * Checks if a player can swap nodes in a certain direction. For example, to
+	 * check left xDir and yDir should be (-1, 0).
 	 * 
 	 * @param playerId
 	 *            the player who is trying to capture nodes
@@ -103,8 +103,9 @@ public class RuleHandler implements Rules {
 	}
 
 	/**
-	 * Retrieves all the nodes that will be swapped in a certain direction when making a move. For example, to retrieve
-	 * nodes to the left, xDir and yDir should be (-1, 0).
+	 * Retrieves all the nodes that will be swapped in a certain direction when
+	 * making a move. For example, to retrieve nodes to the left, xDir and yDir
+	 * should be (-1, 0).
 	 * 
 	 * @param playerId
 	 *            the player who is swapping nodes
@@ -114,7 +115,8 @@ public class RuleHandler implements Rules {
 	 *            the x-axis direction to check in
 	 * @param yDir
 	 *            the y axis direction to check in
-	 * @return a list of all the nodes that were swapped. Returns null if no node could be swapped
+	 * @return a list of all the nodes that were swapped. Returns null if no
+	 *         node could be swapped
 	 */
 	private List<Node> getNodesToSwapInDirection(String playerId, Node move, int xDir, int yDir) {
 		Node next = boardHandler.getNode(move.getXCoordinate() + xDir, move.getYCoordinate() + yDir);

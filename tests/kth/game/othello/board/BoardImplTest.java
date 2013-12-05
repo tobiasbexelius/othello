@@ -3,8 +3,6 @@ package kth.game.othello.board;
 import java.util.ArrayList;
 import java.util.List;
 
-import kth.game.othello.BoardHandler;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -27,10 +25,8 @@ public class BoardImplTest {
 
 		Board board = new BoardImpl(nodes);
 
-		BoardHandler boardHandler = new BoardHandler(board);
-
-		Assert.assertNotNull(boardHandler.getNode(1, 2));
-		Assert.assertNotNull(boardHandler.getNode(2, 2));
+		Assert.assertNotNull(board.getNode(1, 2));
+		Assert.assertNotNull(board.getNode(2, 2));
 	}
 
 	@Test
@@ -49,8 +45,7 @@ public class BoardImplTest {
 
 		Board board = new BoardImpl(nodes);
 
-		BoardHandler boardHandler = new BoardHandler(board);
-		Assert.assertNull(boardHandler.getNode(3, 2));
+		Assert.assertNull(board.getNode(3, 2));
 	}
 
 	@Test
