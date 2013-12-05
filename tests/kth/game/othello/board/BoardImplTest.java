@@ -3,21 +3,17 @@ package kth.game.othello.board;
 import java.util.ArrayList;
 import java.util.List;
 
+import kth.game.othello.tests.MockCreator;
+
 import org.junit.Assert;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 public class BoardImplTest {
 
 	@Test
 	public void getExistingNodeWithCoordinates() {
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(1);
-		Mockito.when(node1.getYCoordinate()).thenReturn(2);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(2);
-		Mockito.when(node2.getYCoordinate()).thenReturn(2);
+		Node node1 = MockCreator.createMockedNode(1, 2);
+		Node node2 = MockCreator.createMockedNode(2, 2);
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(node1);
@@ -31,13 +27,8 @@ public class BoardImplTest {
 
 	@Test
 	public void getNonExistingNodeWithCoordinates() {
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(1);
-		Mockito.when(node1.getYCoordinate()).thenReturn(2);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(2);
-		Mockito.when(node2.getYCoordinate()).thenReturn(2);
+		Node node1 = MockCreator.createMockedNode(1, 2);
+		Node node2 = MockCreator.createMockedNode(2, 2);
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(node1);
@@ -50,13 +41,8 @@ public class BoardImplTest {
 
 	@Test
 	public void hasNodeWithExistingNode() {
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(1);
-		Mockito.when(node1.getYCoordinate()).thenReturn(2);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(2);
-		Mockito.when(node2.getYCoordinate()).thenReturn(2);
+		Node node1 = MockCreator.createMockedNode(1, 2);
+		Node node2 = MockCreator.createMockedNode(2, 2);
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(node1);
@@ -68,13 +54,8 @@ public class BoardImplTest {
 
 	@Test
 	public void hasNodeWithNonExistingNode() {
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(1);
-		Mockito.when(node1.getYCoordinate()).thenReturn(2);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(2);
-		Mockito.when(node2.getYCoordinate()).thenReturn(2);
+		Node node1 = MockCreator.createMockedNode(1, 2);
+		Node node2 = MockCreator.createMockedNode(2, 2);
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(node1);
@@ -86,17 +67,9 @@ public class BoardImplTest {
 
 	@Test
 	public void getMaxX() {
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(4);
-		Mockito.when(node1.getYCoordinate()).thenReturn(2);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(3);
-		Mockito.when(node2.getYCoordinate()).thenReturn(2);
-
-		Node node3 = Mockito.mock(Node.class);
-		Mockito.when(node3.getXCoordinate()).thenReturn(1);
-		Mockito.when(node3.getYCoordinate()).thenReturn(2);
+		Node node1 = MockCreator.createMockedNode(4, 2);
+		Node node2 = MockCreator.createMockedNode(3, 2);
+		Node node3 = MockCreator.createMockedNode(1, 2);
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(node1);
@@ -109,17 +82,9 @@ public class BoardImplTest {
 
 	@Test
 	public void getMaxY() {
-		Node node1 = Mockito.mock(Node.class);
-		Mockito.when(node1.getXCoordinate()).thenReturn(4);
-		Mockito.when(node1.getYCoordinate()).thenReturn(1);
-
-		Node node2 = Mockito.mock(Node.class);
-		Mockito.when(node2.getXCoordinate()).thenReturn(3);
-		Mockito.when(node2.getYCoordinate()).thenReturn(4);
-
-		Node node3 = Mockito.mock(Node.class);
-		Mockito.when(node3.getXCoordinate()).thenReturn(1);
-		Mockito.when(node3.getYCoordinate()).thenReturn(3);
+		Node node1 = MockCreator.createMockedNode(4, 3);
+		Node node2 = MockCreator.createMockedNode(1, 4);
+		Node node3 = MockCreator.createMockedNode(3, 1);
 
 		List<Node> nodes = new ArrayList<Node>();
 		nodes.add(node1);
