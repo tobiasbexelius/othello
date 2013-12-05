@@ -8,7 +8,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import kth.game.othello.Othello;
+import kth.game.othello.OthelloCreator;
 import kth.game.othello.OthelloCreatorImpl;
+import kth.game.othello.OthelloFactory;
 import kth.game.othello.board.BoardCreator;
 import kth.game.othello.board.BoardCreatorImpl;
 import kth.game.othello.board.NodeCreator;
@@ -25,6 +27,8 @@ public class Tournament implements Observer {
 	private Map<String, Integer> highScore;
 	private List<Player> players;
 	private boolean graphicalView;
+	private OthelloFactory othelloFactory;
+	private BoardFactory boardFactory;
 
 	public Tournament(List<Player> players, boolean graphicalView) {
 		highScore = new HashMap<String, Integer>();
@@ -33,26 +37,33 @@ public class Tournament implements Observer {
 		}
 		this.graphicalView = graphicalView;
 		this.players = players;
+		NodeCreator nodeCreator = new NodeCreatorImpl();
+		BoardCreator boardCreator = new BoardCreatorImpl();
+		boardFactory = new BoardFactory(nodeCreator, boardCreator);
+		PlayerCreator playerCreator = new PlayerCreatorImpl();
+		OthelloCreator othelloCreator = new OthelloCreatorImpl();
+		othelloFactory = new OthelloFactory(othelloCreator, boardFactory, playerCreator);
 	}
 
-	public static void main(String[] args) {
-		PlayerCreator pc = new PlayerCreatorImpl();
-		Player player1 = pc.createComputerPlayer("computer 1 ");
-		Player player2 = pc.createComputerPlayer("computer 2 ");
-		List<Player> players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
-		Tournament tournament = new Tournament(players, false);
-		tournament.playOneRound();
-		tournament.playOneRound();
-		String winner = tournament.getHighestScoringPlayer();
-		if (winner == null) {
-			System.out.println("the tournament was a draw");
-		} else {
-			System.out.println("Player " + winner + " won the tournament");
-		}
-		// System.exit(0);
-	}
+	//
+	// public static void main(String[] args) {
+	// PlayerCreator pc = new PlayerCreatorImpl();
+	// Player player1 = pc.createComputerPlayer("computer 1 ");
+	// Player player2 = pc.createComputerPlayer("computer 2 ");
+	// List<Player> players = new ArrayList<Player>();
+	// players.add(player1);
+	// players.add(player2);
+	// Tournament tournament = new Tournament(players, false);
+	// tournament.playOneRound();
+	// tournament.playOneRound();
+	// String winner = tournament.getHighestScoringPlayer();
+	// if (winner == null) {
+	// System.out.println("the tournament was a draw");
+	// } else {
+	// System.out.println("Player " + winner + " won the tournament");
+	// }
+	// // System.exit(0);
+	// }
 
 	public void playOneRound() {
 		int j = 0;
@@ -73,43 +84,44 @@ public class Tournament implements Observer {
 	}
 
 	private Othello createGameWithPlayers(Player player1, Player player2) {
-		NodeCreator nc = new NodeCreatorImpl();
-		BoardCreator bc = new BoardCreatorImpl();
-		BoardFactory bf = new BoardFactory(nc, bc);
-
 		List<Player> players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
-
-		OthelloCreatorImpl oc = new OthelloCreatorImpl();
-		Othello othello = oc.createOthello(bf.getQuadraticBoard(8, players), players);
+		Othello othello = othelloFactory.createGame(boardFactory.getQuadraticBoard(8, players), players);
 		return othello;
 	}
 
 	@Override
 	public void update(Observable o, Object arg) throws RuntimeException {
 		if (!(o instanceof Othello))
-			throw new RuntimeException("The observed object is not a Othello game");
+			throw new RuntimeException("The observed object is not an Othello game");
 		Othello othello = (Othello) o;
+		findWinner(othello);
+	}
+
+	private void findWinner(Othello othello) {
 		List<ScoreItem> scores = othello.getScore().getPlayersScore();
-		String winner = null;
-		int highestScore = -1;
-		for (ScoreItem score : scores) {
-			if (score.getScore() > highestScore) {
-				winner = score.getPlayerId();
-				highestScore = score.getScore();
-			} else if (score.getScore() == highestScore) {
-				winner = null;
-			}
-		}
-		if (winner == null) {
-			for (ScoreItem score : scores) {
-				highScore.put(score.getPlayerId(), 1 + highScore.get(score.getPlayerId()));
-			}
+		ArrayList<String> winners= new ArrayList<String>();
+		int highestScore = getHighestScore(scores);
+		for (ScoreItem score : scores) 
+			if (score.getScore() == highestScore)
+				winners.add(score.getPlayerId());
+
+		if (winners.size()==1) {
+			highScore.put(winners.get(0), 2 + highScore.get(winners.get(0)));
 		} else {
-			System.out.println("is highscore null? : " + (highScore == null));
-			highScore.put(winner, 2 + highScore.get(winner));
+			for (String drawer : winners) 
+				highScore.put(drawer, 1 + highScore.get(drawer));
 		}
+	}
+	
+	private int getHighestScore(List<ScoreItem> scores){
+		int highestScore = -1; 
+		for (ScoreItem score : scores) 
+			if (score.getScore() > highestScore)
+				highestScore = score.getScore();	
+		return highestScore;
+
 	}
 
 	public String getHighestScoringPlayer() {
