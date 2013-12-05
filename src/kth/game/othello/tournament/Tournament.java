@@ -89,27 +89,34 @@ public class Tournament implements Observer {
 	@Override
 	public void update(Observable o, Object arg) throws RuntimeException {
 		if (!(o instanceof Othello))
-			throw new RuntimeException("The observed object is not a Othello game");
+			throw new RuntimeException("The observed object is not an Othello game");
 		Othello othello = (Othello) o;
+		findWinner(othello);
+	}
+
+	private void findWinner(Othello othello) {
 		List<ScoreItem> scores = othello.getScore().getPlayersScore();
-		String winner = null;
-		int highestScore = -1;
-		for (ScoreItem score : scores) {
-			if (score.getScore() > highestScore) {
-				winner = score.getPlayerId();
-				highestScore = score.getScore();
-			} else if (score.getScore() == highestScore) {
-				winner = null;
-			}
-		}
-		if (winner == null) {
-			for (ScoreItem score : scores) {
-				highScore.put(score.getPlayerId(), 1 + highScore.get(score.getPlayerId()));
-			}
+		ArrayList<String> winners= new ArrayList<String>();
+		int highestScore = getHighestScore(scores);
+		for (ScoreItem score : scores) 
+			if (score.getScore() == highestScore)
+				winners.add(score.getPlayerId());
+
+		if (winners.size()==1) {
+			highScore.put(winners.get(0), 2 + highScore.get(winners.get(0)));
 		} else {
-			System.out.println("is highscore null? : " + (highScore == null));
-			highScore.put(winner, 2 + highScore.get(winner));
+			for (String drawer : winners) 
+				highScore.put(drawer, 1 + highScore.get(drawer));
 		}
+	}
+	
+	private int getHighestScore(List<ScoreItem> scores){
+		int highestScore = -1; 
+		for (ScoreItem score : scores) 
+			if (score.getScore() > highestScore)
+				highestScore = score.getScore();	
+		return highestScore;
+
 	}
 
 	public String getHighestScoringPlayer() {
