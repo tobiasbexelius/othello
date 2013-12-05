@@ -181,7 +181,8 @@ public class ScoreImplTest {
 		score.addObserver(observer);
 		score.update(node, null);
 		assertEquals(1, score.getPoints("player1"));
-		Mockito.verify(observer).update(score, null);
+		List<String> stuff = new ArrayList<String>();
+		stuff.add("player1");
+		Mockito.verify(observer).update(score, stuff);
 	}
-
 }
