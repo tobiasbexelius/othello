@@ -35,12 +35,20 @@ public class MockCreator {
 		return node;
 	}
 
-	public static List<Player> createMockedPlayers(int number) {
+	public static List<Player> createMockedHumanPlayers(int number) {
 		List<Player> players = new ArrayList<Player>();
 		for (int i = 0; i < number; i++) {
-			players.add(new PlayerImpl("player" + i, "player" + i, Player.Type.HUMAN));
+			players.add(createMockedHumanPlayer("player" + i, "player" + i));
 		}
 		return players;
+	}
+
+	public static Player createMockedHumanPlayer(String id, String name) {
+		Player player = mock(PlayerImpl.class);
+		when(player.getType()).thenReturn(Type.HUMAN);
+		when(player.getId()).thenReturn(id);
+		when(player.getName()).thenReturn(name);
+		return player;
 	}
 
 	public static Player createMockedComputerPlayer(String id, String name, MoveStrategy strategy) {
