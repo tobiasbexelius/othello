@@ -46,10 +46,9 @@ public class MoveHandlerTest {
 	public void computerMoveWithoutValidMove() {
 		BoardHandler boardHandler = mock(BoardHandler.class);
 		RuleHandler ruleHandler = mock(RuleHandler.class);
-		Player player = mock(Player.class);
+		Player player = MockCreator.createMockedComputerPlayer("player1", "player1", null);
 
 		when(ruleHandler.getPlayerInTurn()).thenReturn(player);
-		when(player.getType()).thenReturn(Type.COMPUTER);
 		when(ruleHandler.hasValidMove(anyString())).thenReturn(false);
 
 		MoveHandler moveHandler = new MoveHandler(boardHandler, ruleHandler);
@@ -91,5 +90,10 @@ public class MoveHandlerTest {
 		when(randomMoveStrategy.move("player1", ruleHandler, board)).thenReturn(toBeOccupied);
 		List<Node> swappedNodes = moveHandler.move();
 		assertEquals(2, swappedNodes.size());
+	}
+
+	@Test
+	public void humanMoveWithoutValidMove() {
+
 	}
 }
