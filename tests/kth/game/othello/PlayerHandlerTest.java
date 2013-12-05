@@ -1,4 +1,4 @@
-package kth.game.othello.player;
+package kth.game.othello;
 
 import java.util.ArrayList;
 import java.util.List;

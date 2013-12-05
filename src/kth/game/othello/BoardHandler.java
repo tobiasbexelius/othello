@@ -11,10 +11,10 @@ import kth.game.othello.board.NodeImpl;
  * This class handles operations on a board made up of nodes.
  * 
  */
-public class BoardHandler {
+class BoardHandler {
 
 	private Board board;
-	
+
 	public BoardHandler(Board board) {
 		this.board = board;
 	}
@@ -34,22 +34,24 @@ public class BoardHandler {
 		}
 		return nodesToSwap;
 	}
-	
+
 	/**
 	 * Occupies a certain node on the board.
 	 * 
-	 * @param node the node to be occupied
-	 * @param occupantPlayerId the player who will occupy the node
+	 * @param node
+	 *            the node to be occupied
+	 * @param occupantPlayerId
+	 *            the player who will occupy the node
 	 */
 	private void occupyNode(Node node, String occupantPlayerId) {
-		NodeImpl nodeImpl = (NodeImpl)  node;
+		NodeImpl nodeImpl = (NodeImpl) node;
 		nodeImpl.updateOccupantPlayer(occupantPlayerId);
 	}
-	
+
 	public Node getNode(int x, int y) {
 		return board.getNode(x, y);
 	}
-	
+
 	/**
 	 * Retrieves a node from the board.
 	 * 
@@ -65,11 +67,11 @@ public class BoardHandler {
 		}
 		return null;
 	}
-	
+
 	public Board getBoard() {
 		return board;
 	}
-	
+
 	public List<Node> getNodes() {
 		return board.getNodes();
 	}

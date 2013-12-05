@@ -6,7 +6,7 @@ import java.util.Observer;
 
 import kth.game.othello.board.Node;
 
-public class ObserverHandler {
+class ObserverHandler {
 	private List<Observer> moveObservers;
 	private List<Observer> gameFinishedObservers;
 	private OthelloImpl othello;

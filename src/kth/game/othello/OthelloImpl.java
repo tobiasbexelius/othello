@@ -34,18 +34,6 @@ public class OthelloImpl extends Observable implements Othello {
 		observerHandler = new ObserverHandler(this);
 	}
 
-	/**
-	 * This constructor is only used for testing. Do NOT use this in your project.
-	 */
-	private OthelloImpl(List<Player> players, Board board, RuleHandler ruleHandler, MoveHandler moveHandler,
-			BoardHandler boardHandler, PlayerHandler playerHandler) {
-		this.boardHandler = boardHandler;
-		this.playerHandler = playerHandler;
-		this.ruleHandler = ruleHandler;
-		this.moveHandler = moveHandler;
-		id = players.get(0).getId() + " vs " + players.get(1).getId();
-	}
-
 	@Override
 	public Board getBoard() {
 		return boardHandler.getBoard();

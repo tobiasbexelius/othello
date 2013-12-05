@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import kth.game.othello.BoardHandler;
-import kth.game.othello.PlayerHandler;
 import kth.game.othello.RuleHandler;
 import kth.game.othello.board.Node;
 import kth.game.othello.player.Player;
