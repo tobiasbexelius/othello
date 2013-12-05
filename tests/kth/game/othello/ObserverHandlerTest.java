@@ -20,9 +20,9 @@ public class ObserverHandlerTest {
 		List<Node> list = new ArrayList<Node>();
 		Observer observer = mock(Observer.class);
 		Observer observer2 = mock(Observer.class);
-		handler.addMoveObserver(observer);
-		handler.addMoveObserver(observer2);
-		handler.notifyMoveObservers(list);
+		handler.addObserver("move", observer);
+		handler.addObserver("move", observer2);
+		handler.notifyObservers("move", list);
 
 		verify(observer).update(othello, list);
 		verify(observer2).update(othello, list);
@@ -34,9 +34,9 @@ public class ObserverHandlerTest {
 		ObserverHandler handler = new ObserverHandler(othello);
 		Observer observer = mock(Observer.class);
 		Observer observer2 = mock(Observer.class);
-		handler.addGameFinishedObserver(observer2);
-		handler.addGameFinishedObserver(observer);
-		handler.notifyGameFinishedObservers();
+		handler.addObserver("finish", observer2);
+		handler.addObserver("finish", observer);
+		handler.notifyObservers("finish", null);
 
 		verify(observer).update(othello, null);
 		verify(observer2).update(othello, null);

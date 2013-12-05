@@ -1,39 +1,33 @@
 package kth.game.othello;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Observable;
 import java.util.Observer;
 
-import kth.game.othello.board.Node;
-
 class ObserverHandler {
-	private List<Observer> moveObservers;
-	private List<Observer> gameFinishedObservers;
-	private OthelloImpl othello;
+	private Observable observedObject;
+	private Map<String, List<Observer>> observers;
 
-	public ObserverHandler(OthelloImpl othello) {
-		moveObservers = new ArrayList<Observer>();
-		gameFinishedObservers = new ArrayList<Observer>();
-		this.othello = othello;
+	public ObserverHandler(Observable observedObject) {
+		this.observedObject = observedObject;
+		observers = new HashMap<String, List<Observer>>();
 	}
 
-	public void notifyMoveObservers(List<Node> swapped) {
-		for (Observer observer : moveObservers) {
-			observer.update(othello, swapped);
+	public void notifyObservers(String type, Object argument) {
+		if (observers.get(type) != null) {
+			for (Observer observer : observers.get(type)) {
+				observer.update(observedObject, argument);
+			}
 		}
 	}
 
-	public void notifyGameFinishedObservers() {
-		for (Observer observer : gameFinishedObservers) {
-			observer.update(othello, null);
+	public void addObserver(String type, Observer observer) {
+		if (observers.get(type) == null) {
+			observers.put(type, new ArrayList<Observer>());
 		}
-	}
-
-	public void addMoveObserver(Observer observer) {
-		moveObservers.add(observer);
-	}
-
-	public void addGameFinishedObserver(Observer observer) {
-		gameFinishedObservers.add(observer);
+		observers.get(type).add(observer);
 	}
 }
