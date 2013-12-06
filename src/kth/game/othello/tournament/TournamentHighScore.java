@@ -19,9 +19,9 @@ import kth.game.othello.score.ScoreItem;
 class TournamentHighScore implements Observer {
 	private Map<String, Integer> highScore;
 
-	public TournamentHighScore(Tournament tournament, List<Player> players) {
+	public TournamentHighScore(Tournament tournament) {
 		highScore = new HashMap<String, Integer>();
-		for (Player player : players) {
+		for (Player player : tournament.getPlayers()) {
 			highScore.put(player.getId(), 0);
 		}
 		tournament.addObserver(this);
@@ -38,7 +38,7 @@ class TournamentHighScore implements Observer {
 	private List<String> findWinners(Othello othello) {
 		List<ScoreItem> scores = othello.getScore().getPlayersScore();
 		List<String> winners = new ArrayList<String>();
-		int highestScore = getHighestScore(scores);
+		int highestScore = getHighestScoreInList(scores);
 		for (ScoreItem score : scores)
 			if (score.getScore() == highestScore)
 				winners.add(score.getPlayerId());
@@ -53,13 +53,24 @@ class TournamentHighScore implements Observer {
 	 *            the list to search through
 	 * @return the highest score in the list
 	 */
-	private int getHighestScore(List<ScoreItem> scores) {
+	private int getHighestScoreInList(List<ScoreItem> scores) {
 		int highestScore = -1;
 		for (ScoreItem score : scores)
 			if (score.getScore() > highestScore)
 				highestScore = score.getScore();
 		return highestScore;
 
+	}
+
+	/**
+	 * Retrieve the tournament score for a certain player
+	 * 
+	 * @param playerId
+	 *            The id of the player
+	 * @return the player's score
+	 */
+	public int getScoreForPlayer(String playerId) {
+		return highScore.get(playerId);
 	}
 
 	/**
@@ -81,7 +92,8 @@ class TournamentHighScore implements Observer {
 	 * Get the id of the player who has the highest score in the observed
 	 * tournament.
 	 * 
-	 * @return the id of the highest scoring player
+	 * @return the id of the highest scoring player. Null if the tournament was
+	 *         a draw.
 	 */
 	public String getHighestScoringPlayer() {
 		String highest = null;

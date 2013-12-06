@@ -39,15 +39,7 @@ public class Tournament extends Observable implements Observer {
 		this.players = players;
 		tournamentRounds = 2;
 		gameCreator = new TournamentGameCreator();
-		highScore = new TournamentHighScore(this, players);
-	}
-
-	public String getWinnerOfTournament() {
-		return highScore.getHighestScoringPlayer();
-	}
-
-	public int highestScore() {
-		return highScore.getHighestTournamentScore();
+		highScore = new TournamentHighScore(this);
 	}
 
 	/**
@@ -66,7 +58,24 @@ public class Tournament extends Observable implements Observer {
 		this.players = players;
 		this.tournamentRounds = tournamentRounds;
 		gameCreator = new TournamentGameCreator();
-		highScore = new TournamentHighScore(this, players);
+		highScore = new TournamentHighScore(this);
+	}
+
+	/**
+	 * Returns the highest scoring player of the tournament (winner).
+	 * 
+	 * @return The winning player, or null if the tournament was a draw.
+	 */
+	public String getWinnerOfTournament() {
+		return highScore.getHighestScoringPlayer();
+	}
+
+	public List<Player> getPlayers() {
+		return players;
+	}
+
+	public int highestScore() {
+		return highScore.getHighestTournamentScore();
 	}
 
 	/**

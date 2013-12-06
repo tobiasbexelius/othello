@@ -12,6 +12,7 @@ import kth.game.othello.player.Player;
 import kth.game.othello.player.Player.Type;
 import kth.game.othello.player.PlayerImpl;
 import kth.game.othello.player.movestrategy.MoveStrategy;
+import kth.game.othello.score.ScoreItem;
 
 public class MockCreator {
 
@@ -58,5 +59,12 @@ public class MockCreator {
 		when(player.getName()).thenReturn(name);
 		when(player.getMoveStrategy()).thenReturn(strategy);
 		return player;
+	}
+
+	public static ScoreItem createMockedScoreItem(String playerId, int score) {
+		ScoreItem item = mock(ScoreItem.class);
+		when(item.getPlayerId()).thenReturn(playerId);
+		when(item.getScore()).thenReturn(score);
+		return item;
 	}
 }
