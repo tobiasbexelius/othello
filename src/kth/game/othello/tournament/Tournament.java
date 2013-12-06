@@ -4,6 +4,13 @@ import java.util.List;
 
 import kth.game.othello.player.Player;
 
+/**
+ * The responsibility of this class is to hold a tournament among a group of
+ * computer players. The tournament works like this: every computer plays
+ * against one another two times, each starting the game one time each. The
+ * player who performs the best is the winner.
+ * 
+ */
 public class Tournament {
 	private List<Player> players;
 	private boolean graphicalView;
