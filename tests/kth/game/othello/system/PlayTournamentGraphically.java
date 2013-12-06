@@ -13,7 +13,7 @@ import kth.game.othello.tournament.Tournament;
 
 import org.junit.Test;
 
-public class PlayTournament {
+public class PlayTournamentGraphically {
 
 	@Test
 	public void playATournament() {
@@ -26,14 +26,9 @@ public class PlayTournament {
 		players.add(first);
 		players.add(random);
 
-		Tournament tournament = new Tournament(players, false);
+		Tournament tournament = new Tournament(players, true);
 		tournament.playTournament();
-		String winner = tournament.getWinnerOfTournament();
-		if (winner != null) {
-			System.out.println("The winner is: " + tournament.getWinnerOfTournament() + " with "
-					+ tournament.highestScore() + " points!");
-		} else {
-			System.out.println("The tournament ended in a draw!");
-		}
+		System.out.println("The winner is: " + tournament.getWinnerOfTournament() + " with "
+				+ tournament.highestScore() + " points!");
 	}
 }

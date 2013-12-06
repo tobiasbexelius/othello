@@ -1,71 +1,89 @@
 package kth.game.othello.tournament;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
 import kth.game.othello.Othello;
-import kth.game.othello.OthelloCreator;
-import kth.game.othello.OthelloCreatorImpl;
-import kth.game.othello.OthelloFactory;
-import kth.game.othello.board.BoardCreator;
-import kth.game.othello.board.BoardCreatorImpl;
-import kth.game.othello.board.NodeCreator;
-import kth.game.othello.board.NodeCreatorImpl;
-import kth.game.othello.board.factory.BoardFactory;
 import kth.game.othello.player.Player;
-import kth.game.othello.player.PlayerCreator;
-import kth.game.othello.player.PlayerCreatorImpl;
-import kth.game.othello.score.ScoreItem;
 import kth.game.othello.view.swing.OthelloView;
 import kth.game.othello.view.swing.OthelloViewFactory;
 
-public class Tournament implements Observer {
-	private Map<String, Integer> highScore;
+/**
+ * The responsibility of this class is to take a list of players and make sure
+ * they all play at least one game of Othello against each other. It must notify
+ * it's observers each time a game has finished.The number of times they will
+ * play against each other can be specified in the constructor. The result of
+ * the matches will be printed in the console.
+ * 
+ */
+public class Tournament extends Observable implements Observer {
 	private List<Player> players;
 	private boolean graphicalView;
-	private OthelloFactory othelloFactory;
-	private BoardFactory boardFactory;
+	private TournamentGameCreator gameCreator;
+	private int tournamentRounds;
+	private TournamentHighScore highScore;
 
+	/**
+	 * Creates a new tournament. Each player will play against one another two
+	 * times.
+	 * 
+	 * @param players
+	 *            The players who will play in the tournament
+	 * @param graphicalView
+	 *            If true, each match will be shown graphically. Otherwise, the
+	 *            matches will not be shown.
+	 */
 	public Tournament(List<Player> players, boolean graphicalView) {
-		highScore = new HashMap<String, Integer>();
-		for (Player player : players) {
-			highScore.put(player.getId(), 0);
-		}
 		this.graphicalView = graphicalView;
 		this.players = players;
-		NodeCreator nodeCreator = new NodeCreatorImpl();
-		BoardCreator boardCreator = new BoardCreatorImpl();
-		boardFactory = new BoardFactory(nodeCreator, boardCreator);
-		PlayerCreator playerCreator = new PlayerCreatorImpl();
-		OthelloCreator othelloCreator = new OthelloCreatorImpl();
-		othelloFactory = new OthelloFactory(othelloCreator, boardFactory, playerCreator);
+		tournamentRounds = 2;
+		gameCreator = new TournamentGameCreator();
+		highScore = new TournamentHighScore(this, players);
 	}
 
-	//
-	// public static void main(String[] args) {
-	// PlayerCreator pc = new PlayerCreatorImpl();
-	// Player player1 = pc.createComputerPlayer("computer 1 ");
-	// Player player2 = pc.createComputerPlayer("computer 2 ");
-	// List<Player> players = new ArrayList<Player>();
-	// players.add(player1);
-	// players.add(player2);
-	// Tournament tournament = new Tournament(players, false);
-	// tournament.playOneRound();
-	// tournament.playOneRound();
-	// String winner = tournament.getHighestScoringPlayer();
-	// if (winner == null) {
-	// System.out.println("the tournament was a draw");
-	// } else {
-	// System.out.println("Player " + winner + " won the tournament");
-	// }
-	// // System.exit(0);
-	// }
+	public String getWinnerOfTournament() {
+		return highScore.getHighestScoringPlayer();
+	}
 
-	public void playOneRound() {
+	public int highestScore() {
+		return highScore.getHighestTournamentScore();
+	}
+
+	/**
+	 * Creates a new tournament.
+	 * 
+	 * @param players
+	 *            The players who will play in the tournament
+	 * @param graphicalView
+	 *            If true, each match will be shown graphically. Otherwise, the
+	 *            matches will not be shown.
+	 * @param tournamentRounds
+	 *            The amount of times each player will play against one another
+	 */
+	public Tournament(List<Player> players, boolean graphicalView, int tournamentRounds) {
+		this.graphicalView = graphicalView;
+		this.players = players;
+		this.tournamentRounds = tournamentRounds;
+		gameCreator = new TournamentGameCreator();
+		highScore = new TournamentHighScore(this, players);
+	}
+
+	/**
+	 * Plays all rounds of the tournament.The result of the tournament is
+	 * printed afterwards.
+	 */
+	public void playTournament() {
+		for (int i = 0; i < tournamentRounds; i++) {
+			playOneRound();
+		}
+	}
+
+	/**
+	 * Plays one round of the tournament. One round consists of all players
+	 * playing once against each other.
+	 */
+	private void playOneRound() {
 		int j = 0;
 		for (Player player : players) {
 			for (int i = j + 1; i < players.size(); i++) {
@@ -75,20 +93,27 @@ public class Tournament implements Observer {
 		}
 	}
 
+	/**
+	 * Plays a game of Othello between two players. The tournament listens on
+	 * the match and notifies the highScore when the match is finished.
+	 * 
+	 * @param player1
+	 *            The first of the two players
+	 * @param player2
+	 *            The second of the two playes
+	 */
 	private void playOneGame(Player player1, Player player2) {
-		Othello othello = createGameWithPlayers(player1, player2);
+		Othello othello = gameCreator.createGameWithPlayers(player1, player2);
 		othello.addGameFinishedObserver(this);
-		OthelloView othelloView = OthelloViewFactory.create(othello, 5, 5);
-		// othello.start();
-		othelloView.start();
-	}
-
-	private Othello createGameWithPlayers(Player player1, Player player2) {
-		List<Player> players = new ArrayList<Player>();
-		players.add(player1);
-		players.add(player2);
-		Othello othello = othelloFactory.createGame(boardFactory.getQuadraticBoard(8, players), players);
-		return othello;
+		if (graphicalView) {
+			OthelloView othelloView = OthelloViewFactory.create(othello, 5, 5);
+			othelloView.start();
+		} else {
+			othello.start();
+			while (othello.isActive()) {
+				othello.move();
+			}
+		}
 	}
 
 	@Override
@@ -96,47 +121,8 @@ public class Tournament implements Observer {
 		if (!(o instanceof Othello))
 			throw new RuntimeException("The observed object is not an Othello game");
 		Othello othello = (Othello) o;
-		findWinner(othello);
-	}
-
-	private void findWinner(Othello othello) {
-		List<ScoreItem> scores = othello.getScore().getPlayersScore();
-		ArrayList<String> winners= new ArrayList<String>();
-		int highestScore = getHighestScore(scores);
-		for (ScoreItem score : scores) 
-			if (score.getScore() == highestScore)
-				winners.add(score.getPlayerId());
-
-		if (winners.size()==1) {
-			highScore.put(winners.get(0), 2 + highScore.get(winners.get(0)));
-		} else {
-			for (String drawer : winners) 
-				highScore.put(drawer, 1 + highScore.get(drawer));
-		}
-	}
-	
-	private int getHighestScore(List<ScoreItem> scores){
-		int highestScore = -1; 
-		for (ScoreItem score : scores) 
-			if (score.getScore() > highestScore)
-				highestScore = score.getScore();	
-		return highestScore;
-
-	}
-
-	public String getHighestScoringPlayer() {
-		String highest = null;
-		int highestScore = -1;
-		for (String player : highScore.keySet()) {
-			if (highestScore < highScore.get(player)) {
-				highest = player;
-				highestScore = highScore.get(player);
-			} else if (highestScore == highScore.get(player)) {
-				highest = null;
-			}
-		}
-		System.out.println("Highest score: " + highestScore);
-		return highest;
+		setChanged();
+		notifyObservers(othello);
 	}
 
 }
