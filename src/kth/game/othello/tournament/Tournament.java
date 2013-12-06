@@ -36,7 +36,7 @@ public class Tournament {
 	 * 
 	 * @return The winning player, or null if the tournament was a draw.
 	 */
-	public String getWinnerOfTournament() {
+	public String getWinner() {
 		return highScore.getHighestScoringPlayer();
 	}
 

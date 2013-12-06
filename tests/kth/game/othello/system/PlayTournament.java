@@ -28,9 +28,9 @@ public class PlayTournament {
 
 		Tournament tournament = new Tournament(players, false);
 		tournament.playTournament();
-		String winner = tournament.getWinnerOfTournament();
+		String winner = tournament.getWinner();
 		if (winner != null) {
-			System.out.println("The winner is: " + tournament.getWinnerOfTournament() + " with "
+			System.out.println("The winner is: " + tournament.getWinner() + " with "
 					+ tournament.highestScore() + " points!");
 		} else {
 			System.out.println("The tournament ended in a draw!");

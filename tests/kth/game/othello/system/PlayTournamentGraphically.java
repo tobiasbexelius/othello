@@ -28,7 +28,7 @@ public class PlayTournamentGraphically {
 
 		Tournament tournament = new Tournament(players, true);
 		tournament.playTournament();
-		System.out.println("The winner is: " + tournament.getWinnerOfTournament() + " with "
+		System.out.println("The winner is: " + tournament.getWinner() + " with "
 				+ tournament.highestScore() + " points!");
 	}
 }
