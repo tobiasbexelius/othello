@@ -12,19 +12,19 @@ import kth.game.othello.player.Player;
 import kth.game.othello.score.ScoreItem;
 
 /**
- * The responsibility of this class is to keep tabs on the results of the
- * matches in an observed tournament.
+ * The responsibility of this class is to keep track of the total points for
+ * each player in a tournament. The score should be updated each time a match in
+ * the tournament has finished.
  * 
  */
 class TournamentHighScore implements Observer {
 	private Map<String, Integer> highScore;
 
-	public TournamentHighScore(Tournament tournament) {
+	public TournamentHighScore(List<Player> players) {
 		highScore = new HashMap<String, Integer>();
-		for (Player player : tournament.getPlayers()) {
+		for (Player player : players) {
 			highScore.put(player.getId(), 0);
 		}
-		tournament.addObserver(this);
 	}
 
 	/**
@@ -112,12 +112,18 @@ class TournamentHighScore implements Observer {
 	/**
 	 * Updates the winner of the Othello game's tournament points by 2. If there
 	 * were more than one winner (draw), each player with the highest score gets
-	 * 1 point.
+	 * 1 point. The provided Othello game most be finished in order to determine
+	 * a winner.
 	 * 
 	 * @param othello
 	 *            The finished game
+	 * @throws a
+	 *             runtime exception if the Othello game is active
 	 */
 	private void updateScore(Othello othello) {
+		if (othello.isActive())
+			throw new RuntimeException(
+					"Cannot determine the winner of an unfinished othello game! The game is still active.");
 		List<String> winners = findWinners(othello);
 		if (winners.size() == 1) {
 			highScore.put(winners.get(0), 2 + highScore.get(winners.get(0)));
@@ -129,7 +135,7 @@ class TournamentHighScore implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (!(o instanceof Tournament)) {
+		if (!(o instanceof TournamentRound)) {
 			throw new RuntimeException("The observed object was not a tournament!");
 		} else if (!(arg instanceof Othello)) {
 			throw new RuntimeException("The supplied argument was not an Othello game!");

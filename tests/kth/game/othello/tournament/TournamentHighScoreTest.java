@@ -2,6 +2,7 @@ package kth.game.othello.tournament;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,7 +21,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getScoreAfterOneWonMatch() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -28,7 +29,7 @@ public class TournamentHighScoreTest {
 
 		Othello othello = createMockedOthelloMatch("player1", "player2");
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othello);
 		assertEquals(2, highScore.getScoreForPlayer("player1"));
 		assertEquals(0, highScore.getScoreForPlayer("player2"));
@@ -36,7 +37,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getScoreAfterOneDrawMatch() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -50,7 +51,7 @@ public class TournamentHighScoreTest {
 		when(score.getPlayersScore()).thenReturn(scores);
 		when(othello.getScore()).thenReturn(score);
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othello);
 		assertEquals(1, highScore.getScoreForPlayer("player1"));
 		assertEquals(1, highScore.getScoreForPlayer("player2"));
@@ -58,7 +59,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getScoreAfterFourMatches() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -69,7 +70,7 @@ public class TournamentHighScoreTest {
 		Othello othelloMatch3 = createMockedOthelloMatch("player1", "player2");
 		Othello othelloMatch4 = createMockedOthelloMatch("player1", "player2");
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othelloMatch1);
 		highScore.update(tournament, othelloMatch2);
 		highScore.update(tournament, othelloMatch3);
@@ -81,7 +82,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getHighestTournamentScoreAfterFourWins() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -92,7 +93,7 @@ public class TournamentHighScoreTest {
 		Othello othelloMatch3 = createMockedOthelloMatch("player1", "player2");
 		Othello othelloMatch4 = createMockedOthelloMatch("player1", "player2");
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othelloMatch1);
 		highScore.update(tournament, othelloMatch2);
 		highScore.update(tournament, othelloMatch3);
@@ -103,7 +104,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getWinnerOfTournamentAfterFourMatches() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -114,7 +115,7 @@ public class TournamentHighScoreTest {
 		Othello othelloMatch3 = createMockedOthelloMatch("player1", "player2");
 		Othello othelloMatch4 = createMockedOthelloMatch("player1", "player2");
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othelloMatch1);
 		highScore.update(tournament, othelloMatch2);
 		highScore.update(tournament, othelloMatch3);
@@ -125,7 +126,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getWinnerOfTournamentWhenItWasADraw() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -136,7 +137,7 @@ public class TournamentHighScoreTest {
 		Othello othelloMatch3 = createMockedOthelloMatch("player2", "player1");
 		Othello othelloMatch4 = createMockedOthelloMatch("player2", "player1");
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othelloMatch1);
 		highScore.update(tournament, othelloMatch2);
 		highScore.update(tournament, othelloMatch3);
@@ -147,7 +148,7 @@ public class TournamentHighScoreTest {
 
 	@Test
 	public void getScoreAfterOneWinAndThreeDraws() {
-		Tournament tournament = mock(Tournament.class);
+		TournamentRound tournament = mock(TournamentRound.class);
 		List<Player> players = new ArrayList<Player>();
 		players.add(MockCreator.createMockedComputerPlayer("player1", "player1", null));
 		players.add(MockCreator.createMockedComputerPlayer("player2", "player2", null));
@@ -158,7 +159,7 @@ public class TournamentHighScoreTest {
 		Othello othelloMatch3 = createMockedOthelloDrawMatch("player1", "player2");
 		Othello othelloMatch4 = createMockedOthelloDrawMatch("player1", "player2");
 
-		TournamentHighScore highScore = new TournamentHighScore(tournament);
+		TournamentHighScore highScore = new TournamentHighScore(players);
 		highScore.update(tournament, othelloMatch1);
 		highScore.update(tournament, othelloMatch2);
 		highScore.update(tournament, othelloMatch3);
@@ -166,6 +167,24 @@ public class TournamentHighScoreTest {
 
 		assertEquals(5, highScore.getScoreForPlayer("player1"));
 		assertEquals(3, highScore.getScoreForPlayer("player2"));
+	}
+
+	@Test
+	public void updateScoreForActiveOthello() {
+		TournamentRound tournament = mock(TournamentRound.class);
+		List<Player> players = new ArrayList<Player>();
+		TournamentHighScore highScore = new TournamentHighScore(players);
+		Othello othello = mock(Othello.class);
+		when(othello.isActive()).thenReturn(true);
+		boolean threwException = false;
+		try {
+			highScore.update(tournament, othello);
+		} catch (RuntimeException e) {
+			threwException = true;
+		}
+
+		assertTrue(threwException);
+
 	}
 
 	private Othello createMockedOthelloMatch(String winningPlayer, String loosingPlayer) {
@@ -176,6 +195,7 @@ public class TournamentHighScoreTest {
 		Score score = mock(Score.class);
 		when(score.getPlayersScore()).thenReturn(scores);
 		when(othello.getScore()).thenReturn(score);
+		when(othello.isActive()).thenReturn(false);
 		return othello;
 	}
 
@@ -187,6 +207,7 @@ public class TournamentHighScoreTest {
 		Score score = mock(Score.class);
 		when(score.getPlayersScore()).thenReturn(scores);
 		when(othello.getScore()).thenReturn(score);
+		when(othello.isActive()).thenReturn(false);
 		return othello;
 	}
 }

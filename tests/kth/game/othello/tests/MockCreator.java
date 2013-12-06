@@ -44,6 +44,14 @@ public class MockCreator {
 		return players;
 	}
 
+	public static List<Player> createMockedComputerPlayers(int number) {
+		List<Player> players = new ArrayList<Player>();
+		for (int i = 0; i < number; i++) {
+			players.add(createMockedComputerPlayer("player" + i, "player" + i, null));
+		}
+		return players;
+	}
+
 	public static Player createMockedHumanPlayer(String id, String name) {
 		Player player = mock(PlayerImpl.class);
 		when(player.getType()).thenReturn(Type.HUMAN);

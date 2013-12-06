@@ -26,7 +26,7 @@ public class PlayTournamentGraphically {
 		players.add(first);
 		players.add(random);
 
-		Tournament tournament = new Tournament(players, true);
+		Tournament tournament = new Tournament(players, true, 2);
 		tournament.playTournament();
 		System.out.println("The winner is: " + tournament.getWinnerOfTournament() + " with "
 				+ tournament.highestScore() + " points!");
