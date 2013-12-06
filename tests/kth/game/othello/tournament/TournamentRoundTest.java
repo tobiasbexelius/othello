@@ -50,7 +50,7 @@ public class TournamentRoundTest {
 		TournamentRound round = new TournamentRound(players, false, gameCreator);
 
 		int totalNumberOfMatches = round.playRound();
-		assertEquals(6, totalNumberOfMatches);
+		assertEquals(12, totalNumberOfMatches);
 	}
 
 	@Test
@@ -65,7 +65,7 @@ public class TournamentRoundTest {
 		TournamentRound round = new TournamentRound(players, false, gameCreator);
 
 		int totalNumberOfMatches = round.playRound();
-		assertEquals(45, totalNumberOfMatches);
+		assertEquals(90, totalNumberOfMatches);
 	}
 
 }

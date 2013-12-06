@@ -11,7 +11,7 @@ import kth.game.othello.view.swing.OthelloViewFactory;
 
 /**
  * The responsibility of this class is to take a list of players and make sure
- * they all play one game of Othello against each other. It must notify it's
+ * they all play two games of Othello against each other. It must notify it's
  * observers each time a match in the round has finished.
  * 
  */
@@ -41,7 +41,7 @@ public class TournamentRound extends Observable implements Observer {
 
 	/**
 	 * Plays one round of the tournament. One round consists of all players
-	 * playing once against each other.
+	 * playing two times against each other. Each player starts the match once.
 	 * 
 	 * @return the total number of matches played in the round.
 	 */
@@ -50,8 +50,9 @@ public class TournamentRound extends Observable implements Observer {
 		int matchesPlayed = 0;
 		for (Player player : players) {
 			for (int i = j + 1; i < players.size(); i++) {
-				playOneGame(player, players.get(i));
-				matchesPlayed++;
+				playOneGame(player, players.get(i), player);
+				playOneGame(player, players.get(i), players.get(i));
+				matchesPlayed += 2;
 			}
 			j++;
 		}
@@ -65,16 +66,18 @@ public class TournamentRound extends Observable implements Observer {
 	 * @param player1
 	 *            The first of the two players
 	 * @param player2
-	 *            The second of the two playes
+	 *            The second of the two players
+	 * @param startingPlayer
+	 *            the player who will make the first move
 	 */
-	private void playOneGame(Player player1, Player player2) {
+	private void playOneGame(Player player1, Player player2, Player startingPlayer) {
 		Othello othello = gameCreator.createGameWithPlayers(player1, player2);
 		othello.addGameFinishedObserver(this);
 		if (graphicalView) {
 			OthelloView othelloView = OthelloViewFactory.create(othello, 5, 5);
-			othelloView.start();
+			othelloView.start(startingPlayer.getId());
 		} else {
-			othello.start();
+			othello.start(startingPlayer.getId());
 			while (othello.isActive()) {
 				othello.move();
 			}

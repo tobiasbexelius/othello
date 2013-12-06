@@ -75,8 +75,9 @@ public class TournamentTest {
 
 		Tournament tournament = new Tournament(players, false, 2);
 		tournament.playTournament();
-		assertTrue(tournament.highestScore() < 16);
-		assertTrue(tournament.highestScore() > 8);
+		System.out.println(tournament.highestScore());
+		assertTrue(tournament.highestScore() <= 16);
+		assertTrue(tournament.highestScore() >= 8);
 	}
 
 }

@@ -49,11 +49,9 @@ public class Tournament {
 	 */
 	public int playTournament() {
 		int matchesPlayed = 0;
-		for (int i = 0; i < tournamentRounds; i++) {
-			TournamentRound round = new TournamentRound(players, graphicalView, new TournamentGameCreator());
-			round.addObserver(highScore);
-			matchesPlayed += round.playRound();
-		}
+		TournamentRound round = new TournamentRound(players, graphicalView, new TournamentGameCreator());
+		round.addObserver(highScore);
+		matchesPlayed += round.playRound();
 		return matchesPlayed;
 	}
 }
