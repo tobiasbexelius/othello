@@ -7,7 +7,6 @@ import kth.game.othello.player.Player;
 public class Tournament {
 	private List<Player> players;
 	private boolean graphicalView;
-	private int tournamentRounds;
 	private TournamentHighScore highScore;
 
 	/**
@@ -18,13 +17,10 @@ public class Tournament {
 	 * @param graphicalView
 	 *            If true, each match will be shown graphically. Otherwise, the
 	 *            matches will not be shown.
-	 * @param tournamentRounds
-	 *            The amount of times each player will play against one another
 	 */
-	public Tournament(List<Player> players, boolean graphicalView, int tournamentRounds) {
+	public Tournament(List<Player> players, boolean graphicalView) {
 		this.graphicalView = graphicalView;
 		this.players = players;
-		this.tournamentRounds = tournamentRounds;
 		highScore = new TournamentHighScore(players);
 	}
 
@@ -37,21 +33,24 @@ public class Tournament {
 		return highScore.getHighestScoringPlayer();
 	}
 
+	/**
+	 * Returns the highest score achieved in the tournament
+	 * 
+	 * @return the highest score in the tournament
+	 */
 	public int highestScore() {
 		return highScore.getHighestTournamentScore();
 	}
 
 	/**
-	 * Plays all rounds of the tournament.The result of the tournament is
-	 * printed afterwards.
+	 * Plays all rounds of the tournament.
 	 * 
-	 * @return the total number of matches played
+	 * @return the total number of matches played int the tournament
 	 */
 	public int playTournament() {
-		int matchesPlayed = 0;
 		TournamentRound round = new TournamentRound(players, graphicalView, new TournamentGameCreator());
 		round.addObserver(highScore);
-		matchesPlayed += round.playRound();
+		int matchesPlayed = round.playRound();
 		return matchesPlayed;
 	}
 }

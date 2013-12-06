@@ -26,7 +26,7 @@ public class PlayTournament {
 		players.add(first);
 		players.add(random);
 
-		Tournament tournament = new Tournament(players, false, 2);
+		Tournament tournament = new Tournament(players, false);
 		tournament.playTournament();
 		String winner = tournament.getWinnerOfTournament();
 		if (winner != null) {

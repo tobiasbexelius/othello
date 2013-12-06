@@ -33,7 +33,7 @@ public class TournamentTest {
 		players.add(first);
 		players.add(random);
 
-		Tournament tournament = new Tournament(players, false, 2);
+		Tournament tournament = new Tournament(players, false);
 		assertEquals(6, tournament.playTournament());
 	}
 
@@ -53,7 +53,7 @@ public class TournamentTest {
 		players.add(first2);
 		players.add(first3);
 
-		Tournament tournament = new Tournament(players, false, 2);
+		Tournament tournament = new Tournament(players, false);
 		assertEquals(20, tournament.playTournament());
 	}
 
@@ -73,7 +73,7 @@ public class TournamentTest {
 		players.add(first2);
 		players.add(first3);
 
-		Tournament tournament = new Tournament(players, false, 2);
+		Tournament tournament = new Tournament(players, false);
 		tournament.playTournament();
 		System.out.println(tournament.highestScore());
 		assertTrue(tournament.highestScore() <= 16);
