@@ -29,7 +29,7 @@ public class TournamentRoundTest {
 		OthelloImpl othello = mock(OthelloImpl.class);
 		when(othello.isActive()).thenReturn(false);
 		TournamentGameCreator gameCreator = mock(TournamentGameCreator.class);
-		when(gameCreator.createGameWithPlayers(player1, player2)).thenReturn(othello);
+		when(gameCreator.createGameWithPlayers((Player) anyObject(), (Player) anyObject())).thenReturn(othello);
 		TournamentRound round = new TournamentRound(players, false, gameCreator);
 		Observer observer = mock(Observer.class);
 		round.addObserver(observer);

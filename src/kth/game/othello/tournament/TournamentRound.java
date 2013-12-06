@@ -51,7 +51,7 @@ public class TournamentRound extends Observable implements Observer {
 		for (Player player : players) {
 			for (int i = j + 1; i < players.size(); i++) {
 				playOneGame(player, players.get(i), player);
-				playOneGame(player, players.get(i), players.get(i));
+				playOneGame(players.get(i), player, players.get(i));
 				matchesPlayed += 2;
 			}
 			j++;
