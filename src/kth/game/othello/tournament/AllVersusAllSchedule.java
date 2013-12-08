@@ -11,7 +11,7 @@ import kth.game.othello.player.Player;
  * matches where every player play against every other player two times.
  * 
  */
-public class AllVersusAllSchedule implements Schedule {
+class AllVersusAllSchedule implements Schedule {
 
 	private List<Player> players;
 	private MatchFactory matchFactory;

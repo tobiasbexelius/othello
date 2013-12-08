@@ -3,7 +3,7 @@ package kth.game.othello.tournament;
 import kth.game.othello.Othello;
 import kth.game.othello.player.Player;
 
-public class Match {
+class Match {
 
 	private Othello matchUp;
 	private Player startingPlayer;

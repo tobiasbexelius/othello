@@ -9,7 +9,7 @@ import java.util.Queue;
  * be played in.
  * 
  */
-public interface Schedule {
+interface Schedule {
 
 	/**
 	 * Returns the schedule in form of a queue of matches to be played.

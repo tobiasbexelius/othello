@@ -14,7 +14,7 @@ import kth.game.othello.view.swing.OthelloViewFactory;
  * time a match has finished.
  * 
  */
-public class Round extends Observable implements Observer {
+class Round extends Observable implements Observer {
 	private boolean graphicalView;
 	private Schedule schedule;
 
