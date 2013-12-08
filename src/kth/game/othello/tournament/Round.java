@@ -40,6 +40,7 @@ class Round extends Observable implements Observer {
 	 */
 	public int playRound() {
 		int matchesPlayed = 0;
+		schedule.createSchedule();
 		Queue<Match> matchQueue = schedule.getSchedule();
 		while (!matchQueue.isEmpty()) {
 			Match currentMatch = matchQueue.poll();

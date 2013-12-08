@@ -15,7 +15,7 @@ class AllVersusAllSchedule implements Schedule {
 
 	private List<Player> players;
 	private MatchFactory matchFactory;
-
+	private Queue<Match> schedule;
 	/**
 	 * Create a new schedule.
 	 * 
@@ -31,7 +31,12 @@ class AllVersusAllSchedule implements Schedule {
 
 	@Override
 	public Queue<Match> getSchedule() {
-		Queue<Match> schedule = new LinkedList<Match>();
+		return schedule;
+	}
+
+	@Override
+	public void createSchedule() {
+		this.schedule = new LinkedList<Match>();
 		int j = 0;
 		for (Player player : players) {
 			for (int i = j + 1; i < players.size(); i++) {
@@ -42,6 +47,6 @@ class AllVersusAllSchedule implements Schedule {
 			}
 			j++;
 		}
-		return schedule;
+		
 	}
 }

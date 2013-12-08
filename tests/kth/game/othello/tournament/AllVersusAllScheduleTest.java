@@ -24,6 +24,7 @@ public class AllVersusAllScheduleTest {
 		when(matchFactory.createMatchWithPlayers((Player) anyObject(), (Player) anyObject(), (Player) anyObject()))
 				.thenReturn(match);
 		AllVersusAllSchedule schedule = new AllVersusAllSchedule(players, matchFactory);
+		schedule.createSchedule();
 		assertEquals(6, schedule.getSchedule().size());
 	}
 
@@ -35,6 +36,7 @@ public class AllVersusAllScheduleTest {
 		when(matchFactory.createMatchWithPlayers((Player) anyObject(), (Player) anyObject(), (Player) anyObject()))
 				.thenReturn(match);
 		AllVersusAllSchedule schedule = new AllVersusAllSchedule(players, matchFactory);
+		schedule.createSchedule();
 		assertEquals(12, schedule.getSchedule().size());
 	}
 
@@ -46,6 +48,7 @@ public class AllVersusAllScheduleTest {
 		when(matchFactory.createMatchWithPlayers((Player) anyObject(), (Player) anyObject(), (Player) anyObject()))
 				.thenReturn(match);
 		AllVersusAllSchedule schedule = new AllVersusAllSchedule(players, matchFactory);
+		schedule.createSchedule();
 		assertEquals(90, schedule.getSchedule().size());
 	}
 
@@ -62,6 +65,7 @@ public class AllVersusAllScheduleTest {
 		when(matchFactory.createMatchWithPlayers(player1, player2, player1)).thenReturn(match1);
 		when(matchFactory.createMatchWithPlayers(player1, player2, player2)).thenReturn(match2);
 		AllVersusAllSchedule schedule = new AllVersusAllSchedule(players, matchFactory);
+		schedule.createSchedule();
 		Queue<Match> queue = schedule.getSchedule();
 		assertEquals("player1", queue.poll().getStartingPlayerId());
 		assertEquals("player2", queue.poll().getStartingPlayerId());

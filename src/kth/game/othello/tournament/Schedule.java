@@ -17,4 +17,9 @@ interface Schedule {
 	 * @return the queue of matches to be played.
 	 */
 	public Queue<Match> getSchedule();
+	
+	/**
+	 * Creates a schedule in form of a queue for the matches to be played. 
+	 */
+	public void createSchedule();
 }
