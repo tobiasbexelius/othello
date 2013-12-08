@@ -17,10 +17,10 @@ import kth.game.othello.score.ScoreItem;
  * the tournament has finished.
  * 
  */
-class TournamentHighScore implements Observer {
+class HighScore implements Observer {
 	private Map<String, Integer> highScore;
 
-	public TournamentHighScore(List<Player> players) {
+	public HighScore(List<Player> players) {
 		highScore = new HashMap<String, Integer>();
 		for (Player player : players) {
 			highScore.put(player.getId(), 0);
@@ -135,7 +135,7 @@ class TournamentHighScore implements Observer {
 
 	@Override
 	public void update(Observable o, Object arg) {
-		if (!(o instanceof TournamentRound)) {
+		if (!(o instanceof Round)) {
 			throw new RuntimeException("The observed object was not a tournament!");
 		} else if (!(arg instanceof Othello)) {
 			throw new RuntimeException("The supplied argument was not an Othello game!");

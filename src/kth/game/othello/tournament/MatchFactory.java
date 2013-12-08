@@ -22,12 +22,12 @@ import kth.game.othello.player.PlayerCreatorImpl;
  * 
  */
 
-class TournamentGameCreator {
+class MatchFactory {
 
 	private OthelloFactory othelloFactory;
 	private BoardFactory boardFactory;
 
-	public TournamentGameCreator() {
+	public MatchFactory() {
 		NodeCreator nodeCreator = new NodeCreatorImpl();
 		BoardCreator boardCreator = new BoardCreatorImpl();
 		boardFactory = new BoardFactory(nodeCreator, boardCreator);
@@ -37,19 +37,23 @@ class TournamentGameCreator {
 	}
 
 	/**
-	 * Creates an Othello game with a quadratic 8x8 board and two players.
+	 * Creates a tournament mach. The othello game in the match will have a
+	 * quadratic 8x8 board and two players.
 	 * 
 	 * @param player1
-	 *            The first player of the game
+	 *            The first player of in the match
 	 * @param player2
-	 *            The second player of the game
-	 * @return and Othello game
+	 *            The second player in the match
+	 * @param startingPlayer
+	 *            The starting player of the match
+	 * @return the match
 	 */
-	public Othello createGameWithPlayers(Player player1, Player player2) {
+	public Match createMatchWithPlayers(Player player1, Player player2, Player startingPlayer) {
 		List<Player> players = new ArrayList<Player>();
 		players.add(player1);
 		players.add(player2);
 		Othello othello = othelloFactory.createGame(boardFactory.getQuadraticBoard(8, players), players);
-		return othello;
+
+		return new Match(othello, startingPlayer);
 	}
 }
