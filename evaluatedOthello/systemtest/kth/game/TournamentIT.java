@@ -22,7 +22,12 @@ import kth.game.othello.player.movestrategy.SimpleFromFirstNodeMoveStrategy;
 import kth.game.othello.player.movestrategy.SimpleFromLastNodeMoveStrategy;
 import kth.game.othello.view.swing.OthelloView;
 import kth.game.othello.view.swing.OthelloViewFactory;
-import kth.game.tournament.*;
+import kth.game.tournament.Entry;
+import kth.game.tournament.GameTypeWrapper;
+import kth.game.tournament.OthelloViewWrapper;
+import kth.game.tournament.OthelloWrapper;
+import kth.game.tournament.Tournament;
+import kth.game.tournament.TournamentImpl;
 
 import org.junit.Test;
 
